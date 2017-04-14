@@ -54,7 +54,8 @@ void Camera::MoveVertical(float fIncrement) {
 }
 
 void Camera::ChangePitch(float fIncrement) {
-	rotation *= ToMatrix4(glm::angleAxis(fIncrement, vector3(1, 0, 0)));
+	
+	rotation *= ToMatrix4(glm::angleAxis(fIncrement, vector3(1, 0, 0))); 
 }
 
 void Camera::ChangeRoll(float fIncrement) {

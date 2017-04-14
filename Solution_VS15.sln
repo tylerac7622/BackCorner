@@ -9,21 +9,44 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ref Code", "Ref Code", "{C0
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A08", "\\banner.main.ad.rit.edu\students\ltr6702\IGMProfile\Documents\ReEngineApp_2016s\A08 - Final\A08.vcxproj", "{635F6252-1CFD-402C-A66D-775610C6220F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletTest", "BulletTest\BulletTest.vcxproj", "{3EDF865C-05FB-4311-A767-0E596D0E2CC5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A08_CameraClass", "\\banner.main.ad.rit.edu\students\ltr6702\IGMProfile\Documents\BackCorner\A08_CameraClass\A08_CameraClass.vcxproj", "{605F2BD5-F21C-4E00-A2BA-6D7D99806125}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{635F6252-1CFD-402C-A66D-775610C6220F}.Debug|x64.ActiveCfg = Debug|Win32
 		{635F6252-1CFD-402C-A66D-775610C6220F}.Debug|x86.ActiveCfg = Debug|Win32
 		{635F6252-1CFD-402C-A66D-775610C6220F}.Debug|x86.Build.0 = Debug|Win32
+		{635F6252-1CFD-402C-A66D-775610C6220F}.Release|x64.ActiveCfg = Release|Win32
 		{635F6252-1CFD-402C-A66D-775610C6220F}.Release|x86.ActiveCfg = Release|Win32
 		{635F6252-1CFD-402C-A66D-775610C6220F}.Release|x86.Build.0 = Release|Win32
+		{3EDF865C-05FB-4311-A767-0E596D0E2CC5}.Debug|x64.ActiveCfg = Debug|x64
+		{3EDF865C-05FB-4311-A767-0E596D0E2CC5}.Debug|x64.Build.0 = Debug|x64
+		{3EDF865C-05FB-4311-A767-0E596D0E2CC5}.Debug|x86.ActiveCfg = Debug|Win32
+		{3EDF865C-05FB-4311-A767-0E596D0E2CC5}.Debug|x86.Build.0 = Debug|Win32
+		{3EDF865C-05FB-4311-A767-0E596D0E2CC5}.Release|x64.ActiveCfg = Release|x64
+		{3EDF865C-05FB-4311-A767-0E596D0E2CC5}.Release|x64.Build.0 = Release|x64
+		{3EDF865C-05FB-4311-A767-0E596D0E2CC5}.Release|x86.ActiveCfg = Release|Win32
+		{3EDF865C-05FB-4311-A767-0E596D0E2CC5}.Release|x86.Build.0 = Release|Win32
+		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Debug|x64.ActiveCfg = Debug|Win32
+		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Debug|x86.ActiveCfg = Debug|Win32
+		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Debug|x86.Build.0 = Debug|Win32
+		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Release|x64.ActiveCfg = Release|Win32
+		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Release|x86.ActiveCfg = Release|Win32
+		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{635F6252-1CFD-402C-A66D-775610C6220F} = {C0E8C6DD-2B8C-4CC4-942C-A47B6C6C6552}
+		{3EDF865C-05FB-4311-A767-0E596D0E2CC5} = {CDB66DF0-F246-4F07-A985-D4CE8DD20034}
 	EndGlobalSection
 EndGlobal
