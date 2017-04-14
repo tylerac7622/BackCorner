@@ -1,0 +1,4 @@
+Logan Rogers
+Felipe Yoon
+
+Note camera is moved with arrows keys and LCtrl/RCtrl
