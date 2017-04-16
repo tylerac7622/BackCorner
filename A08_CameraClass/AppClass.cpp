@@ -80,6 +80,8 @@ void AppClass::Update(void)
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
+	bullet.Update();
+
 	//First person camera movement
 	if (m_bFPC == true)
 		RotateCam();

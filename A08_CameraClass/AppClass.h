@@ -8,12 +8,14 @@ Date: 2015/09
 #include "RE\ReEngAppClass.h"
 #include <SFML\Graphics.hpp>
 #include "Camera.h"
+#include "Bullet.h"
 
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
 	Camera cam = Camera();
+	Bullet bullet = Bullet();
 
 	PrimitiveClass* m_pCone = nullptr;
 
