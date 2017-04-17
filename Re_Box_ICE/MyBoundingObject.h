@@ -1,6 +1,6 @@
-#pragma once
 #include "RE\ReEng.h"
-class MyBoundingBoxClass
+
+class MyBoundingObject
 {
 private:
 	float m_fRadius = 0.0f; //radius of the sphere
@@ -17,7 +17,10 @@ private:
 	matrix4 rotation = IDENTITY_M4;
 	MeshManagerSingleton* m_pMeshMngr = nullptr; //for drawing the sphere
 	bool m_bColliding = false;
-
+	bool isVisible = true;
+	bool isSphereVisible = true;
+	bool isBoxVisible = true;
+	vector3 v3Color = REGREEN;
 public:
 	/*
 	Sets Colliding
@@ -54,6 +57,16 @@ public:
 	*/
 	vector3 GetCenterGlobal(void);
 
+	vector3 GetMax(void);
+	vector3 GetMin(void);
+
+	void SetColor(vector3 color);
+	void SetVisible(bool vis);
+	bool GetVisible(void);
+	void SetSphereVisible(bool vis);
+	bool GetSphereVisible(void);
+	void SetBoxVisible(bool vis);
+	bool GetBoxVisible(void);
 	/*
 	Gets model to world matrix of the sphere
 	*/
@@ -62,11 +75,11 @@ public:
 	Gets radius of the sphere
 	*/
 	float GetRadius(void);
-	
+
 	/*
 	Constructor, needs a vertex list
 	*/
-	MyBoundingBoxClass(std::vector<vector3> vertexList);
+	MyBoundingObject(std::vector<vector3> vertexList);
 	/*
 	Renders the sphere based on the radius and the center in global space
 	*/
@@ -79,5 +92,5 @@ public:
 	/*
 	Will check the collision with another object
 	*/
-	bool IsColliding(MyBoundingBoxClass* a_other);
+	bool IsColliding(MyBoundingObject* a_other);
 };

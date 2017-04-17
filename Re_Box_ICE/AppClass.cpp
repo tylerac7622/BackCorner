@@ -16,9 +16,9 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
 	m_pMeshMngr->LoadModel("Minecraft\\Cow.obj", "Cow");
 	//creating bounding spheres for both models
-	m_pBS0 = new MyBoundingBoxClass(m_pMeshMngr->GetVertexList("Zombie"));
-	m_pBS1 = new MyBoundingBoxClass(m_pMeshMngr->GetVertexList("Steve"));
-	m_pBS2 = new MyBoundingBoxClass(m_pMeshMngr->GetVertexList("Cow"));
+	m_pBS0 = new MyBoundingObject(m_pMeshMngr->GetVertexList("Zombie"));
+	m_pBS1 = new MyBoundingObject(m_pMeshMngr->GetVertexList("Steve"));
+	m_pBS2 = new MyBoundingObject(m_pMeshMngr->GetVertexList("Cow"));
 
 	matrix4 m4Position = glm::translate(vector3(3.0, 0.0, 0.0));
 	m_pMeshMngr->SetModelMatrix(m4Position, "Steve");
@@ -63,6 +63,8 @@ void AppClass::Update(void)
 	m_pMeshMngr->SetModelMatrix(m4Transform, "Zombie"); //set the matrix to the model
 	m_pBS0->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Zombie"));
 	m_pBS0->RenderSphere();//render the bounding sphere
+
+	m_pBS0->SetSphereVisible(false);
 		
 
 	m_pMeshMngr->SetModelMatrix(mTranslation, "Steve");
@@ -75,21 +77,30 @@ void AppClass::Update(void)
 	m_pBS0->SetColliding(false);
 	m_pBS1->SetColliding(false);
 	m_pBS2->SetColliding(false);
+	m_pBS0->SetColor(REGREEN);
+	m_pBS1->SetColor(REGREEN);
+	m_pBS2->SetColor(REGREEN);
 
 	if (m_pBS0->IsColliding(m_pBS1))
 	{
 		m_pBS0->SetColliding(true);
+		m_pBS0->SetColor(RERED);
 		m_pBS1->SetColliding(true);
+		m_pBS1->SetColor(RERED);
 	}
 	if (m_pBS0->IsColliding(m_pBS2))
 	{
 		m_pBS0->SetColliding(true);
+		m_pBS0->SetColor(RERED);
 		m_pBS2->SetColliding(true);
+		m_pBS2->SetColor(RERED);
 	}
 	if (m_pBS1->IsColliding(m_pBS2))
 	{
 		m_pBS1->SetColliding(true);
+		m_pBS1->SetColor(RERED);
 		m_pBS2->SetColliding(true);
+		m_pBS2->SetColor(RERED);
 	}
 
 	if (fPercentage > 1.0f)
@@ -110,27 +121,6 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine("");//Add a line on top
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
 
-	m_pMeshMngr->Print("Max: ( ");
-	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMaxGlobal().x), RERED);
-	m_pMeshMngr->Print(" , ");
-	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMaxGlobal().y), RERED);
-	m_pMeshMngr->Print(" , ");
-	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMaxGlobal().z), RERED);
-	m_pMeshMngr->PrintLine(")");
-	m_pMeshMngr->Print("Min: ( ");
-	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMinGlobal().x), RERED);
-	m_pMeshMngr->Print(" , ");
-	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMinGlobal().y), RERED);
-	m_pMeshMngr->Print(" , ");
-	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMinGlobal().z), RERED);
-	m_pMeshMngr->PrintLine(")");
-	m_pMeshMngr->Print("Size: ( ");
-	m_pMeshMngr->Print(std::to_string(m_pBS0->GetReSizeGlobal().x), RERED);
-	m_pMeshMngr->Print(" , ");
-	m_pMeshMngr->Print(std::to_string(m_pBS0->GetReSizeGlobal().y), RERED);
-	m_pMeshMngr->Print(" , ");
-	m_pMeshMngr->Print(std::to_string(m_pBS0->GetReSizeGlobal().z), RERED);
-	m_pMeshMngr->PrintLine(")");
 	m_pMeshMngr->Print("Center: (");
 	m_pMeshMngr->Print(std::to_string(m_pBS0->GetCenterGlobal().x), RERED);
 	m_pMeshMngr->Print(" , ");
