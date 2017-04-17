@@ -9,8 +9,7 @@ Date: 2015/09 (Last Modified on: 15/11)
 #include <SFML\Graphics.hpp>
 #include "MyBoundingSphereClass.h"
 #include "MyBoundingBox.h"
-#include "MyBoundingObject.h"
-
+#include "BoundingObjectManager.h"
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
@@ -20,6 +19,8 @@ class AppClass : public ReEngAppClass
 	MyBoundingObject* m_pBS1;
 	MyBoundingObject* m_pBS2;
 public:
+	BoundingObjectManager boundingObjectManger;
+	BoundingObjectManager* boundMangPtr = boundingObjectManger.GetInstance();
 	typedef ReEngAppClass super;
 	/*
 	USAGE: Constructor
