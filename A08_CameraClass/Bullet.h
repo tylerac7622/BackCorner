@@ -20,9 +20,13 @@ public:
 
 	void SetPosition(vector3 position2);
 
+	void ChangeTurn(float offset);
+
 	void ChangeRotation(matrix4 offset);
 
 	void SetRotation(matrix4 rotation2);
+
+	vector3 GetForward(void);
 
 	void ChangeVelocity(float offset);
 
@@ -34,5 +38,6 @@ private:
 	matrix4 rotation;
 
 	float velocity;
+	float turningRotation = 0;
 };
 #endif

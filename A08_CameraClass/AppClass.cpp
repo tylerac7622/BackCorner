@@ -1,7 +1,7 @@
 #include "AppClass.h"
 void AppClass::InitWindow(String a_sWindowName)
 {
-	super::InitWindow("SLERP - YOUR USER NAME GOES HERE"); // Window Name
+	super::InitWindow("Magic Bullet - Back Corner"); // Window Name
 
 	//Setting the color to black
 	m_v4ClearColor = vector4(0.0f);
@@ -60,9 +60,15 @@ void AppClass::InitVariables(void)
 	cam.SetPosition(vector3(0.0f, 0.0f, 15.0f));
 	cam.SetTarget(ZERO_V3);
 	cam.SetUp(REAXISY);
+	bulletCam.SetPosition(vector3(0.0f, 0.0f, 15.0f));
+	bulletCam.SetTarget(ZERO_V3);
+	bulletCam.SetUp(REAXISY);
 
 	m_pCone = new PrimitiveClass();
 	m_pCone->GenerateCone(1.0f, 1.0f, 10, RERED);
+
+	m_pGround = new PrimitiveClass();
+	m_pGround->GeneratePlane(200.0f, REGREEN);
 
 
 	//Setting the color to black
@@ -81,6 +87,8 @@ void AppClass::Update(void)
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
 	bullet.Update();
+	bulletCam.SetPosition(bullet.GetPosition() + (bullet.GetForward() * vector3(-10.0f, 0.0f, -10.0f)) + vector3(0.0f, 1.0f, .0f));
+	bulletCam.SetTarget(bullet.GetPosition());
 
 	//First person camera movement
 	if (m_bFPC == true)
@@ -99,7 +107,22 @@ void AppClass::Display(void)
 	ClearScreen();
 
 	//Render the cone
-	m_pCone->Render(cam.GetProjection(false), cam.GetView(), IDENTITY_M4);
+	matrix4 bulletMatrix = IDENTITY_M4;
+	bulletMatrix = glm::translate(bullet.GetPosition());
+	matrix4 groundMatrix = IDENTITY_M4;
+	groundMatrix = glm::translate(vector3(0, -5, 0));
+	quaternion q = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
+	groundMatrix *= ToMatrix4(q);
+	if (followBullet)
+	{
+		m_pCone->Render(bulletCam.GetProjection(false), bulletCam.GetView(), bulletMatrix);
+		m_pGround->Render(bulletCam.GetProjection(false), bulletCam.GetView(), groundMatrix);
+	}
+	else
+	{
+		m_pCone->Render(cam.GetProjection(false), cam.GetView(), bulletMatrix);
+		m_pGround->Render(cam.GetProjection(false), cam.GetView(), groundMatrix);
+	}
 
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render

@@ -16,8 +16,12 @@ class AppClass : public ReEngAppClass
 {
 	Camera cam = Camera();
 	Bullet bullet = Bullet();
+	Camera bulletCam = Camera();
 
 	PrimitiveClass* m_pCone = nullptr;
+	PrimitiveClass* m_pGround = nullptr;
+
+	bool followBullet = false;
 
 public:
 	typedef ReEngAppClass super;
