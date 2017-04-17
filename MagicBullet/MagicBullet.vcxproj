@@ -12,8 +12,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{605F2BD5-F21C-4E00-A2BA-6D7D99806125}</ProjectGuid>
-    <RootNamespace>A08_CameraClass</RootNamespace>
-    <ProjectName>A08_CameraClass</ProjectName>
+    <RootNamespace>MagicBullet</RootNamespace>
+    <ProjectName>MagicBullet</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
