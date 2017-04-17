@@ -18,8 +18,9 @@ private:
 	vector3 m_ReCenter = vector3(0.0f);
 	vector3 reCenter = vector3(0.0f);
 	vector3 reSize = vector3(0.0f);
-	std::vector<vector3> reVertexList;
+	std::vector<vector4> reVertexList;
 	matrix4 m_m4ToWorld = IDENTITY_M4; //matrix that takes you from local to global space
+	matrix4 m_m4ToWorld2 = IDENTITY_M4; //matrix that takes you from local to global space
 	matrix4 rotation = IDENTITY_M4;
 	MeshManagerSingleton* m_pMeshMngr = nullptr; //for drawing the sphere
 	bool m_bColliding = false;
@@ -59,6 +60,10 @@ public:
 	Gets center of the sphere in global space
 	*/
 	vector3 GetCenterGlobal(void);
+
+	vector3 GetMaxGlobal(void);
+	vector3 GetMinGlobal(void);
+	vector3 GetReSizeGlobal(void);
 	/*
 	Gets model to world matrix of the sphere
 	*/

@@ -18,6 +18,7 @@ class AppClass : public ReEngAppClass
 	MyBoundingBoxClass* m_pBS0;
 	MyBoundingBoxClass* m_pBS1;
 	MyBoundingBoxClass* m_pBS2;
+	MyBoundingBoxClass* m_pBS3;
 public:
 	typedef ReEngAppClass super;
 	/*

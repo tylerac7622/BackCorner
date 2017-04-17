@@ -51,14 +51,17 @@ MyBoundingBoxClass::MyBoundingBoxClass(std::vector<vector3> vertexList)
 	m_v3Size.z = glm::distance(vector3(0.0, 0.0, m_v3Min.z), vector3(0.0, 0.0, m_v3Max.z));
 	//--------------------------------------------------------------------------------
 
-	reVertexList.push_back(vector3(m_v3Min.x, m_v3Max.y, m_v3Max.z));
-	reVertexList.push_back(vector3(m_v3Max.x, m_v3Max.y, m_v3Max.z));
-	reVertexList.push_back(vector3(m_v3Min.x, m_v3Max.y, m_v3Min.z));
-	reVertexList.push_back(vector3(m_v3Max.x, m_v3Max.y, m_v3Min.z));
-	reVertexList.push_back(vector3(m_v3Min.x, m_v3Min.y, m_v3Max.z));
-	reVertexList.push_back(vector3(m_v3Max.x, m_v3Min.y, m_v3Max.z));
-	reVertexList.push_back(vector3(m_v3Min.x, m_v3Min.y, m_v3Min.z));
-	reVertexList.push_back(vector3(m_v3Max.x, m_v3Min.y, m_v3Min.z));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Min.x, m_v3Max.y, m_v3Max.z, 0));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Max.x, m_v3Max.y, m_v3Max.z, 0));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Min.x, m_v3Max.y, m_v3Min.z, 0));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Max.x, m_v3Max.y, m_v3Min.z, 0));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Min.x, m_v3Min.y, m_v3Max.z, 0));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Max.x, m_v3Min.y, m_v3Max.z, 0));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Min.x, m_v3Min.y, m_v3Min.z, 0));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Max.x, m_v3Min.y, m_v3Min.z, 0));
+
+	//m_v3Max = vector3(reVertexList[0].x, reVertexList[0].y, reVertexList[0].z);
+	//m_v3Min = vector3(reVertexList[0].x, reVertexList[0].y, reVertexList[0].z);
 
 	for (int i = 1; i < reVertexList.size(); i++) {
 		if (m_ReMin.x > reVertexList[i].x)
@@ -112,7 +115,7 @@ void MyBoundingBoxClass::RenderSphere()
 
 	// m_pMeshMngr->AddCubeToRenderList(glm::translate(m_v3CenterGlobal) * glm::scale(m_v3Size), v3Color, WIRE);
 	m_pMeshMngr->AddCubeToRenderList(m_m4ToWorld * glm::translate(m_v3CenterLocal) * glm::scale(m_v3Size), v3Color, WIRE);
-	m_pMeshMngr->AddCubeToRenderList(m_m4ToWorld * glm::translate(reCenter) * glm::scale(reSize), v3Color, WIRE);
+	m_pMeshMngr->AddCubeToRenderList(IDENTITY_M4 * glm::translate(m_v3CenterGlobal) * glm::scale(reSize), v3Color, WIRE);
 }
 void MyBoundingBoxClass::SetModelMatrix(matrix4 a_m4ToWorld)
 {
@@ -121,12 +124,65 @@ void MyBoundingBoxClass::SetModelMatrix(matrix4 a_m4ToWorld)
 
 	m_m4ToWorld = a_m4ToWorld;
 	m_v3CenterGlobal = vector3(m_m4ToWorld * vector4(m_v3CenterLocal, 1.0f));
-	m_v3MaxGlobal = vector3(m_m4ToWorld * vector4(m_ReMax, 1.0f));
-	m_v3MinGlobal = vector3(m_m4ToWorld * vector4(m_ReMin, 1.0f));
+	m_v3MaxGlobal = vector3(m_m4ToWorld * vector4(m_v3Max, 1.0f));
+	m_v3MinGlobal = vector3(m_m4ToWorld * vector4(m_v3Min, 1.0f));
+
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Min.x, m_v3Max.y, m_v3Max.z, 1.0f));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Max.x, m_v3Max.y, m_v3Max.z, 1.0f));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Min.x, m_v3Max.y, m_v3Min.z, 1.0f));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Max.x, m_v3Max.y, m_v3Min.z, 1.0f));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Min.x, m_v3Min.y, m_v3Max.z, 1.0f));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Max.x, m_v3Min.y, m_v3Max.z, 1.0f));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Min.x, m_v3Min.y, m_v3Min.z, 1.0f));
+	reVertexList.push_back(m_m4ToWorld * vector4(m_v3Max.x, m_v3Min.y, m_v3Min.z, 1.0f));
+
+	m_v3MaxGlobal = vector3(reVertexList[0].x, reVertexList[0].y, reVertexList[0].z);
+	m_v3MinGlobal = vector3(reVertexList[0].x, reVertexList[0].y, reVertexList[0].z);
+
+	for (int i = 1; i < reVertexList.size(); i++) 
+	{
+		if (m_v3MinGlobal.x > reVertexList[i].x)
+		{
+			m_v3MinGlobal.x = reVertexList[i].x;
+		}
+		else if (m_v3MaxGlobal.x < reVertexList[i].x)
+		{
+			m_v3MaxGlobal.x = reVertexList[i].x;
+		}
+
+		if (m_v3MinGlobal.y > reVertexList[i].y)
+		{
+			m_v3MinGlobal.y = reVertexList[i].y;
+		}
+		else if (m_v3MaxGlobal.y < reVertexList[i].y)
+		{
+			m_v3MaxGlobal.y = reVertexList[i].y;
+		}
+
+		if (m_v3MinGlobal.z > reVertexList[i].z)
+		{
+			m_v3MinGlobal.z = reVertexList[i].z;
+		}
+		else if (m_v3MaxGlobal.z < reVertexList[i].z)
+		{
+			m_v3MaxGlobal.z = reVertexList[i].z;
+		}
+	}
+
+	m_v3CenterGlobal = (m_v3MaxGlobal + m_v3MinGlobal) / 2.0f;
+
+	reSize.x = glm::distance(vector3(m_v3MinGlobal.x, 0.0, 0.0), vector3(m_v3MaxGlobal.x, 0.0, 0.0));
+	reSize.y = glm::distance(vector3(0.0, m_v3MinGlobal.y, 0.0), vector3(0.0, m_v3MaxGlobal.y, 0.0));
+	reSize.z = glm::distance(vector3(0.0, 0.0, m_v3MinGlobal.z), vector3(0.0, 0.0, m_v3MaxGlobal.z));
+
+	//m_pMeshMngr = MeshManagerSingleton::GetInstance();
+
+	reVertexList.clear();
 
 }
 
-void MyBoundingBoxClass::SetRotation(matrix4 rot) {
+void MyBoundingBoxClass::SetRotation(matrix4 rot) 
+{
 	rotation = rot;
 }
 
@@ -162,5 +218,8 @@ void MyBoundingBoxClass::SetRadius(float input) { m_fRadius = input; }
 bool MyBoundingBoxClass::GetColliding(void) { return m_bColliding; }
 vector3 MyBoundingBoxClass::GetCenterLocal(void) { return m_v3CenterLocal; }
 vector3 MyBoundingBoxClass::GetCenterGlobal(void) { return m_v3CenterGlobal; }
+vector3 MyBoundingBoxClass::GetMaxGlobal(void) { return m_v3Max; }
+vector3 MyBoundingBoxClass::GetMinGlobal(void) { return m_v3Min; }
+vector3 MyBoundingBoxClass::GetReSizeGlobal(void) { return reSize; }
 float MyBoundingBoxClass::GetRadius(void) { return m_fRadius; }
 matrix4 MyBoundingBoxClass::GetModelMatrix(void) { return m_m4ToWorld; }

@@ -110,8 +110,27 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine("");//Add a line on top
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
 
-	m_pMeshMngr->Print("Radius: ");
-	m_pMeshMngr->PrintLine(std::to_string(m_pBS0->GetRadius()), RERED);
+	m_pMeshMngr->Print("Max: ( ");
+	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMaxGlobal().x), RERED);
+	m_pMeshMngr->Print(" , ");
+	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMaxGlobal().y), RERED);
+	m_pMeshMngr->Print(" , ");
+	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMaxGlobal().z), RERED);
+	m_pMeshMngr->PrintLine(")");
+	m_pMeshMngr->Print("Min: ( ");
+	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMinGlobal().x), RERED);
+	m_pMeshMngr->Print(" , ");
+	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMinGlobal().y), RERED);
+	m_pMeshMngr->Print(" , ");
+	m_pMeshMngr->Print(std::to_string(m_pBS0->GetMinGlobal().z), RERED);
+	m_pMeshMngr->PrintLine(")");
+	m_pMeshMngr->Print("Size: ( ");
+	m_pMeshMngr->Print(std::to_string(m_pBS0->GetReSizeGlobal().x), RERED);
+	m_pMeshMngr->Print(" , ");
+	m_pMeshMngr->Print(std::to_string(m_pBS0->GetReSizeGlobal().y), RERED);
+	m_pMeshMngr->Print(" , ");
+	m_pMeshMngr->Print(std::to_string(m_pBS0->GetReSizeGlobal().z), RERED);
+	m_pMeshMngr->PrintLine(")");
 	m_pMeshMngr->Print("Center: (");
 	m_pMeshMngr->Print(std::to_string(m_pBS0->GetCenterGlobal().x), RERED);
 	m_pMeshMngr->Print(" , ");

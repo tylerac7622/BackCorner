@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ref Code", "Ref Code", "{C0
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A08", "\\banner.main.ad.rit.edu\students\ltr6702\IGMProfile\Documents\ReEngineApp_2016s\A08 - Final\A08.vcxproj", "{635F6252-1CFD-402C-A66D-775610C6220F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A08_CameraClass", "A08_CameraClass\A08_CameraClass.vcxproj", "{605F2BD5-F21C-4E00-A2BA-6D7D99806125}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "W9R_BoundingSphereDEMO", "Re_Box_ICE\W9R_BoundingSphereDEMO.vcxproj", "{625922B3-FF5F-49AF-84A3-8E4BAD5B8DC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +23,12 @@ Global
 		{635F6252-1CFD-402C-A66D-775610C6220F}.Release|x64.ActiveCfg = Release|Win32
 		{635F6252-1CFD-402C-A66D-775610C6220F}.Release|x86.ActiveCfg = Release|Win32
 		{635F6252-1CFD-402C-A66D-775610C6220F}.Release|x86.Build.0 = Release|Win32
-		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Debug|x64.ActiveCfg = Debug|Win32
-		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Debug|x86.ActiveCfg = Debug|Win32
-		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Debug|x86.Build.0 = Debug|Win32
-		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Release|x64.ActiveCfg = Release|Win32
-		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Release|x86.ActiveCfg = Release|Win32
-		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Release|x86.Build.0 = Release|Win32
+		{625922B3-FF5F-49AF-84A3-8E4BAD5B8DC4}.Debug|x64.ActiveCfg = Debug|Win32
+		{625922B3-FF5F-49AF-84A3-8E4BAD5B8DC4}.Debug|x86.ActiveCfg = Debug|Win32
+		{625922B3-FF5F-49AF-84A3-8E4BAD5B8DC4}.Debug|x86.Build.0 = Debug|Win32
+		{625922B3-FF5F-49AF-84A3-8E4BAD5B8DC4}.Release|x64.ActiveCfg = Release|Win32
+		{625922B3-FF5F-49AF-84A3-8E4BAD5B8DC4}.Release|x86.ActiveCfg = Release|Win32
+		{625922B3-FF5F-49AF-84A3-8E4BAD5B8DC4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
