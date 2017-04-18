@@ -30,13 +30,12 @@ namespace {
 		void SetVisilibty(bool, MyBoundingObject*);
 		void CheckCollisons();
 		void SetRotation(matrix4, MyBoundingObject*);
+		BoundingObjectManager();
 	private:
 		static BoundingObjectManager* instance;
-		BoundingObjectManager();
 		bool isVisible = true;
 		vector3 color = vector3(0.0f);
-		
+
 	};
-	
 	BoundingObjectManager* BoundingObjectManager::instance = nullptr;
 }

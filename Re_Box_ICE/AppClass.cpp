@@ -82,6 +82,8 @@ void AppClass::Update(void)
 	//update collisions
 	boundMangPtr->CheckCollisons();
 
+	//render boxes
+	boundMangPtr->RenderBoxes();
 	
 	/*m_pBS0->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Zombie"));
 	m_pBS0->RenderSphere();//render the bounding sphere

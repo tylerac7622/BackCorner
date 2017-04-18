@@ -2,13 +2,16 @@
 
 BoundingObjectManager::BoundingObjectManager() {}
 
+
 void BoundingObjectManager::AddBox(std::vector<vector3> vertixList) {
 	MyBoundingObject* toPush = new MyBoundingObject(vertixList);
 	objects.push_back(toPush);
 }
 
 void BoundingObjectManager::RenderBoxes() {
-	if (!isVisible) { return; }
+	for (int i = 1; i < GetNumBO(); i++) {
+		objects[i]->RenderSphere();
+	}
 }
 
 void BoundingObjectManager::SwitchVisiblity(MyBoundingObject* objectToSet) {
