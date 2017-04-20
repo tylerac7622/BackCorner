@@ -1,10 +1,11 @@
+#ifndef __COUNDINGOBJECTMANAGER_H_
+#define __COUNDINGOBJECTMANAGER_H_
+
 #pragma once
 
-#include "RE\ReEngAppClass.h"
 #include "MyBoundingObject.h"
 using namespace ReEng;
 
-namespace {
 	class BoundingObjectManager {
 	public:
 		std::vector<MyBoundingObject*> objects;
@@ -38,4 +39,5 @@ namespace {
 
 	};
 	BoundingObjectManager* BoundingObjectManager::instance = nullptr;
-}
+
+#endif

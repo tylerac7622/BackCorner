@@ -23,9 +23,17 @@ void AppClass::ProcessKeyboard(void)
 
 #pragma region Camera Positioning
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		bullet = Bullet();
+		bullet.SetFired(true);
 		followBullet = true;
+		globalTime = 0.02f;
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+	{
 		followBullet = false;
+		globalTime = 1;
+	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		bullet.ChangeTurn(-2.0f);

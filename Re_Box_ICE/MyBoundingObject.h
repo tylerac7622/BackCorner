@@ -1,3 +1,6 @@
+
+#ifndef __MYBOUNDINGOBJECT_H_
+#define __MYBOUNDINGOBJECT_H_
 #include "RE\ReEng.h"
 
 class MyBoundingObject
@@ -94,3 +97,5 @@ public:
 	*/
 	bool IsColliding(MyBoundingObject* a_other);
 };
+
+#endif

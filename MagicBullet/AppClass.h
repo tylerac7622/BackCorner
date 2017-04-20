@@ -16,7 +16,8 @@ class AppClass : public ReEngAppClass
 {
 	Camera cam = Camera();
 	Bullet bullet = Bullet();
-	Camera bulletCam = Camera();
+
+	float globalTime = 1;
 
 	PrimitiveClass* m_pCone = nullptr;
 	PrimitiveClass* m_pGround = nullptr;

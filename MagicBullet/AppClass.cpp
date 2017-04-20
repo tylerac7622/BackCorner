@@ -60,9 +60,6 @@ void AppClass::InitVariables(void)
 	cam.SetPosition(vector3(0.0f, 0.0f, 15.0f));
 	cam.SetTarget(ZERO_V3);
 	cam.SetUp(REAXISY);
-	bulletCam.SetPosition(vector3(0.0f, 0.0f, 15.0f));
-	bulletCam.SetTarget(ZERO_V3);
-	bulletCam.SetUp(REAXISY);
 
 	m_pCone = new PrimitiveClass();
 	m_pCone->GenerateCone(1.0f, 1.0f, 10, RERED);
@@ -86,9 +83,7 @@ void AppClass::Update(void)
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
-	bullet.Update();
-	bulletCam.SetPosition(bullet.GetPosition() + (bullet.GetForward() * vector3(-10.0f, 0.0f, -10.0f)) + vector3(0.0f, 1.0f, .0f));
-	bulletCam.SetTarget(bullet.GetPosition());
+	bullet.Update(globalTime);
 
 	//First person camera movement
 	if (m_bFPC == true)
@@ -113,14 +108,20 @@ void AppClass::Display(void)
 	groundMatrix = glm::translate(vector3(0, -5, 0));
 	quaternion q = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
 	groundMatrix *= ToMatrix4(q);
-	if (followBullet)
+	if (followBullet && bullet.GetFired())
 	{
-		m_pCone->Render(bulletCam.GetProjection(false), bulletCam.GetView(), bulletMatrix);
-		m_pGround->Render(bulletCam.GetProjection(false), bulletCam.GetView(), groundMatrix);
+		if (bullet.GetFired())
+		{
+			m_pCone->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), bulletMatrix);
+		}
+		m_pGround->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), groundMatrix);
 	}
-	else
+	if(!followBullet)
 	{
-		m_pCone->Render(cam.GetProjection(false), cam.GetView(), bulletMatrix);
+		if (bullet.GetFired())
+		{
+			m_pCone->Render(cam.GetProjection(false), cam.GetView(), bulletMatrix);
+		}
 		m_pGround->Render(cam.GetProjection(false), cam.GetView(), groundMatrix);
 	}
 
