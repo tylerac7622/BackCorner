@@ -61,11 +61,17 @@ void AppClass::InitVariables(void)
 	cam.SetTarget(ZERO_V3);
 	cam.SetUp(REAXISY);
 
+	//bullet
 	m_pCone = new PrimitiveClass();
 	m_pCone->GenerateCone(1.0f, 1.0f, 10, RERED);
 
+	//ground
 	m_pGround = new PrimitiveClass();
 	m_pGround->GeneratePlane(200.0f, REGREEN);
+
+	//target cylinder
+	m_pTarget = new PrimitiveClass();
+	m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
 
 
 	//Setting the color to black
@@ -84,6 +90,12 @@ void AppClass::Update(void)
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
 	bullet.Update(globalTime);
+
+	//limits the bullet and resets it if it goes too far
+	if (bullet.GetPosition().x + bullet.GetPosition().z > 500)
+	{
+		bullet = Bullet();
+	}
 
 	//First person camera movement
 	if (m_bFPC == true)
@@ -104,18 +116,28 @@ void AppClass::Display(void)
 	//Render the cone
 	matrix4 bulletMatrix = IDENTITY_M4;
 	bulletMatrix = glm::translate(bullet.GetPosition());
+
 	matrix4 groundMatrix = IDENTITY_M4;
 	groundMatrix = glm::translate(vector3(0, -5, 0));
 	quaternion q = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
 	groundMatrix *= ToMatrix4(q);
-	if (followBullet && bullet.GetFired())
+
+	matrix4 targetMatrix = IDENTITY_M4;
+	targetMatrix = glm::translate(vector3(-30, 2, -70));
+	quaternion q2 = glm::angleAxis(90.0f, vector3(0.0f, 0.0f, 1.0f));
+	targetMatrix *= ToMatrix4(q2);
+
+	//following the bullet
+	if (followBullet)
 	{
 		if (bullet.GetFired())
 		{
 			m_pCone->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), bulletMatrix);
 		}
 		m_pGround->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), groundMatrix);
+		m_pTarget->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), targetMatrix);
 	}
+	//fps player camera
 	if(!followBullet)
 	{
 		if (bullet.GetFired())
@@ -123,6 +145,7 @@ void AppClass::Display(void)
 			m_pCone->Render(cam.GetProjection(false), cam.GetView(), bulletMatrix);
 		}
 		m_pGround->Render(cam.GetProjection(false), cam.GetView(), groundMatrix);
+		m_pTarget->Render(cam.GetProjection(false), cam.GetView(), targetMatrix);
 	}
 
 	m_pMeshMngr->Render(); //renders the render list

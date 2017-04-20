@@ -22,6 +22,7 @@ void AppClass::ProcessKeyboard(void)
 #pragma endregion
 
 #pragma region Camera Positioning
+	//fire the bullet
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		bullet = Bullet();
@@ -29,6 +30,7 @@ void AppClass::ProcessKeyboard(void)
 		followBullet = true;
 		globalTime = 0.02f;
 	}
+	//return to the fps player
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
 	{
 		followBullet = false;
@@ -36,9 +38,9 @@ void AppClass::ProcessKeyboard(void)
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		bullet.ChangeTurn(-2.0f);
+		bullet.ChangeTurn(-1.5f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		bullet.ChangeTurn(2.0f);
+		bullet.ChangeTurn(1.5f);
 /*	if(bModifier)
 		fSpeed *= 10.0f;
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))

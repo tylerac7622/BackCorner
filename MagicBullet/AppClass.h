@@ -17,9 +17,11 @@ class AppClass : public ReEngAppClass
 	Camera cam = Camera();
 	Bullet bullet = Bullet();
 
+	//the speed that enables the world to slow down when following the bullet
 	float globalTime = 1;
 
 	PrimitiveClass* m_pCone = nullptr;
+	PrimitiveClass* m_pTarget = nullptr;
 	PrimitiveClass* m_pGround = nullptr;
 
 	bool followBullet = false;

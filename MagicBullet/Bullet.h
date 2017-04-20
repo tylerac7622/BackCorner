@@ -15,18 +15,21 @@ public:
 
 	void Update(float globalTime);
 
+	//gets each respective variable
 	vector3 GetPosition(void);
-	void ChangePosition(vector3 offset);
+	vector3 GetForward(void);
+	Camera GetCamera(void);
+	bool GetFired(void);
+	//sets each respective variable
 	void SetPosition(vector3 position2);
+	void SetRotation(matrix4 rotation2);
+	void SetVelocity(float velocity2);
+	void SetFired(bool fired);
+	//add a change to each respective variable
+	void ChangePosition(vector3 offset);
 	void ChangeTurn(float offset);
 	void ChangeRotation(matrix4 offset);
-	void SetRotation(matrix4 rotation2);
-	vector3 GetForward(void);
 	void ChangeVelocity(float offset);
-	void SetVelocity(float velocity2);
-	Camera GetCamera(void);
-	void SetFired(bool fired);
-	bool GetFired(void);
 private:
 
 	vector3 position;
@@ -35,7 +38,7 @@ private:
 	Camera bulletCam = Camera();
 	bool isFired = false;
 
-	float velocity;
+	float velocity = 20.0f;
 	float turningRotation = 0;
 };
 #endif

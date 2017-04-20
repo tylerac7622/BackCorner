@@ -30,60 +30,21 @@ void Bullet::Update(float globalTime)
 	}
 }
 
-vector3 Bullet::GetPosition(void)
-{
-	return position;
-}
+vector3 Bullet::GetPosition(void) { return position; }
+vector3 Bullet::GetForward(void) { return forward; }
+Camera Bullet::GetCamera(void) { return bulletCam; }
+bool Bullet::GetFired(void) { return isFired; }
 
-void Bullet::ChangePosition(vector3 offset)
-{
-	position += offset;
-}
-
-void Bullet::SetPosition(vector3 position2)
-{
-	position = position2;
-}
+void Bullet::SetPosition(vector3 position2) { position = position2; }
+void Bullet::SetRotation(matrix4 rotation2) { }
+void Bullet::SetVelocity(float velocity2) {	velocity = velocity2; }
+void Bullet::SetFired(bool fired) { isFired = fired; }
 
 void Bullet::ChangeTurn(float offset)
 {
 	turningRotation += offset;
 	forward = vector3(cos(PI * turningRotation/180.0f), 0, sin(PI * turningRotation / 180.0f));
 }
-
-void Bullet::ChangeRotation(matrix4 offset)
-{
-
-}
-
-void Bullet::SetRotation(matrix4 rotation2)
-{
-
-}
-
-vector3 Bullet::GetForward(void)
-{
-	return forward;
-}
-
-void Bullet::ChangeVelocity(float offset)
-{
-	velocity += offset;
-}
-
-void Bullet::SetVelocity(float velocity2)
-{
-	velocity = velocity2;
-}
-Camera Bullet::GetCamera(void)
-{
-	return bulletCam;
-}
-void Bullet::SetFired(bool fired)
-{
-	isFired = fired;
-}
-bool Bullet::GetFired(void)
-{
-	return isFired;
-}
+void Bullet::ChangePosition(vector3 offset) { position += offset; }
+void Bullet::ChangeRotation(matrix4 offset) { }
+void Bullet::ChangeVelocity(float offset) {	velocity += offset; }
