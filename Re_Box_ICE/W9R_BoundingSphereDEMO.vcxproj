@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{625922B3-FF5F-49AF-84A3-8E4BAD5B8DC4}</ProjectGuid>
+    <ProjectGuid>{62923BCE-3468-4ABF-B73C-283D84A0B56C}</ProjectGuid>
     <RootNamespace>W9R_BoundingSphereDEMO</RootNamespace>
     <ProjectName>W9R_BoundingSphereDEMO</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>

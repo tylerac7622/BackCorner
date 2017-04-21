@@ -37,6 +37,9 @@ void Camera::SetTarget(vector3 v3Target) {
 void Camera::SetUp(vector3 v3Up) {
 	up = v3Up;
 }
+vector3 Camera::GetUp(void) {
+	return up;
+}
 
 void Camera::MoveForward(float fIncrement) {
 	eye.z -= fIncrement;
@@ -56,12 +59,21 @@ void Camera::MoveVertical(float fIncrement) {
 void Camera::ChangePitch(float fIncrement) {
 	
 	rotation *= ToMatrix4(glm::angleAxis(fIncrement, vector3(1, 0, 0))); 
+	SetUp(quaternion(rotation) * vector3(0, 1, 0));
 }
 
 void Camera::ChangeRoll(float fIncrement) {
 	rotation *= ToMatrix4(glm::angleAxis(fIncrement, vector3(0, 0, 1)));
+	SetUp(quaternion(rotation) * vector3(0, 1, 0));
 }
 
 void Camera::ChangeYaw(float fIncrement) {
 	rotation *= ToMatrix4(glm::angleAxis(fIncrement, vector3(0, 1, 0)));
+	SetUp(quaternion(rotation) * vector3(0, 1, 0));
+}
+
+void Camera::SetRotation(quaternion quat)
+{
+	rotation = ToMatrix4(quat);
+	SetUp(quaternion(rotation) * vector3(0, 1, 0));
 }

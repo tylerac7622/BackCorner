@@ -106,6 +106,16 @@ void AppClass::Update(void)
 	//Counting the cumulative time
 	static double fRunTime = 0.0f;
 	fRunTime += fCallTime;
+
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->Print("Rotation:");
+	m_pMeshMngr->Print(std::to_string(bullet.GetEuler().x) + ", ");
+	m_pMeshMngr->Print(std::to_string(bullet.GetEuler().y) + ", ");
+	m_pMeshMngr->PrintLine(std::to_string(bullet.GetEuler().z));
+	m_pMeshMngr->Print("Up:");
+	m_pMeshMngr->Print(std::to_string(cam.GetUp().x) + ", ");
+	m_pMeshMngr->Print(std::to_string(cam.GetUp().y) + ", ");
+	m_pMeshMngr->PrintLine(std::to_string(cam.GetUp().z));
 }
 
 void AppClass::Display(void)
@@ -116,6 +126,7 @@ void AppClass::Display(void)
 	//Render the cone
 	matrix4 bulletMatrix = IDENTITY_M4;
 	bulletMatrix = glm::translate(bullet.GetPosition());
+	bulletMatrix *= ToMatrix4(bullet.GetRotation());
 
 	matrix4 groundMatrix = IDENTITY_M4;
 	groundMatrix = glm::translate(vector3(0, -5, 0));
