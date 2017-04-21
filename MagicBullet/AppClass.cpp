@@ -73,6 +73,11 @@ void AppClass::InitVariables(void)
 	m_pTarget = new PrimitiveClass();
 	m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
 
+	bulletCollider = new MyBoundingBoxClass(m_pCone->GetVertexList());
+	bulletCollider->SetColliding(false);
+
+	targetCollider = new MyBoundingBoxClass(m_pTarget->GetVertexList());
+	targetCollider->SetColliding(false);
 
 	//Setting the color to black
 	m_v4ClearColor = vector4(0.0f);
@@ -106,6 +111,16 @@ void AppClass::Update(void)
 	//Counting the cumulative time
 	static double fRunTime = 0.0f;
 	fRunTime += fCallTime;
+
+	//update bullet collis
+	bulletCollider->SetModelMatrix(bulletMatrix);
+	targetCollider->SetModelMatrix(targetMatrix);
+	if (bulletCollider->IsColliding(targetCollider)) {
+		m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, RERED);
+	}
+	else {
+		m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
+	}
 }
 
 void AppClass::Display(void)
@@ -114,7 +129,7 @@ void AppClass::Display(void)
 	ClearScreen();
 
 	//Render the cone
-	matrix4 bulletMatrix = IDENTITY_M4;
+	
 	bulletMatrix = glm::translate(bullet.GetPosition());
 
 	matrix4 groundMatrix = IDENTITY_M4;
@@ -122,7 +137,7 @@ void AppClass::Display(void)
 	quaternion q = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
 	groundMatrix *= ToMatrix4(q);
 
-	matrix4 targetMatrix = IDENTITY_M4;
+	
 	targetMatrix = glm::translate(vector3(-30, 2, -70));
 	quaternion q2 = glm::angleAxis(90.0f, vector3(0.0f, 0.0f, 1.0f));
 	targetMatrix *= ToMatrix4(q2);

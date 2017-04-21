@@ -4,6 +4,7 @@
 #include "RE\ReEngAppClass.h"
 #include <SFML\Graphics.hpp>
 #include "Camera.h"
+#include "MyBoundingBox.h"
 using namespace ReEng;
 
 class Bullet {
