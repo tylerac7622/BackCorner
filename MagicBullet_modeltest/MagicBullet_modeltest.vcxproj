@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{62923BCE-3468-4ABF-B73C-283D84A0B56C}</ProjectGuid>
-    <RootNamespace>W9R_BoundingSphereDEMO</RootNamespace>
-    <ProjectName>W9R_BoundingSphereDEMO</ProjectName>
+    <ProjectGuid>{219B40DB-B009-4E30-82DA-A817697257A4}</ProjectGuid>
+    <RootNamespace>MagicBullet_modeltest</RootNamespace>
+    <ProjectName>MagicBullet_modeltest</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -105,20 +105,20 @@ xcopy "$(SolutionDir)include\RE\Shaders" "$(SolutionDir)_Binary\Shaders" /y</Com
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AppClass.cpp" />
-    <ClCompile Include="AppClassControls.cpp" />
-    <ClCompile Include="BoundingObjectManager.cpp" />
-    <ClCompile Include="MyBoundingObject.cpp" />
-    <ClCompile Include="Main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\res\Resource.h" />
     <ClInclude Include="AppClass.h" />
-    <ClInclude Include="BoundingObjectManager.h" />
-    <ClInclude Include="MyBoundingObject.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\res\BTO.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AppClass.cpp" />
+    <ClCompile Include="AppClassControls.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

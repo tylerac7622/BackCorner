@@ -56,7 +56,6 @@ void AppClass::RotateCam(float a_fSpeed = 0.005f)
 void AppClass::InitVariables(void)
 {
 	//Setting the position in which the camera is looking and its interest point
-	//m_pCameraMngr->SetPositionTargetAndView(vector3(12.12f, 28.52f, 11.34f), ZERO_V3, REAXISY);
 	cam.SetPosition(vector3(0.0f, 0.0f, 15.0f));
 	cam.SetTarget(ZERO_V3);
 	cam.SetUp(REAXISY);
@@ -73,11 +72,7 @@ void AppClass::InitVariables(void)
 	m_pTarget = new PrimitiveClass();
 	m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
 
-	bulletCollider = new MyBoundingBoxClass(m_pCone->GetVertexList());
-	bulletCollider->SetColliding(false);
-
-	targetCollider = new MyBoundingBoxClass(m_pTarget->GetVertexList());
-	targetCollider->SetColliding(false);
+	m_pMeshMngr->LoadModel("bullet.obj", "bullet");
 
 	//Setting the color to black
 	m_v4ClearColor = vector4(0.0f);
@@ -91,9 +86,6 @@ void AppClass::Update(void)
 	//Update the mesh manager's time without updating for collision detection
 	m_pMeshMngr->Update();
 
-	//Adds all loaded instance to the render list
-	m_pMeshMngr->AddInstanceToRenderList("ALL");
-
 	bullet.Update(globalTime);
 
 	//limits the bullet and resets it if it goes too far
@@ -106,51 +98,37 @@ void AppClass::Update(void)
 	if (m_bFPC == true)
 		RotateCam();
 
+	//Adds all loaded instance to the render list
+	m_pMeshMngr->AddInstanceToRenderList("ALL");
+
 	//Getting the time between calls
 	double fCallTime = m_pSystem->LapClock();
 	//Counting the cumulative time
 	static double fRunTime = 0.0f;
 	fRunTime += fCallTime;
-
-<<<<<<< HEAD
-	//update bullet collis
-	bulletCollider->SetModelMatrix(bulletMatrix);
-	targetCollider->SetModelMatrix(targetMatrix);
-	if (bulletCollider->IsColliding(targetCollider)) {
-		m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, RERED);
-	}
-	else {
-		m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
-	}
-=======
-	m_pMeshMngr->PrintLine("");
-	m_pMeshMngr->Print("Rotation:");
-	m_pMeshMngr->Print(std::to_string(bullet.GetEuler().x) + ", ");
-	m_pMeshMngr->Print(std::to_string(bullet.GetEuler().y) + ", ");
-	m_pMeshMngr->PrintLine(std::to_string(bullet.GetEuler().z));
-	m_pMeshMngr->Print("Up:");
-	m_pMeshMngr->Print(std::to_string(cam.GetUp().x) + ", ");
-	m_pMeshMngr->Print(std::to_string(cam.GetUp().y) + ", ");
-	m_pMeshMngr->PrintLine(std::to_string(cam.GetUp().z));
->>>>>>> 4c023f193ea709fbf25d9bbda01a1c7a0c05dcc7
 }
 
 void AppClass::Display(void)
 {
 	//clear the screen
 	ClearScreen();
+	
+	//m_pMeshMngr->SetModelMatrix(m4Bullet, "bullet");
 
 	//Render the cone
-	
+	//matrix4 bulletMatrix = IDENTITY_M4;
+	//bulletMatrix = glm::translate(bullet.GetPosition());
+
 	bulletMatrix = glm::translate(bullet.GetPosition());
-	bulletMatrix *= ToMatrix4(bullet.GetRotation());
+
+	m_pMeshMngr->SetModelMatrix(bulletMatrix, "bullet");
 
 	matrix4 groundMatrix = IDENTITY_M4;
 	groundMatrix = glm::translate(vector3(0, -5, 0));
 	quaternion q = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
 	groundMatrix *= ToMatrix4(q);
 
-	
+	matrix4 targetMatrix = IDENTITY_M4;
 	targetMatrix = glm::translate(vector3(-30, 2, -70));
 	quaternion q2 = glm::angleAxis(90.0f, vector3(0.0f, 0.0f, 1.0f));
 	targetMatrix *= ToMatrix4(q2);
@@ -175,6 +153,8 @@ void AppClass::Display(void)
 		m_pGround->Render(cam.GetProjection(false), cam.GetView(), groundMatrix);
 		m_pTarget->Render(cam.GetProjection(false), cam.GetView(), targetMatrix);
 	}
+
+	//m_pCameraMngr->SetPositionTargetAndView(bullet.GetPosition(), ZERO_V3, REAXISY);
 
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render

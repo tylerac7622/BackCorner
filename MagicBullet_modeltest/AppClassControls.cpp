@@ -38,17 +38,9 @@ void AppClass::ProcessKeyboard(void)
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		//bullet.ChangeTurn(-1.5f);
-		bullet.ChangeEuler(vector3(0, 1.5f, 0));
+		bullet.ChangeTurn(-1.5f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		//bullet.ChangeTurn(1.5f);
-		bullet.ChangeEuler(vector3(0, -1.5f, 0));
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		//bullet.ChangePitch(1.5f);
-		bullet.ChangeEuler(vector3(-1.5f, 0, 0));
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		//bullet.ChangePitch(-1.5f);
-		bullet.ChangeEuler(vector3(1.5f, 0, 0));
+		bullet.ChangeTurn(1.5f);
 /*	if(bModifier)
 		fSpeed *= 10.0f;
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
