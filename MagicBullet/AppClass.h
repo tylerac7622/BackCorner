@@ -10,6 +10,9 @@ Date: 2015/09
 #include "Camera.h"
 #include "Bullet.h"
 #include "MyBoundingBox.h"
+#include <stdlib.h>
+#include <time.h>
+
 
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
@@ -17,6 +20,7 @@ class AppClass : public ReEngAppClass
 {
 	MyBoundingBoxClass* bulletCollider;
 	MyBoundingBoxClass* targetCollider;
+
 	matrix4 bulletMatrix = IDENTITY_M4;
 	matrix4 targetMatrix = IDENTITY_M4;
 

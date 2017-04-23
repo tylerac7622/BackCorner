@@ -61,6 +61,8 @@ void AppClass::InitVariables(void)
 	cam.SetTarget(ZERO_V3);
 	cam.SetUp(REAXISY);
 
+	srand(time(NULL));
+
 	//bullet
 	m_pCone = new PrimitiveClass();
 	m_pCone->GenerateCone(1.0f, 1.0f, 10, RERED);
@@ -78,6 +80,10 @@ void AppClass::InitVariables(void)
 
 	targetCollider = new MyBoundingBoxClass(m_pTarget->GetVertexList());
 	targetCollider->SetColliding(false);
+
+	targetMatrix = glm::translate(vector3(-30, 2, -70));
+	quaternion q2 = glm::angleAxis(90.0f, vector3(0.0f, 0.0f, 1.0f));
+	targetMatrix *= ToMatrix4(q2);
 
 	//Setting the color to black
 	m_v4ClearColor = vector4(0.0f);
@@ -112,17 +118,21 @@ void AppClass::Update(void)
 	static double fRunTime = 0.0f;
 	fRunTime += fCallTime;
 
-<<<<<<< HEAD
 	//update bullet collis
 	bulletCollider->SetModelMatrix(bulletMatrix);
 	targetCollider->SetModelMatrix(targetMatrix);
-	if (bulletCollider->IsColliding(targetCollider)) {
+	if (bulletCollider->IsColliding(targetCollider)) 
+	{
 		m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, RERED);
+
+		targetMatrix = glm::translate(vector3(rand() % 200 - 100, 2, rand() % 200 - 100));
+		quaternion q2 = glm::angleAxis(90.0f, vector3(0.0f, 0.0f, 1.0f));
+		targetMatrix *= ToMatrix4(q2);
 	}
 	else {
 		m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
 	}
-=======
+
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->Print("Rotation:");
 	m_pMeshMngr->Print(std::to_string(bullet.GetEuler().x) + ", ");
@@ -132,7 +142,6 @@ void AppClass::Update(void)
 	m_pMeshMngr->Print(std::to_string(cam.GetUp().x) + ", ");
 	m_pMeshMngr->Print(std::to_string(cam.GetUp().y) + ", ");
 	m_pMeshMngr->PrintLine(std::to_string(cam.GetUp().z));
->>>>>>> 4c023f193ea709fbf25d9bbda01a1c7a0c05dcc7
 }
 
 void AppClass::Display(void)
@@ -150,10 +159,12 @@ void AppClass::Display(void)
 	quaternion q = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
 	groundMatrix *= ToMatrix4(q);
 
-	
-	targetMatrix = glm::translate(vector3(-30, 2, -70));
-	quaternion q2 = glm::angleAxis(90.0f, vector3(0.0f, 0.0f, 1.0f));
-	targetMatrix *= ToMatrix4(q2);
+	PrimitiveClass* m_pGround2 = new PrimitiveClass();
+	m_pGround2->GeneratePlane(200.0f, RERED);
+	matrix4 groundMatrix2 = IDENTITY_M4;
+	groundMatrix2 = glm::translate(vector3(0, -6, 0));
+	quaternion q2 = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
+	groundMatrix2 *= ToMatrix4(q2);
 
 	//following the bullet
 	if (followBullet)
@@ -164,6 +175,7 @@ void AppClass::Display(void)
 		}
 		m_pGround->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), groundMatrix);
 		m_pTarget->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), targetMatrix);
+		m_pGround2->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), groundMatrix2);
 	}
 	//fps player camera
 	if(!followBullet)
@@ -174,6 +186,7 @@ void AppClass::Display(void)
 		}
 		m_pGround->Render(cam.GetProjection(false), cam.GetView(), groundMatrix);
 		m_pTarget->Render(cam.GetProjection(false), cam.GetView(), targetMatrix);
+		m_pGround2->Render(cam.GetProjection(false), cam.GetView(), groundMatrix2);
 	}
 
 	m_pMeshMngr->Render(); //renders the render list
