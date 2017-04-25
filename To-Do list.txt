@@ -1,0 +1,10 @@
+Tyler likes to-do lists (at least for him) so here's a to-do list
+
+Bullet Acceleration? slightly?
+Definately have rotation acceleration though
+Add a way to set the bullet's up vector to up (so, if its upsidedown, it can become right side up)
+Get bullet style rotation to work for the player
+Add some basic UI stuff
+Models for stuff
+Make targets able to move
+Add obstacles in the way
