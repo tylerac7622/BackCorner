@@ -22,6 +22,8 @@ class AppClass : public ReEngAppClass
 	UINT MouseLastY = 0;
 
 	MyBOManager* m_pBOMngr; //Pointer to Bounding Object Manager
+
+	PrimitiveClass* m_pPlane;
 public:
 	typedef ReEngAppClass super;
 	/*

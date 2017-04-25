@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MagicBullet", "MagicBullet\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MagicBullet_modeltest", "\\banner.main.ad.rit.edu\students\fy3881\IGMProfile\Documents\BackCorner\MagicBullet_modeltest\MagicBullet_modeltest.vcxproj", "{219B40DB-B009-4E30-82DA-A817697257A4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A11s_BoundingObjectSingleton", "A11s_BoundingObjectSingleton\A11s_BoundingObjectSingleton.vcxproj", "{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -37,6 +39,12 @@ Global
 		{219B40DB-B009-4E30-82DA-A817697257A4}.Release|x64.ActiveCfg = Release|Win32
 		{219B40DB-B009-4E30-82DA-A817697257A4}.Release|x86.ActiveCfg = Release|Win32
 		{219B40DB-B009-4E30-82DA-A817697257A4}.Release|x86.Build.0 = Release|Win32
+		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Debug|x64.ActiveCfg = Debug|Win32
+		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Debug|x86.ActiveCfg = Debug|Win32
+		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Debug|x86.Build.0 = Debug|Win32
+		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Release|x64.ActiveCfg = Release|Win32
+		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Release|x86.ActiveCfg = Release|Win32
+		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
