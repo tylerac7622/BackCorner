@@ -106,6 +106,14 @@ void AppClass::Update(void)
 	if (bullet.GetPosition().x + bullet.GetPosition().z > 500)
 	{
 		bullet = Bullet();
+		followBullet = false;
+		globalTime = 1;
+	}
+	if (bullet.GetPosition().y <= -5)
+	{
+		bullet = Bullet();
+		followBullet = false;
+		globalTime = 1;
 	}
 
 	//First person camera movement
@@ -128,6 +136,10 @@ void AppClass::Update(void)
 		targetMatrix = glm::translate(vector3(rand() % 200 - 100, 2, rand() % 200 - 100));
 		quaternion q2 = glm::angleAxis(90.0f, vector3(0.0f, 0.0f, 1.0f));
 		targetMatrix *= ToMatrix4(q2);
+
+		bullet = Bullet();
+		followBullet = false;
+		globalTime = 1;
 	}
 	else {
 		m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
