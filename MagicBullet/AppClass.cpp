@@ -48,8 +48,8 @@ void AppClass::RotateCam(float a_fSpeed = 0.005f)
 		fAngleX += fDeltaMouse * a_fSpeed;
 	}
 	//Change the Yaw and the Pitch of the camera
-	cam.ChangeYaw(-fAngleY * 3.0f);
-	cam.ChangePitch(fAngleX * 3.0f);
+	player.ChangeEuler(vector3(-fAngleX * 5.0f, 0, 0));
+	player.ChangeEuler(vector3(0, fAngleY * 4.0f, 0));
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
 
@@ -63,27 +63,13 @@ void AppClass::InitVariables(void)
 
 	srand(time(NULL));
 
-	//bullet
-	m_pCone = new PrimitiveClass();
-	m_pCone->GenerateCone(1.0f, 1.0f, 10, RERED);
-
 	//ground
 	m_pGround = new PrimitiveClass();
 	m_pGround->GeneratePlane(200.0f, REGREEN);
 
-	//target cylinder
-	m_pTarget = new PrimitiveClass();
-	m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
-
-	bulletCollider = new MyBoundingBoxClass(m_pCone->GetVertexList());
-	bulletCollider->SetColliding(false);
-
-	targetCollider = new MyBoundingBoxClass(m_pTarget->GetVertexList());
-	targetCollider->SetColliding(false);
-
-	targetMatrix = glm::translate(vector3(-30, 2, -70));
-	quaternion q2 = glm::angleAxis(90.0f, vector3(0.0f, 0.0f, 1.0f));
-	targetMatrix *= ToMatrix4(q2);
+	bullet.InitBullet();
+	target.InitTarget();
+	player.InitPlayer();
 
 	//Setting the color to black
 	m_v4ClearColor = vector4(0.0f);
@@ -101,17 +87,19 @@ void AppClass::Update(void)
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
 	bullet.Update(globalTime);
+	target.Update(globalTime);
+	player.Update(globalTime);
 
 	//limits the bullet and resets it if it goes too far
 	if (bullet.GetPosition().x + bullet.GetPosition().z > 500)
 	{
-		bullet = Bullet();
+		bullet.Reset();
 		followBullet = false;
 		globalTime = 1;
 	}
 	if (bullet.GetPosition().y <= -5)
 	{
-		bullet = Bullet();
+		bullet.Reset();
 		followBullet = false;
 		globalTime = 1;
 	}
@@ -127,44 +115,39 @@ void AppClass::Update(void)
 	fRunTime += fCallTime;
 
 	//update bullet collis
-	bulletCollider->SetModelMatrix(bulletMatrix);
-	targetCollider->SetModelMatrix(targetMatrix);
-	if (bulletCollider->IsColliding(targetCollider)) 
+	if (bullet.collider->IsColliding(target.collider))
 	{
-		m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, RERED);
+		target.model->GenerateCylinder(2.0f, 0.5f, 10, RERED);
 
-		targetMatrix = glm::translate(vector3(rand() % 200 - 100, 2, rand() % 200 - 100));
-		quaternion q2 = glm::angleAxis(90.0f, vector3(0.0f, 0.0f, 1.0f));
-		targetMatrix *= ToMatrix4(q2);
+		target.SetPosition(vector3(rand() % 200 - 100, 2, rand() % 200 - 100));
+		target.SetEuler(vector3(0, 0, 90.0f));
 
-		bullet = Bullet();
+		bullet.Reset();
 		followBullet = false;
 		globalTime = 1;
 	}
 	else {
-		m_pTarget->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
+		target.model->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
 	}
 
 	m_pMeshMngr->PrintLine("");
-	m_pMeshMngr->Print("Rotation:");
-	m_pMeshMngr->Print(std::to_string(bullet.GetEuler().x) + ", ");
-	m_pMeshMngr->Print(std::to_string(bullet.GetEuler().y) + ", ");
-	m_pMeshMngr->PrintLine(std::to_string(bullet.GetEuler().z));
-	m_pMeshMngr->Print("Up:");
-	m_pMeshMngr->Print(std::to_string(cam.GetUp().x) + ", ");
-	m_pMeshMngr->Print(std::to_string(cam.GetUp().y) + ", ");
-	m_pMeshMngr->PrintLine(std::to_string(cam.GetUp().z));
+	m_pMeshMngr->Print("Position:");
+	m_pMeshMngr->Print(std::to_string(player.GetCamera().GetPosition().x) + ", ");
+	m_pMeshMngr->Print(std::to_string(player.GetCamera().GetPosition().y) + ", ");
+	m_pMeshMngr->PrintLine(std::to_string(player.GetCamera().GetPosition().z));
+	m_pMeshMngr->Print("Euler:");
+	m_pMeshMngr->Print(std::to_string(player.GetEuler().x) + ", ");
+	m_pMeshMngr->Print(std::to_string(player.GetEuler().y) + ", ");
+	m_pMeshMngr->PrintLine(std::to_string(player.GetEuler().z));
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->PrintLine("Press Escape to quit");
+	m_pMeshMngr->PrintLine("Hold right click to free mouse");
 }
 
 void AppClass::Display(void)
 {
 	//clear the screen
 	ClearScreen();
-
-	//Render the cone
-	
-	bulletMatrix = glm::translate(bullet.GetPosition());
-	bulletMatrix *= ToMatrix4(bullet.GetRotation());
 
 	matrix4 groundMatrix = IDENTITY_M4;
 	groundMatrix = glm::translate(vector3(0, -5, 0));
@@ -183,10 +166,10 @@ void AppClass::Display(void)
 	{
 		if (bullet.GetFired())
 		{
-			m_pCone->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), bulletMatrix);
+			bullet.model->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), bullet.GetWorldMatrix());
 		}
 		m_pGround->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), groundMatrix);
-		m_pTarget->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), targetMatrix);
+		target.model->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), target.GetWorldMatrix());
 		m_pGround2->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), groundMatrix2);
 	}
 	//fps player camera
@@ -194,11 +177,11 @@ void AppClass::Display(void)
 	{
 		if (bullet.GetFired())
 		{
-			m_pCone->Render(cam.GetProjection(false), cam.GetView(), bulletMatrix);
+			bullet.model->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), bullet.GetWorldMatrix());
 		}
-		m_pGround->Render(cam.GetProjection(false), cam.GetView(), groundMatrix);
-		m_pTarget->Render(cam.GetProjection(false), cam.GetView(), targetMatrix);
-		m_pGround2->Render(cam.GetProjection(false), cam.GetView(), groundMatrix2);
+		m_pGround->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), groundMatrix);
+		target.model->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), target.GetWorldMatrix());
+		m_pGround2->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), groundMatrix2);
 	}
 
 	m_pMeshMngr->Render(); //renders the render list

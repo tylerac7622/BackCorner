@@ -1,25 +1,26 @@
-#ifndef __BULLET_H_
-#define __BULLET_H_
+#ifndef __PLAYER_H_
+#define __PLAYER_H_
 
 #include "RE\ReEngAppClass.h"
 #include <SFML\Graphics.hpp>
 #include "Camera.h"
 #include "MyBoundingBox.h"
+
 using namespace ReEng;
 
-class Bullet {
+class Player {
 public:
 
 	MyBoundingBoxClass* collider;
 	PrimitiveClass* model = nullptr;
 
-	Bullet(void);
+	Player(void);
 
-	~Bullet(void);
+	~Player(void);
 
 	void Reset(void);
 
-	void InitBullet(void);
+	void InitPlayer(void);
 
 	void Update(float globalTime);
 
@@ -29,20 +30,16 @@ public:
 	vector3 GetEuler(void);
 	quaternion GetRotation(void);
 	Camera GetCamera(void);
-	bool GetFired(void);
 	//sets each respective variable
 	void SetPosition(vector3 position2);
 	void SetRotation(quaternion rotation2);
 	void SetVelocity(float velocity2);
-	void SetFired(bool fired);
 	//add a change to each respective variable
 	void ChangePosition(vector3 offset);
 	void ChangeEuler(vector3 offset);
 	void ChangeRotation(quaternion offset);
 	void ChangeVelocity(float offset);
 
-	PrimitiveClass* GetModel(void);
-	MyBoundingBoxClass* GetCollider(void);
 	matrix4 GetWorldMatrix(void);
 	void SetWorldMatrix(matrix4 mat);
 	void UpdateWorldMatrix(void);
@@ -52,8 +49,7 @@ private:
 	vector3 forward;
 	quaternion rotation;
 	vector3 eulerRotation;
-	Camera bulletCam = Camera();
-	bool isFired = false;
+	Camera playerCam = Camera();
 
 	float velocity = 20.0f;
 

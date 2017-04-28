@@ -19,6 +19,11 @@ matrix4 Camera::GetView(void) {
 	return viewMatrix;
 }
 
+vector3 Camera::GetPosition(void)
+{
+	return eye;
+}
+
 matrix4 Camera::GetProjection(bool bOrthographic) {
 	if (bOrthographic) {
 		return orthographicMatrix;

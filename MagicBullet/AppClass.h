@@ -9,6 +9,8 @@ Date: 2015/09
 #include <SFML\Graphics.hpp>
 #include "Camera.h"
 #include "Bullet.h"
+#include "Target.h"
+#include "Player.h"
 #include "MyBoundingBox.h"
 #include <stdlib.h>
 #include <time.h>
@@ -18,20 +20,14 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
-	MyBoundingBoxClass* bulletCollider;
-	MyBoundingBoxClass* targetCollider;
-
-	matrix4 bulletMatrix = IDENTITY_M4;
-	matrix4 targetMatrix = IDENTITY_M4;
-
 	Camera cam = Camera();
 	Bullet bullet = Bullet();
+	Target target = Target();
+	Player player = Player();
 
 	//the speed that enables the world to slow down when following the bullet
 	float globalTime = 1;
 
-	PrimitiveClass* m_pCone = nullptr;
-	PrimitiveClass* m_pTarget = nullptr;
 	PrimitiveClass* m_pGround = nullptr;
 
 	bool followBullet = false;

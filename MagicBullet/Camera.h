@@ -15,6 +15,8 @@ public:
 	matrix4 GetView(void);
 	vector3 GetUp(void);
 
+	vector3 GetPosition(void);
+
 	void SetRotation(quaternion quat);
 
 	matrix4 GetProjection(bool bOrthographic);

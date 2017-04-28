@@ -4,8 +4,6 @@ Bullet::Bullet(void)
 {
 	position = vector3(0, 2, 0);
 	velocity = 20.0f;
-	turningRotation = 270;
-	turningRotationY = 0;
 	eulerRotation = vector3(0, 0, 0);
 	rotation = quaternion(vector3(PI * eulerRotation.x / 180, PI * eulerRotation.y / 180, PI * eulerRotation.z / 180));
 	forward = rotation * vector3(0, 0, -1);
@@ -15,11 +13,41 @@ Bullet::Bullet(void)
 	bulletCam.SetUp(REAXISY);
 
 	isFired = false;
+
+	worldMatrix = glm::translate(GetPosition());
+	worldMatrix *= ToMatrix4(GetRotation());
+}
+
+void Bullet::Reset(void)
+{
+	position = vector3(0, 2, 0);
+	velocity = 20.0f;
+	eulerRotation = vector3(0, 0, 0);
+	rotation = quaternion(vector3(PI * eulerRotation.x / 180, PI * eulerRotation.y / 180, PI * eulerRotation.z / 180));
+	forward = rotation * vector3(0, 0, -1);
+
+	bulletCam.SetPosition(vector3(0.0f, 0.0f, 15.0f));
+	bulletCam.SetTarget(ZERO_V3);
+	bulletCam.SetUp(REAXISY);
+
+	isFired = false;
+
+	worldMatrix = glm::translate(GetPosition());
+	worldMatrix *= ToMatrix4(GetRotation());
 }
 
 Bullet::~Bullet(void)
 {
+}
 
+void Bullet::InitBullet(void)
+{
+	model = new PrimitiveClass();
+	model->GenerateCone(1.0f, 1.0f, 10, RERED);
+	//m_pCone->LoadModel("bullet.obj", "bullet");
+
+	collider = new MyBoundingBoxClass(model->GetVertexList());
+	collider->SetColliding(false);
 }
 
 void Bullet::Update(float globalTime)
@@ -33,6 +61,15 @@ void Bullet::Update(float globalTime)
 		//bulletCam.SetRotation(rotation);
 		bulletCam.SetUp(rotation * vector3(0, 1, 0));
 	}
+	UpdateWorldMatrix();
+
+	collider->SetModelMatrix(worldMatrix);
+}
+
+void Bullet::UpdateWorldMatrix(void) 
+{ 
+	worldMatrix = glm::translate(GetPosition());
+	worldMatrix *= ToMatrix4(GetRotation());
 }
 
 vector3 Bullet::GetPosition(void) { return position; }
@@ -41,11 +78,15 @@ vector3 Bullet::GetEuler(void) { return eulerRotation; }
 quaternion Bullet::GetRotation(void) { return rotation; }
 Camera Bullet::GetCamera(void) { return bulletCam; }
 bool Bullet::GetFired(void) { return isFired; }
+PrimitiveClass* Bullet::GetModel(void) { return model;  }
+MyBoundingBoxClass* Bullet::GetCollider(void) { return collider; }
+matrix4 Bullet::GetWorldMatrix(void) { return worldMatrix; }
 
 void Bullet::SetPosition(vector3 position2) { position = position2; }
 void Bullet::SetRotation(quaternion rotation2) { }
 void Bullet::SetVelocity(float velocity2) {	velocity = velocity2; }
 void Bullet::SetFired(bool fired) { isFired = fired; }
+void Bullet::SetWorldMatrix(matrix4 mat) { worldMatrix = mat; }
 
 void Bullet::ChangeEuler(vector3 offset)
 {
