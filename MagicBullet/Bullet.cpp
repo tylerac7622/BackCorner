@@ -7,6 +7,7 @@ Bullet::Bullet(vector3 pos, vector3 rot)
 	eulerRotation = rot;
 	rotation = quaternion(vector3(PI * eulerRotation.x / 180, PI * eulerRotation.y / 180, PI * eulerRotation.z / 180));
 	forward = rotation * vector3(0, 0, -1);
+	rotationSpeed = vector3(0, 0, 0);
 
 	bulletCam.SetPosition(vector3(0.0f, 0.0f, 15.0f));
 	bulletCam.SetTarget(ZERO_V3);
@@ -25,6 +26,7 @@ void Bullet::Reset(vector3 pos, vector3 rot)
 	eulerRotation = rot;
 	rotation = quaternion(vector3(PI * eulerRotation.x / 180, PI * eulerRotation.y / 180, PI * eulerRotation.z / 180));
 	forward = rotation * vector3(0, 0, -1);
+	rotationSpeed = vector3(0, 0, 0);
 
 	bulletCam.SetPosition(vector3(0.0f, 0.0f, 15.0f));
 	bulletCam.SetTarget(ZERO_V3);
@@ -55,8 +57,57 @@ void Bullet::Update(float globalTime)
 	if (isFired)
 	{
 		ChangePosition(globalTime * velocity * forward);
+		ChangeEuler(rotationSpeed);
+		if (rotationSpeed.x > 0)
+		{
+			if (rotationSpeed.x < .3)
+			{
+				rotationSpeed.x = .3;
+			}
+			rotationSpeed.x -= .3;
+		}
+		if (rotationSpeed.x < 0)
+		{
+			if (rotationSpeed.x > -.3)
+			{
+				rotationSpeed.x = -.3;
+			}
+			rotationSpeed.x += .3;
+		}
+		if (rotationSpeed.y > 0)
+		{
+			if (rotationSpeed.y < .3)
+			{
+				rotationSpeed.y = .3;
+			}
+			rotationSpeed.y -= .3;
+		}
+		if (rotationSpeed.y < 0)
+		{
+			if (rotationSpeed.y > -.3)
+			{
+				rotationSpeed.y = -.3;
+			}
+			rotationSpeed.y += .3;
+		}
+		if (rotationSpeed.z > 0)
+		{
+			if (rotationSpeed.z < .3)
+			{
+				rotationSpeed.z = .3;
+			}
+			rotationSpeed.z -= .3;
+		}
+		if (rotationSpeed.z < 0)
+		{
+			if (rotationSpeed.z > -.3)
+			{
+				rotationSpeed.z = -.3;
+			}
+			rotationSpeed.z += .3;
+		}
 
-		bulletCam.SetPosition(position + (rotation * vector3(0.0f, 0.0f, 3.0f)) + (rotation * vector3(0.0f, 0.3f, .0f)));
+		bulletCam.SetPosition(position + (rotation * vector3(0.0f, 0.0f, 5.0f)) + (rotation * vector3(0.0f, 0.5f, .0f)));
 		bulletCam.SetTarget(position);
 		//bulletCam.SetRotation(rotation);
 		bulletCam.SetUp(rotation * vector3(0, 1, 0));
@@ -93,6 +144,34 @@ void Bullet::ChangeEuler(vector3 offset)
 	eulerRotation += offset;
 	rotation = quaternion(vector3(PI * eulerRotation.x / 180, PI * eulerRotation.y / 180, PI * eulerRotation.z / 180));
 	forward = rotation * vector3(0, 0, -1);
+}
+void Bullet::ChangeRotSpeed(vector3 offset)
+{
+	rotationSpeed += offset;
+	if (rotationSpeed.x > 2)
+	{
+		rotationSpeed.x = 2;
+	}
+	if (rotationSpeed.x < -2)
+	{
+		rotationSpeed.x = -2;
+	}
+	if (rotationSpeed.y > 2)
+	{
+		rotationSpeed.y = 2;
+	}
+	if (rotationSpeed.y < -2)
+	{
+		rotationSpeed.y = -2;
+	}
+	if (rotationSpeed.z > 2)
+	{
+		rotationSpeed.z = 2;
+	}
+	if (rotationSpeed.z < -2)
+	{
+		rotationSpeed.z = -2;
+	}
 }
 void Bullet::ChangePosition(vector3 offset) { position += offset; }
 void Bullet::ChangeRotation(quaternion offset) { }

@@ -222,7 +222,7 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine(std::to_string(player.GetEuler().z));
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->PrintLine("Press Escape to quit");
-	m_pMeshMngr->PrintLine("Hold right click to free mouse");
+	//m_pMeshMngr->PrintLine("Hold right click to free mouse");
 }
 
 void AppClass::Display(void)

@@ -38,6 +38,7 @@ public:
 	//add a change to each respective variable
 	void ChangePosition(vector3 offset);
 	void ChangeEuler(vector3 offset);
+	void ChangeRotSpeed(vector3 offset);
 	void ChangeRotation(quaternion offset);
 	void ChangeVelocity(float offset);
 
@@ -56,6 +57,7 @@ private:
 	bool isFired = false;
 
 	float velocity = 20.0f;
+	vector3 rotationSpeed;
 
 	matrix4 worldMatrix = IDENTITY_M4;
 };
