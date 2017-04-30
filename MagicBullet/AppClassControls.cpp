@@ -25,7 +25,7 @@ void AppClass::ProcessKeyboard(void)
 	//fire the bullet
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		bullet.Reset();
+		bullet.Reset(player.GetPosition() + vector3(0, 2, 0), player.GetEuler());
 		bullet.SetFired(true);
 		followBullet = true;
 		globalTime = 0.02f;
@@ -102,7 +102,8 @@ void AppClass::ProcessMouse(void)
 		m_bArcBall = true;
 
 	//if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
-	m_bFPC = true;
+	//m_bFPC = true;
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
-		m_bFPC = false;
+		//m_bFPC = false;
+		m_bFPC = true;
 }

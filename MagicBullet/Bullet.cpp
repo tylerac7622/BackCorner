@@ -1,10 +1,10 @@
 #include "Bullet.h"
 
-Bullet::Bullet(void)
+Bullet::Bullet(vector3 pos, vector3 rot)
 {
-	position = vector3(0, 2, 0);
+	position = pos;
 	velocity = 20.0f;
-	eulerRotation = vector3(0, 0, 0);
+	eulerRotation = rot;
 	rotation = quaternion(vector3(PI * eulerRotation.x / 180, PI * eulerRotation.y / 180, PI * eulerRotation.z / 180));
 	forward = rotation * vector3(0, 0, -1);
 
@@ -18,11 +18,11 @@ Bullet::Bullet(void)
 	worldMatrix *= ToMatrix4(GetRotation());
 }
 
-void Bullet::Reset(void)
+void Bullet::Reset(vector3 pos, vector3 rot)
 {
-	position = vector3(0, 2, 0);
+	position = pos;
 	velocity = 20.0f;
-	eulerRotation = vector3(0, 0, 0);
+	eulerRotation = rot;
 	rotation = quaternion(vector3(PI * eulerRotation.x / 180, PI * eulerRotation.y / 180, PI * eulerRotation.z / 180));
 	forward = rotation * vector3(0, 0, -1);
 
@@ -40,10 +40,10 @@ Bullet::~Bullet(void)
 {
 }
 
-void Bullet::InitBullet(void)
+void Bullet::InitBullet()
 {
 	model = new PrimitiveClass();
-	model->GenerateCone(1.0f, 1.0f, 10, RERED);
+	model->GenerateCone(0.2, 0.2, 10, RERED);
 	//m_pCone->LoadModel("bullet.obj", "bullet");
 
 	collider = new MyBoundingBoxClass(model->GetVertexList());
@@ -56,7 +56,7 @@ void Bullet::Update(float globalTime)
 	{
 		ChangePosition(globalTime * velocity * forward);
 
-		bulletCam.SetPosition(position + (rotation * vector3(0.0f, 0.0f, 10.0f)) + (rotation * vector3(0.0f, 1.0f, .0f)));
+		bulletCam.SetPosition(position + (rotation * vector3(0.0f, 0.0f, 3.0f)) + (rotation * vector3(0.0f, 0.3f, .0f)));
 		bulletCam.SetTarget(position);
 		//bulletCam.SetRotation(rotation);
 		bulletCam.SetUp(rotation * vector3(0, 1, 0));

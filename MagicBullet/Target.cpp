@@ -1,18 +1,18 @@
 #include "Target.h"
 
-Target::Target(void)
+Target::Target(vector3 pos, vector3 rot)
 {
-	position = vector3(-30, 2, -70);
-	eulerRotation = vector3(0, 0, 90.0f);
+	position = pos;
+	eulerRotation = rot;
 	rotation = quaternion(vector3(PI * eulerRotation.x / 180, PI * eulerRotation.y / 180, PI * eulerRotation.z / 180));
 
 	worldMatrix = glm::translate(GetPosition());
 	worldMatrix *= ToMatrix4(GetRotation());
 }
 
-void Target::Reset(void)
+void Target::Reset(vector3 pos)
 {
-	position = vector3(-30, 2, -70);
+	position = pos;
 	eulerRotation = vector3(0, 0, 90.0f);
 	rotation = quaternion(vector3(PI * eulerRotation.x / 180, PI * eulerRotation.y / 180, PI * eulerRotation.z / 180));
 
@@ -24,10 +24,22 @@ Target::~Target(void)
 {
 }
 
-void Target::InitTarget(void)
+void Target::InitTarget(vector3 size)
 {
 	model = new PrimitiveClass();
-	model->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
+
+	model->GenerateCuboid(size, REGRAY);
+
+	//m_pCone->LoadModel("bullet.obj", "bullet");
+
+	collider = new MyBoundingBoxClass(model->GetVertexList());
+	collider->SetColliding(false);
+}
+void Target::InitTarget(vector2 size)
+{
+	model = new PrimitiveClass();
+
+	model->GenerateCylinder(size.x, size.y, 10, REBLUE);
 	//m_pCone->LoadModel("bullet.obj", "bullet");
 
 	collider = new MyBoundingBoxClass(model->GetVertexList());

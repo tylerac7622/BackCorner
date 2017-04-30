@@ -13,13 +13,14 @@ public:
 	MyBoundingBoxClass* collider;
 	PrimitiveClass* model = nullptr;
 
-	Target(void);
+	Target(vector3 pos, vector3 rot);
 
 	~Target(void);
 
-	void Reset(void);
+	void Reset(vector3 pos);
 
-	void InitTarget(void);
+	void InitTarget(vector2 size);
+	void InitTarget(vector3 size);
 
 	void Update(float globalTime);
 

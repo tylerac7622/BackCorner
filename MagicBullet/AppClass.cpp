@@ -67,8 +67,57 @@ void AppClass::InitVariables(void)
 	m_pGround = new PrimitiveClass();
 	m_pGround->GeneratePlane(200.0f, REGREEN);
 
+	//"front" wall
+	world.push_back(Target(vector3(0.0f, -2.5f, -30.0f), vector3(0.0, 0.0, 0.0)));
+	world.push_back(Target(vector3(-16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0)));
+	world.push_back(Target(vector3(16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0)));
+	world.push_back(Target(vector3(0.0f, 6.5f, -30.0f), vector3(0.0, 0.0, 0.0)));
+
+	//"left" wall
+	world.push_back(Target(vector3(-30.0f, -2.5f, 0.0f), vector3(0.0, 90.0, 0.0)));
+	world.push_back(Target(vector3(-30.0f, 2.0f, -16.0f), vector3(0.0, 90.0, 0.0)));
+	world.push_back(Target(vector3(-30.0f, 2.0f, 16.0f), vector3(0.0, 90.0, 0.0)));
+	world.push_back(Target(vector3(-30.0f, 6.5f, 0.0f), vector3(0.0, 90.0, 0.0)));
+
+	//"back" wall
+	world.push_back(Target(vector3(0.0f, -2.5f, 30.0f), vector3(0.0, 180.0, 0.0)));
+	world.push_back(Target(vector3(16.0f, 2.0f, 30.0f), vector3(0.0, 180.0, 0.0)));
+	world.push_back(Target(vector3(-16.0f, 2.0f, 30.0f), vector3(0.0, 180.0, 0.0)));
+	world.push_back(Target(vector3(0.0f, 6.5f, 30.0f), vector3(0.0, 180.0, 0.0)));
+
+	//"right" wall
+	world.push_back(Target(vector3(30.0f, -2.5f, 0.0f), vector3(0.0, 270.0, 0.0)));
+	world.push_back(Target(vector3(30.0f, 2.0f, 16.0f), vector3(0.0, 270.0, 0.0)));
+	world.push_back(Target(vector3(30.0f, 2.0f, -16.0f), vector3(0.0, 270.0, 0.0)));
+	world.push_back(Target(vector3(30.0f, 6.5f, 0.0f), vector3(0.0, 270.0, 0.0)));
+
+	//"top"
+	world.push_back(Target(vector3(0.0f, 9.5f, 0.0f), vector3(0.0, 0.0, 0.0)));
+
 	bullet.InitBullet();
-	target.InitTarget();
+	world[0].InitTarget(vector3(60, 5, 1));
+	world[1].InitTarget(vector3(28, 4, 1));
+	world[2].InitTarget(vector3(28, 4, 1));
+	world[3].InitTarget(vector3(60, 5, 1));
+
+	world[4].InitTarget(vector3(60, 5, 1));
+	world[5].InitTarget(vector3(28, 4, 1));
+	world[6].InitTarget(vector3(28, 4, 1));
+	world[7].InitTarget(vector3(60, 5, 1));
+
+	world[8].InitTarget(vector3(60, 5, 1));
+	world[9].InitTarget(vector3(28, 4, 1));
+	world[10].InitTarget(vector3(28, 4, 1));
+	world[11].InitTarget(vector3(60, 5, 1));
+
+	world[12].InitTarget(vector3(60, 5, 1));
+	world[13].InitTarget(vector3(28, 4, 1));
+	world[14].InitTarget(vector3(28, 4, 1));
+	world[15].InitTarget(vector3(60, 5, 1));
+
+	world[16].InitTarget(vector3(60, 1, 60));
+	
+	target.InitTarget(vector2(2, .5));
 	player.InitPlayer();
 
 	//Setting the color to black
@@ -89,17 +138,21 @@ void AppClass::Update(void)
 	bullet.Update(globalTime);
 	target.Update(globalTime);
 	player.Update(globalTime);
+	for (int i = 0; i < world.size(); i++)
+	{
+		world[i].Update(globalTime);
+	}
 
 	//limits the bullet and resets it if it goes too far
 	if (bullet.GetPosition().x + bullet.GetPosition().z > 500)
 	{
-		bullet.Reset();
+		bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
 		followBullet = false;
 		globalTime = 1;
 	}
 	if (bullet.GetPosition().y <= -5)
 	{
-		bullet.Reset();
+		bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
 		followBullet = false;
 		globalTime = 1;
 	}
@@ -119,15 +172,43 @@ void AppClass::Update(void)
 	{
 		target.model->GenerateCylinder(2.0f, 0.5f, 10, RERED);
 
-		target.SetPosition(vector3(rand() % 200 - 100, 2, rand() % 200 - 100));
+		int posX = rand() % 130;
+		int posZ = rand() % 130;
+		if (posX < 65)
+		{
+			posX = -100 + posX;
+		}
+		else
+		{
+			posX = 100 - (posX - 65);
+		}
+		if (posZ < 65)
+		{
+			posZ = -100 + posZ;
+		}
+		else
+		{
+			posZ = 100 - (posZ - 65);
+		}
+		target.SetPosition(vector3(posX, 2, posZ));
 		target.SetEuler(vector3(0, 0, 90.0f));
 
-		bullet.Reset();
+		bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
 		followBullet = false;
 		globalTime = 1;
 	}
 	else {
 		target.model->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
+	}
+
+	for (int i = 0; i < world.size(); i++)
+	{
+		if (bullet.collider->IsColliding(world[i].collider))
+		{
+			bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
+			followBullet = false;
+			globalTime = 1;
+		}
 	}
 
 	m_pMeshMngr->PrintLine("");
@@ -169,6 +250,10 @@ void AppClass::Display(void)
 			bullet.model->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), bullet.GetWorldMatrix());
 		}
 		m_pGround->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), groundMatrix);
+		for (int i = 0; i < world.size(); i++)
+		{
+			world[i].model->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), world[i].GetWorldMatrix());
+		}
 		target.model->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), target.GetWorldMatrix());
 		m_pGround2->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), groundMatrix2);
 	}
@@ -180,6 +265,10 @@ void AppClass::Display(void)
 			bullet.model->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), bullet.GetWorldMatrix());
 		}
 		m_pGround->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), groundMatrix);
+		for (int i = 0; i < world.size(); i++)
+		{
+			world[i].model->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), world[i].GetWorldMatrix());
+		}
 		target.model->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), target.GetWorldMatrix());
 		m_pGround2->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), groundMatrix2);
 	}

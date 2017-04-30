@@ -14,16 +14,20 @@ Date: 2015/09
 #include "MyBoundingBox.h"
 #include <stdlib.h>
 #include <time.h>
-
+#include <list>
+#include <algorithm>
+#include <iostream>
 
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
 	Camera cam = Camera();
-	Bullet bullet = Bullet();
-	Target target = Target();
+	Bullet bullet = Bullet(vector3(0, 2, 0), vector3(0, 0, 0));
+	Target target = Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0));
 	Player player = Player();
+	std::vector<Target> world;
+
 
 	//the speed that enables the world to slow down when following the bullet
 	float globalTime = 1;
