@@ -126,6 +126,11 @@ void AppClass::InitVariables(void)
 
 void AppClass::Update(void)
 {
+	static vector3 startLocation = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
+	static vector3 endLoaction = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
+	static vector3 negStartLocation = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
+	static vector3 negEndLoaction = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
+
 	//Update the system's time
 	m_pSystem->UpdateTime();
 
@@ -196,6 +201,11 @@ void AppClass::Update(void)
 		bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
 		followBullet = false;
 		globalTime = 1;
+
+		startLocation = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
+		endLoaction = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
+		negStartLocation = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
+		negEndLoaction = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
 	}
 	else {
 		target.model->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
@@ -210,6 +220,39 @@ void AppClass::Update(void)
 			globalTime = 1;
 		}
 	}
+
+	static bool up = true;
+	static bool down = false;
+
+	const float translationTime = 1.5f;
+	static int translationClockIndex = m_pSystem->GenClock();
+	static float translationTimer = 0.0f;
+	translationTimer += m_pSystem->LapClock(translationClockIndex);
+	float locationMaped = MapValue(translationTimer, 0.0f, translationTime, 0.0f, 1.0f);
+
+	vector3 lerpedLocation;
+
+	if (up) {
+		lerpedLocation = glm::lerp(startLocation, endLoaction, locationMaped);
+	}
+	if (down) {
+		lerpedLocation = glm::lerp(negStartLocation, negEndLoaction, locationMaped);
+	}
+
+	if (locationMaped >= 1.0f) {
+		translationTimer = 0.0f;
+
+		if (up) {
+			up = false;
+			down = true;
+		}
+		else if (down) {
+			down = false;
+			up = true;
+		}
+	}
+
+	target.SetPosition(lerpedLocation);
 
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->Print("Position:");
