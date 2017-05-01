@@ -58,6 +58,9 @@ void Bullet::Update(float globalTime)
 	{
 		ChangePosition(globalTime * velocity * forward);
 		ChangeEuler(rotationSpeed);
+
+		quaternion adjustedRotation = quaternion(vector3(PI * (eulerRotation.x + (2 * rotationSpeed.x)) / 180, PI * (eulerRotation.y + (2 * rotationSpeed.y)) / 180, PI * (eulerRotation.z + (2 * rotationSpeed.z)) / 180));
+
 		if (rotationSpeed.x > 0)
 		{
 			if (rotationSpeed.x < .15)
@@ -107,10 +110,10 @@ void Bullet::Update(float globalTime)
 			rotationSpeed.z += .15;
 		}
 
-		bulletCam.SetPosition(position + (rotation * vector3(0.0f, 0.0f, 5.0f)) + (rotation * vector3(0.0f, 0.5f, .0f)));
+		bulletCam.SetPosition(position + (adjustedRotation * vector3(0.0f, 0.0f, 5.0f)) + (adjustedRotation * vector3(0.0f, 0.5f, .0f)));
 		bulletCam.SetTarget(position);
 		//bulletCam.SetRotation(rotation);
-		bulletCam.SetUp(rotation * vector3(0, 1, 0));
+		bulletCam.SetUp(adjustedRotation * vector3(0, 1, 0));
 	}
 	UpdateWorldMatrix();
 
