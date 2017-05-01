@@ -38,21 +38,49 @@ void AppClass::ProcessKeyboard(void)
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		//bullet.ChangeTurn(-1.5f);
-		//bullet.ChangeEuler(vector3(0, 1.5f, 0));
-		bullet.ChangeRotSpeed(vector3(0, 0.5f, 0));
+	{
+		if (followBullet)
+		{
+			bullet.ChangeRotSpeed(vector3(0, 0.25f, 0));
+		}
+		else
+		{
+			player.ChangeVelocity(vector3(-0.5f, 0, 0));
+		}
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		//bullet.ChangeTurn(1.5f);
-		//bullet.ChangeEuler(vector3(0, -1.5f, 0));
-		bullet.ChangeRotSpeed(vector3(0, -0.5f, 0));
+	{
+		if (followBullet)
+		{
+			bullet.ChangeRotSpeed(vector3(0, -0.25f, 0));
+		}
+		else
+		{
+			player.ChangeVelocity(vector3(0.5f, 0, 0));
+		}
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		//bullet.ChangePitch(1.5f);
-		//bullet.ChangeEuler(vector3(-1.5f, 0, 0));
-		bullet.ChangeRotSpeed(vector3(-0.5f, 0, 0));
+	{
+		if (followBullet)
+		{
+			bullet.ChangeRotSpeed(vector3(-0.25f, 0, 0));
+		}
+		else
+		{
+			player.ChangeVelocity(vector3(0, 0, -0.5f));
+		}
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		//bullet.ChangePitch(-1.5f);
-		//bullet.ChangeEuler(vector3(1.5f, 0, 0));
-		bullet.ChangeRotSpeed(vector3(0.5f, 0, 0));
+	{
+		if (followBullet)
+		{
+			bullet.ChangeRotSpeed(vector3(0.25f, 0, 0));
+		}
+		else
+		{
+			player.ChangeVelocity(vector3(0, 0, 0.5f));
+		}
+	}
 
 	ON_KEY_PRESS_RELEASE(Escape, NULL, PostMessage(m_pWindow->GetHandler(), WM_QUIT, NULL, NULL));
 /*	if(bModifier)

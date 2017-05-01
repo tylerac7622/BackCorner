@@ -60,51 +60,51 @@ void Bullet::Update(float globalTime)
 		ChangeEuler(rotationSpeed);
 		if (rotationSpeed.x > 0)
 		{
-			if (rotationSpeed.x < .3)
+			if (rotationSpeed.x < .15)
 			{
-				rotationSpeed.x = .3;
+				rotationSpeed.x = .15;
 			}
-			rotationSpeed.x -= .3;
+			rotationSpeed.x -= .15;
 		}
 		if (rotationSpeed.x < 0)
 		{
-			if (rotationSpeed.x > -.3)
+			if (rotationSpeed.x > -.15)
 			{
-				rotationSpeed.x = -.3;
+				rotationSpeed.x = -.15;
 			}
-			rotationSpeed.x += .3;
+			rotationSpeed.x += .15;
 		}
 		if (rotationSpeed.y > 0)
 		{
-			if (rotationSpeed.y < .3)
+			if (rotationSpeed.y < .15)
 			{
-				rotationSpeed.y = .3;
+				rotationSpeed.y = .15;
 			}
-			rotationSpeed.y -= .3;
+			rotationSpeed.y -= .15;
 		}
 		if (rotationSpeed.y < 0)
 		{
-			if (rotationSpeed.y > -.3)
+			if (rotationSpeed.y > -.15)
 			{
-				rotationSpeed.y = -.3;
+				rotationSpeed.y = -.15;
 			}
-			rotationSpeed.y += .3;
+			rotationSpeed.y += .15;
 		}
 		if (rotationSpeed.z > 0)
 		{
-			if (rotationSpeed.z < .3)
+			if (rotationSpeed.z < .15)
 			{
-				rotationSpeed.z = .3;
+				rotationSpeed.z = .15;
 			}
-			rotationSpeed.z -= .3;
+			rotationSpeed.z -= .15;
 		}
 		if (rotationSpeed.z < 0)
 		{
-			if (rotationSpeed.z > -.3)
+			if (rotationSpeed.z > -.15)
 			{
-				rotationSpeed.z = -.3;
+				rotationSpeed.z = -.15;
 			}
-			rotationSpeed.z += .3;
+			rotationSpeed.z += .15;
 		}
 
 		bulletCam.SetPosition(position + (rotation * vector3(0.0f, 0.0f, 5.0f)) + (rotation * vector3(0.0f, 0.5f, .0f)));

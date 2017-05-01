@@ -48,8 +48,8 @@ void AppClass::RotateCam(float a_fSpeed = 0.005f)
 		fAngleX += fDeltaMouse * a_fSpeed;
 	}
 	//Change the Yaw and the Pitch of the camera
-	player.ChangeEuler(vector3(-fAngleX * 5.0f, 0, 0));
-	player.ChangeEuler(vector3(0, fAngleY * 4.0f, 0));
+	player.ChangeEuler(vector3(-fAngleX * 7.0f, 0, 0));
+	player.ChangeEuler(vector3(0, fAngleY * 5.0f, 0));
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
 
@@ -196,7 +196,7 @@ void AppClass::Update(void)
 			posZ = 100 - (posZ - 65);
 		}
 		target.SetPosition(vector3(posX, 2, posZ));
-		target.SetEuler(vector3(0, 0, 90.0f));
+		//target.SetEuler(vector3(0, 0, 90.0f));
 
 		bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
 		followBullet = false;
@@ -218,6 +218,14 @@ void AppClass::Update(void)
 			bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
 			followBullet = false;
 			globalTime = 1;
+		}
+	}
+	player.collider->SetColliding(false);
+	for (int i = 0; i < world.size(); i++)
+	{
+		if (player.collider->IsColliding(world[i].collider))
+		{
+			player.collider->SetColliding(true);
 		}
 	}
 
@@ -254,11 +262,18 @@ void AppClass::Update(void)
 
 	target.SetPosition(lerpedLocation);
 
+	if (player.collider->GetColliding())
+	{
+		player.ChangePosition(quaternion(vector3(0, PI *player.GetEuler().y / 180, 0)) * -player.GetVelocity() * globalTime);
+	}
+
+	player.SetVelocity(vector3(0, 0, 0));
+
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->Print("Position:");
-	m_pMeshMngr->Print(std::to_string(player.GetCamera().GetPosition().x) + ", ");
-	m_pMeshMngr->Print(std::to_string(player.GetCamera().GetPosition().y) + ", ");
-	m_pMeshMngr->PrintLine(std::to_string(player.GetCamera().GetPosition().z));
+	m_pMeshMngr->Print(std::to_string(player.collider->GetCenterGlobal().x) + ", ");
+	m_pMeshMngr->Print(std::to_string(player.collider->GetCenterGlobal().y) + ", ");
+	m_pMeshMngr->PrintLine(std::to_string(player.collider->GetCenterGlobal().z));
 	m_pMeshMngr->Print("Euler:");
 	m_pMeshMngr->Print(std::to_string(player.GetEuler().x) + ", ");
 	m_pMeshMngr->Print(std::to_string(player.GetEuler().y) + ", ");

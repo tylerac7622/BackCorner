@@ -28,17 +28,18 @@ public:
 	vector3 GetPosition(void);
 	vector3 GetForward(void);
 	vector3 GetEuler(void);
+	vector3 GetVelocity(void);
 	quaternion GetRotation(void);
 	Camera GetCamera(void);
 	//sets each respective variable
 	void SetPosition(vector3 position2);
 	void SetRotation(quaternion rotation2);
-	void SetVelocity(float velocity2);
+	void SetVelocity(vector3 velocity2);
 	//add a change to each respective variable
 	void ChangePosition(vector3 offset);
 	void ChangeEuler(vector3 offset);
 	void ChangeRotation(quaternion offset);
-	void ChangeVelocity(float offset);
+	void ChangeVelocity(vector3 offset);
 
 	matrix4 GetWorldMatrix(void);
 	void SetWorldMatrix(matrix4 mat);
@@ -51,7 +52,7 @@ private:
 	vector3 eulerRotation;
 	Camera playerCam = Camera();
 
-	float velocity = 20.0f;
+	vector3 velocity = vector3(0, 0, 0);
 
 	matrix4 worldMatrix = IDENTITY_M4;
 };
