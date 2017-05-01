@@ -279,7 +279,10 @@ void AppClass::Update(void)
 	m_pMeshMngr->Print(std::to_string(player.GetEuler().y) + ", ");
 	m_pMeshMngr->PrintLine(std::to_string(player.GetEuler().z));
 	m_pMeshMngr->PrintLine("");
-	m_pMeshMngr->PrintLine("Press Escape to quit");
+	if (followBullet)
+	{
+		m_pMeshMngr->PrintLine("FOLLOWING BULLET");
+	}
 	//m_pMeshMngr->PrintLine("Hold right click to free mouse");
 }
 
