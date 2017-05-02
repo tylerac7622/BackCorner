@@ -95,33 +95,42 @@ void AppClass::InitVariables(void)
 	world.push_back(Target(vector3(0.0f, 9.5f, 0.0f), vector3(0.0, 0.0, 0.0)));
 
 	bullet.InitBullet();
-	world[0].InitTarget(vector3(60, 5, 1));
-	world[1].InitTarget(vector3(28, 4, 1));
-	world[2].InitTarget(vector3(28, 4, 1));
-	world[3].InitTarget(vector3(60, 5, 1));
+	world[0].InitTarget(vector3(60, 5, 1), "obstac0");
+	world[1].InitTarget(vector3(28, 4, 1), "obstac1");
+	world[2].InitTarget(vector3(28, 4, 1), "obstac1");
+	world[3].InitTarget(vector3(60, 5, 1), "obstac0");
 
-	world[4].InitTarget(vector3(60, 5, 1));
-	world[5].InitTarget(vector3(28, 4, 1));
-	world[6].InitTarget(vector3(28, 4, 1));
-	world[7].InitTarget(vector3(60, 5, 1));
+	world[4].InitTarget(vector3(60, 5, 1), "obstac0");
+	world[5].InitTarget(vector3(28, 4, 1), "obstac1");
+	world[6].InitTarget(vector3(28, 4, 1), "obstac1");
+	world[7].InitTarget(vector3(60, 5, 1), "obstac0");
 
-	world[8].InitTarget(vector3(60, 5, 1));
-	world[9].InitTarget(vector3(28, 4, 1));
-	world[10].InitTarget(vector3(28, 4, 1));
-	world[11].InitTarget(vector3(60, 5, 1));
+	world[8].InitTarget(vector3(60, 5, 1), "obstac0");
+	world[9].InitTarget(vector3(28, 4, 1), "obstac1");
+	world[10].InitTarget(vector3(28, 4, 1), "obstac1");
+	world[11].InitTarget(vector3(60, 5, 1), "obstac0");
 
-	world[12].InitTarget(vector3(60, 5, 1));
-	world[13].InitTarget(vector3(28, 4, 1));
-	world[14].InitTarget(vector3(28, 4, 1));
-	world[15].InitTarget(vector3(60, 5, 1));
+	world[12].InitTarget(vector3(60, 5, 1), "obstac0");
+	world[13].InitTarget(vector3(28, 4, 1), "obstac1");
+	world[14].InitTarget(vector3(28, 4, 1), "obstac1");
+	world[15].InitTarget(vector3(60, 5, 1), "obstac0");
 
-	world[16].InitTarget(vector3(60, 1, 60));
+	world[16].InitTarget(vector3(60, 1, 60), "obstac2");
 	
-	target.InitTarget(vector2(2, .5));
+	target.InitTarget(vector2(2, .5), "target");
 	player.InitPlayer();
 
 	//Setting the color to black
 	m_v4ClearColor = vector4(0.0f);
+
+	m_pMeshMngr->LoadModel("bullet.obj", "bullet");
+	bullet.collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName("bullet")->GetVertexList());
+
+	m_pMeshMngr->InstanceCuboid(vector3(200, 0, 200), REGREEN, "ground");
+	m_pMeshMngr->InstanceCuboid(vector3(60, 5, 1), REGRAY, "obstac0");
+	m_pMeshMngr->InstanceCuboid(vector3(28, 4, 1), REGRAY, "obstac1");
+	m_pMeshMngr->InstanceCuboid(vector3(60, 1, 60), REGRAY, "obstac2");
+	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REBLUE, "target");
 }
 
 void AppClass::Update(void)
@@ -137,15 +146,17 @@ void AppClass::Update(void)
 	//Update the mesh manager's time without updating for collision detection
 	m_pMeshMngr->Update();
 
-	//Adds all loaded instance to the render list
-	m_pMeshMngr->AddInstanceToRenderList("ALL");
-
 	bullet.Update(globalTime);
+	m_pMeshMngr->SetModelMatrix(bullet.GetWorldMatrix(), "bullet");
 	target.Update(globalTime);
+	m_pMeshMngr->SetModelMatrix(target.GetWorldMatrix(), "target");
+	m_pMeshMngr->AddInstanceToRenderList("target");
 	player.Update(globalTime);
 	for (int i = 0; i < world.size(); i++)
 	{
 		world[i].Update(globalTime);
+		m_pMeshMngr->SetModelMatrix(world[i].GetWorldMatrix(),  world[i].GetName());
+		m_pMeshMngr->AddInstanceToRenderList( world[i].GetName());
 	}
 
 	//limits the bullet and resets it if it goes too far
@@ -160,6 +171,12 @@ void AppClass::Update(void)
 		bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
 		followBullet = false;
 		globalTime = 1;
+	}
+
+	if (bullet.GetFired())
+	{
+		//Adds the bullet model to the render list
+		m_pMeshMngr->AddInstanceToRenderList("bullet");
 	}
 
 	//First person camera movement
@@ -293,45 +310,33 @@ void AppClass::Display(void)
 
 	matrix4 groundMatrix = IDENTITY_M4;
 	groundMatrix = glm::translate(vector3(0, -5, 0));
-	quaternion q = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
+	//quaternion q = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
+	quaternion q = glm::angleAxis(0.0f, vector3(1.0f, 0.0f, 0.0f));
 	groundMatrix *= ToMatrix4(q);
 
-	PrimitiveClass* m_pGround2 = new PrimitiveClass();
-	m_pGround2->GeneratePlane(200.0f, RERED);
-	matrix4 groundMatrix2 = IDENTITY_M4;
-	groundMatrix2 = glm::translate(vector3(0, -6, 0));
-	quaternion q2 = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
-	groundMatrix2 *= ToMatrix4(q2);
+	m_pMeshMngr->SetModelMatrix(groundMatrix, "ground");
+
+	m_pMeshMngr->AddInstanceToRenderList("ground");
 
 	//following the bullet
 	if (followBullet)
 	{
+		m_pCameraMngr->SetPositionTargetAndView(bullet.GetCamera().GetPosition(), bullet.GetCamera().GetTarget(), bullet.GetCamera().GetUp());
+
 		if (bullet.GetFired())
 		{
-			bullet.model->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), bullet.GetWorldMatrix());
+			//bullet.model->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), bullet.GetWorldMatrix());
 		}
-		m_pGround->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), groundMatrix);
-		for (int i = 0; i < world.size(); i++)
-		{
-			world[i].model->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), world[i].GetWorldMatrix());
-		}
-		target.model->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), target.GetWorldMatrix());
-		m_pGround2->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), groundMatrix2);
 	}
 	//fps player camera
 	if(!followBullet)
 	{
+		m_pCameraMngr->SetPositionTargetAndView(player.GetCamera().GetPosition(), player.GetCamera().GetTarget(), player.GetCamera().GetUp());
+
 		if (bullet.GetFired())
 		{
-			bullet.model->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), bullet.GetWorldMatrix());
+			//bullet.model->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), bullet.GetWorldMatrix());
 		}
-		m_pGround->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), groundMatrix);
-		for (int i = 0; i < world.size(); i++)
-		{
-			world[i].model->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), world[i].GetWorldMatrix());
-		}
-		target.model->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), target.GetWorldMatrix());
-		m_pGround2->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), groundMatrix2);
 	}
 
 	m_pMeshMngr->Render(); //renders the render list

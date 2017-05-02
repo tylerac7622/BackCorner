@@ -24,19 +24,22 @@ Target::~Target(void)
 {
 }
 
-void Target::InitTarget(vector3 size)
+void Target::InitTarget(vector3 siz, String nam)
 {
+	modelName = nam;
 	model = new PrimitiveClass();
 
-	model->GenerateCuboid(size, REGRAY);
+	model->GenerateCuboid(siz, REGRAY);
+	size = siz;
 
 	//m_pCone->LoadModel("bullet.obj", "bullet");
 
 	collider = new MyBoundingBoxClass(model->GetVertexList());
 	collider->SetColliding(false);
 }
-void Target::InitTarget(vector2 size)
+void Target::InitTarget(vector2 size, String nam)
 {
+	modelName = nam;
 	model = new PrimitiveClass();
 
 	model->GenerateCylinder(size.x, size.y, 10, REBLUE);
@@ -61,6 +64,8 @@ void Target::UpdateWorldMatrix(void)
 
 vector3 Target::GetPosition(void) { return position; }
 vector3 Target::GetEuler(void) { return eulerRotation; }
+vector3 Target::GetSize(void) { return size; }
+String Target::GetName(void) { return modelName; }
 quaternion Target::GetRotation(void) { return rotation; }
 matrix4 Target::GetWorldMatrix(void) { return worldMatrix; }
 

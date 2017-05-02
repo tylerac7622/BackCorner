@@ -28,6 +28,8 @@ public:
 	vector3 GetForward(void);
 	vector3 GetEuler(void);
 	quaternion GetRotation(void);
+	quaternion GetRotationNoZ(void);
+	quaternion GetRotationOnlyZ(void);
 	Camera GetCamera(void);
 	bool GetFired(void);
 	//sets each respective variable

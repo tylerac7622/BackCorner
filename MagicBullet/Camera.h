@@ -16,6 +16,7 @@ public:
 	vector3 GetUp(void);
 
 	vector3 GetPosition(void);
+	vector3 GetTarget(void);
 
 	void SetRotation(quaternion quat);
 

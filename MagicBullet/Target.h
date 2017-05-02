@@ -19,15 +19,17 @@ public:
 
 	void Reset(vector3 pos);
 
-	void InitTarget(vector2 size);
-	void InitTarget(vector3 size);
+	void InitTarget(vector2 size, String nam);
+	void InitTarget(vector3 size, String nam);
 
 	void Update(float globalTime);
 
 	//gets each respective variable
 	vector3 GetPosition(void);
 	vector3 GetEuler(void);
+	vector3 GetSize(void);
 	quaternion GetRotation(void);
+	String GetName(void);
 	//sets each respective variable
 	void SetPosition(vector3 position2);
 	void SetRotation(quaternion rotation2);
@@ -45,6 +47,8 @@ private:
 	vector3 position;
 	quaternion rotation;
 	vector3 eulerRotation;
+	vector3 size;
+	String modelName;
 
 	matrix4 worldMatrix = IDENTITY_M4;
 };

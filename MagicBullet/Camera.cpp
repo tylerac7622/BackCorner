@@ -23,6 +23,10 @@ vector3 Camera::GetPosition(void)
 {
 	return eye;
 }
+vector3 Camera::GetTarget(void)
+{
+	return center;
+}
 
 matrix4 Camera::GetProjection(bool bOrthographic) {
 	if (bOrthographic) {
