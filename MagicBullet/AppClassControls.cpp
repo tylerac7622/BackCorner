@@ -131,11 +131,11 @@ void AppClass::ProcessMouse(void)
 #pragma endregion
 
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle))
-		m_bArcBall = true;
+	m_bArcBall = true;
 
 	//if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 	//m_bFPC = true;
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 		//m_bFPC = false;
-		m_bFPC = true;
+	m_bFPC = true;
 }

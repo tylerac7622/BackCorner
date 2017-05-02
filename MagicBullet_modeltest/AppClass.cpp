@@ -98,6 +98,8 @@ void AppClass::Update(void)
 	if (m_bFPC == true)
 		RotateCam();
 
+	bulletMatrix = glm::translate(bullet.GetPosition());
+
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
@@ -118,8 +120,6 @@ void AppClass::Display(void)
 	//Render the cone
 	//matrix4 bulletMatrix = IDENTITY_M4;
 	//bulletMatrix = glm::translate(bullet.GetPosition());
-
-	bulletMatrix = glm::translate(bullet.GetPosition());
 
 	m_pMeshMngr->SetModelMatrix(bulletMatrix, "bullet");
 
