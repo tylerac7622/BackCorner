@@ -25,7 +25,9 @@ void AppClass::InitVariables(void)
 	m_pBOMngr = MyBOManager::GetInstance();
 	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Steve"), "Steve");
 	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Creeper"), "Creeper");
-	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Cow"), "Cow");
+	for (int i = 0; i < 10; i++) {
+		m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Cow"), std::to_string(i));
+	}
 }
 
 void AppClass::Update(void)
@@ -57,12 +59,21 @@ void AppClass::Update(void)
 	//Set the model matrices for both objects and Bounding Spheres
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O1) * ToMatrix4(m_qArcBall), "Steve");
 	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O2), "Creeper");
-	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O3), "Cow");
+	for (int i = 0; i < 10; i++) {
+		float x = rand() % 100;
+		float y = rand() % 100;
+		float z = rand() % 100;
 
+		m_pMeshMngr->SetModelMatrix(glm::translate(vector3(x, y, z)), std::to_string(i));
+	}
+		
 	//Set the model matrix to the Bounding Object
 	m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"), "Steve");
 	m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"), "Creeper");
-	m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Cow"), "Cow");
+	for (int i = 0; i < 10; i++) {
+		m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Cow"), std::to_string(i));
+	}
+	
 
 	m_pBOMngr->Update();//Update collision detection
 	
