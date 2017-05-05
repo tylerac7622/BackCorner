@@ -11,6 +11,7 @@ void AppClass::InitWindow(String a_sWindowName)
 
 void AppClass::InitVariables(void)
 {
+	spaceOptimzer = new SpatialOpt(500.0f, vector3(0.0f, 0.0f, 0.0f), 4);
 	m_bArcBallZ = false;
 
 	//Initialize positions
@@ -20,13 +21,15 @@ void AppClass::InitVariables(void)
 	//Load Models
 	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
 	m_pMeshMngr->LoadModel("Minecraft\\Creeper.obj", "Creeper");
-	m_pMeshMngr->LoadModel("Minecraft\\Cow.obj", "Cow");
+	for (int i = 0; i < 10; i++) {
+		m_pMeshMngr->LoadModel("Minecraft\\Cow.obj", std::to_string(i));
+	}
 
 	m_pBOMngr = MyBOManager::GetInstance();
 	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Steve"), "Steve");
 	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Creeper"), "Creeper");
 	for (int i = 0; i < 10; i++) {
-		m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Cow"), std::to_string(i));
+		m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList(std::to_string(i)), std::to_string(i));
 	}
 }
 
@@ -64,14 +67,14 @@ void AppClass::Update(void)
 		float y = rand() % 100;
 		float z = rand() % 100;
 
-		m_pMeshMngr->SetModelMatrix(glm::translate(vector3(x, y, z)), std::to_string(i));
+		m_pMeshMngr->SetModelMatrix(glm::translate(vector3((float)x, (float)y, (float)z)), std::to_string(i));
 	}
 		
 	//Set the model matrix to the Bounding Object
 	m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"), "Steve");
 	m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"), "Creeper");
 	for (int i = 0; i < 10; i++) {
-		m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Cow"), std::to_string(i));
+		m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix(std::to_string(i)), std::to_string(i));
 	}
 	
 

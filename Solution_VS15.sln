@@ -13,7 +13,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A11s_BoundingObjectSingleto
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MagicBullet_modeltest", "MagicBullet_modeltest\MagicBullet_modeltest.vcxproj", "{219B40DB-B009-4E30-82DA-A817697257A4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A12", "\\banner.main.ad.rit.edu\students\fy3881\IGMProfile\Documents\BackCorner_2\A12\A12.vcxproj", "{13FA2754-46C1-49D8-B9A4-1DC856801931}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A12", "\\banner.main.ad.rit.edu\students\ltr6702\IGMProfile\Documents\BackCorner\A12\A12.vcxproj", "{13FA2754-46C1-49D8-B9A4-1DC856801931}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
