@@ -11,6 +11,7 @@ SpatialOpt::SpatialOpt(float size, vector3 location, int numDivisions)
 
 	numPartions = numDivisions * 8;
 	partitionSize = totalSize / numPartions;
+	m_pMeshMngr = MeshManagerSingleton::GetInstance();
 }
 
 void SpatialOpt::SetToDraw(bool value)
@@ -39,5 +40,22 @@ void SpatialOpt::GeneratePartionCenters()
 			}
 		}
 	}
+}
+
+
+void SpatialOpt::DrawAllPartions()
+{
+	if (!toDraw) { return; }
+
+	for (int i = 0; i < numPartions; i++) {
+	//	m_pMeshMngr->AddCubeToRenderList(m_m4ToWorld, REGREEN);
+		m_pMeshMngr->AddCubeToRenderList(glm::translate(m_m4ToWorld, partionCenters[i]) *
+			glm::scale(vector3(partitionSize, partitionSize, partitionSize)), RERED, WIRE);
+	}
+}
+
+void SpatialOpt::SetWorld(matrix4 a_m4ToWorld)
+{
+	m_m4ToWorld = a_m4ToWorld;
 }
 
