@@ -30,12 +30,18 @@ void SpatialOpt::GeneratePartionCenters()
 
 	for (int x = 0; x < std::cbrt(numPartions); x++) {
 		toPush.x = ((x + 1) * partitionSize) - (partitionSize / 2);
+	//	toPush.x = -totalSize/2 + ((x + 1) * partitionSize) - (partitionSize / 2);
+		//toPush.x = ((center.x - totalSize/2) +  (x + 1) * partitionSize) - (partitionSize / 2);
 
 		for (int y = 0; y < std::cbrt(numPartions); y++) {
 			toPush.y = ((y + 1) * partitionSize) - (partitionSize / 2);
+		//	toPush.y = -totalSize/2 + ((y + 1) * partitionSize) - (partitionSize / 2);
+		//	toPush.y = ((center.y - totalSize / 2) + (y + 1) * partitionSize) - (partitionSize / 2);
 
 			for (int z= 0; z < std::cbrt(numPartions); z++) {
 				toPush.z = ((z + 1) * partitionSize) - (partitionSize / 2);
+			//	toPush.z = -totalSize/2 + ((z + 1) * partitionSize) - (partitionSize / 2);
+			//	toPush.z = ((center.z - totalSize / 2) + (z + 1) * partitionSize) - (partitionSize / 2);
 				partionCenters.push_back(toPush);
 			}
 		}
