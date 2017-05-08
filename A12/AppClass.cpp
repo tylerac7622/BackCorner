@@ -83,15 +83,18 @@ void AppClass::Update(void)
 		for (int i = 0; i < numObjects; i++)
 		{
 			MyBOClass* current = m_pBOMngr->GetBoundingObject(std::to_string(i));
-			if (current->currentSpec->content.size() > 1)
+			for (int i3 = 0; i3 < current->currentSpec.size(); i3++)
 			{
-				for (int i2 = 0; i2 < current->currentSpec->content.size(); i2++)
+				if (current->currentSpec[i3]->content.size() > 1)
 				{
-					if (current->currentSpec->content[i2]->GetCenterGlobal() != current->GetCenterGlobal())
+					for (int i2 = 0; i2 < current->currentSpec[i3]->content.size(); i2++)
 					{
-						if (m_pBOMngr->GetBoundingObject(std::to_string(i))->IsColliding(current->currentSpec->content[i2]) && showCollisions)
+						if (current->currentSpec[i3]->content[i2]->GetCenterGlobal() != current->GetCenterGlobal())
 						{
-							m_pBOMngr->DisplaySphere(std::to_string(i), RERED);
+							if (m_pBOMngr->GetBoundingObject(std::to_string(i))->IsColliding(current->currentSpec[i3]->content[i2]) && showCollisions)
+							{
+								m_pBOMngr->DisplaySphere(std::to_string(i), RERED);
+							}
 						}
 					}
 				}

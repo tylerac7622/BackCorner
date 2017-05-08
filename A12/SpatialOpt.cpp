@@ -81,22 +81,14 @@ void SpatialOpt::PlaceObject(MyBOClass* toPlace)
 	if (subdivisions.size() == 0)
 	{
 		content.push_back(toPlace);
-		toPlace->currentSpec = this;
+		toPlace->currentSpec.push_back(this);
 	}
 	for (int i = 0; i < subdivisions.size(); i++)
 	{
 		bool isCollide = toPlace->IsColliding(subdivisions[i].collider);
 		if (isCollide)
 		{
-			if (colliding == -1)
-			{
-				colliding = i;
-			}
-			else
-			{
-				content.push_back(toPlace);
-				toPlace->currentSpec = this;
-			}
+			subdivisions[i].PlaceObject(toPlace);
 		}
 	}
 
