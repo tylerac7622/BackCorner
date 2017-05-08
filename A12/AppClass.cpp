@@ -11,9 +11,10 @@ void AppClass::InitWindow(String a_sWindowName)
 
 void AppClass::InitVariables(void)
 {
-	spaceOptimzer = new SpatialOpt(500, vector3(0.0f, 0.0f, 0.0f), 8);
+	//spaceOptimzer = new SpatialOpt(500, vector3(0.0f, 0.0f, 0.0f), 8);
+	spaceOptimzer = new SpatialOpt(100, vector3(0.0f, 0.0f, 0.0f), 4);
 	spaceOptimzer->SetToDraw(true);
-	spaceOptimzer->GeneratePartionCenters();
+	//spaceOptimzer->GeneratePartionCenters();
 
 	m_bArcBallZ = false;
 
@@ -25,6 +26,7 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
 	m_pMeshMngr->LoadModel("Minecraft\\Creeper.obj", "Creeper");
 	for (int i = 0; i < numObjects; i++) {
+		SpatOptObj cow = SpatOptObj(std::to_string(i), vector3(0, 0, 0));
 		m_pMeshMngr->LoadModel("Minecraft\\Cow.obj", std::to_string(i));
 	}
 
@@ -36,15 +38,22 @@ void AppClass::InitVariables(void)
 	}
 
 	for (int i = 0; i < numObjects; i++) {
-		float x = rand() % 100;
-		float y = rand() % 100;
-		float z = rand() % 100;
+		float x = rand() % 50;
+		float y = rand() % 50;
+		float z = rand() % 50;
+		//x = 60 + (i*.5f);
+		//y = 60;
+		//z = 60;
 
-		m_pMeshMngr->SetModelMatrix(glm::translate(vector3((float)x, (float)y, (float)z)), std::to_string(i));
+		m_pMeshMngr->SetModelMatrix(glm::translate(vector3((float)x - 50, (float)y - 50, (float)z - 50)), std::to_string(i));
 	}
 
-	for (int i = 0; i < numObjects; i++) {
+	for (int i = 0; i < numObjects; i++) 
+	{
 		m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix(std::to_string(i)), std::to_string(i));
+
+		spaceOptimzer->PlaceObject(m_pBOMngr->GetBoundingObject(std::to_string(i)));
+		//spaceOptimzer->PlaceObject(vector3(0, 0, 0));
 	}
 
 }
@@ -92,6 +101,24 @@ void AppClass::Update(void)
 	m_pBOMngr->DisplayOriented(-1, REWHITE);
 
 	spaceOptimzer->DrawAllPartions();
+
+	for (int i = 0; i < numObjects; i++)
+	{
+		MyBOClass* current = m_pBOMngr->GetBoundingObject(std::to_string(i));
+		if (current->currentSpec->content.size() > 1)
+		{
+			for (int i2 = 0; i2 < current->currentSpec->content.size(); i2++)
+			{
+				if (current->currentSpec->content[i2]->GetCenterGlobal() != current->GetCenterGlobal())
+				{
+					if (m_pBOMngr->GetBoundingObject(std::to_string(i))->IsColliding(current->currentSpec->content[i2]))
+					{
+						m_pBOMngr->DisplaySphere(std::to_string(i), RERED);
+					}
+				}
+			}
+		}
+	}
 
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");

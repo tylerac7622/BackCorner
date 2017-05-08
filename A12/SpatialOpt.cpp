@@ -12,6 +12,34 @@ SpatialOpt::SpatialOpt(float size, vector3 location, int numDivisions)
 	numPartions = numDivisions * 8;
 	partitionSize = totalSize / numPartions;
 	m_pMeshMngr = MeshManagerSingleton::GetInstance();
+
+	if (numDivisions > 0)
+	{
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x + (size / 4), location.y + (size / 4), location.z + (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x - (size / 4), location.y + (size / 4), location.z + (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x + (size / 4), location.y - (size / 4), location.z + (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x - (size / 4), location.y - (size / 4), location.z + (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x + (size / 4), location.y + (size / 4), location.z - (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x - (size / 4), location.y + (size / 4), location.z - (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x + (size / 4), location.y - (size / 4), location.z - (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x - (size / 4), location.y - (size / 4), location.z - (size / 4)), numDivisions - 1));
+	}
+	else
+	{
+		subdivisions.clear();
+	}
+
+	std::vector<vector3> colliderPoints;
+	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y + (size / 2), location.z + (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y + (size / 2), location.z + (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y - (size / 2), location.z + (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y - (size / 2), location.z + (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y + (size / 2), location.z - (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y + (size / 2), location.z - (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y - (size / 2), location.z - (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y - (size / 2), location.z - (size / 2))));
+	collider = new MyBOClass(colliderPoints);
+
 }
 
 void SpatialOpt::SetToDraw(bool value)
@@ -48,16 +76,52 @@ void SpatialOpt::GeneratePartionCenters()
 	}
 }
 
+void SpatialOpt::PlaceObject(MyBOClass* toPlace)
+{
+	int colliding = -1;
+	if (subdivisions.size() == 0)
+	{
+		content.push_back(toPlace);
+		toPlace->currentSpec = this;
+	}
+	for (int i = 0; i < subdivisions.size(); i++)
+	{
+		bool isCollide = toPlace->IsColliding(subdivisions[i].collider);
+		if (isCollide)
+		{
+			if (colliding == -1)
+			{
+				colliding = i;
+			}
+			else
+			{
+				content.push_back(toPlace);
+				toPlace->currentSpec = this;
+			}
+		}
+	}
+
+	if (colliding != -1)
+	{
+		subdivisions[colliding].PlaceObject(toPlace);
+	}
+}
 
 void SpatialOpt::DrawAllPartions()
 {
 	if (!toDraw) { return; }
 
-	for (int i = 0; i < numPartions; i++) {
+	m_pMeshMngr->AddCubeToRenderList(glm::translate(m_m4ToWorld, center) *
+		glm::scale(vector3(totalSize, totalSize, totalSize)), RERED, WIRE);
+	for (int i = 0; i < subdivisions.size(); i++) {
+		subdivisions[i].DrawAllPartions();
+	}
+
+	/*for (int i = 0; i < numPartions; i++) {
 	//	m_pMeshMngr->AddCubeToRenderList(m_m4ToWorld, REGREEN);
 		m_pMeshMngr->AddCubeToRenderList(glm::translate(m_m4ToWorld, partionCenters[i]) *
 			glm::scale(vector3(partitionSize, partitionSize, partitionSize)), RERED, WIRE);
-	}
+	}*/
 }
 
 void SpatialOpt::SetWorld(matrix4 a_m4ToWorld)

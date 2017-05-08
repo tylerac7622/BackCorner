@@ -14,7 +14,7 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
-	const int numObjects = 200;
+	const int numObjects = 1000;
 	vector3 m_v3O1 = vector3(-2.5f, 0.0f, 0.0f);
 	vector3 m_v3O2 = vector3( 2.5f, 0.0f, 0.0f);
 	vector3 m_v3O3 = vector3( 2.5f, 1.0f, 0.0f);

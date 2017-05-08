@@ -1,15 +1,22 @@
 #pragma once
 #include "RE\ReEng.h"
 #include "MyBOManager.h"
+#include "SpatOptObj.h"
+
+using namespace ReEng;
 
 class SpatialOpt {
 	public:
+		std::vector<MyBOClass*> content;
+		std::vector<SpatialOpt> subdivisions;
+		MyBOClass* collider;
+
 		SpatialOpt(float size, vector3 location, int numDivisions);
 		void SetToDraw(bool value);
 		bool GetToDraw();
 		void GeneratePartionCenters();
 		void DrawAllPartions();
-		void CheckCollisions();
+		void PlaceObject(MyBOClass* toPlace);
 		void SetWorld(matrix4 a_m4ToWorld);
 
 
