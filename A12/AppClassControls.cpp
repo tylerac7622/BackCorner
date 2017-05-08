@@ -7,7 +7,7 @@ void AppClass::ProcessKeyboard(void)
 #pragma region ON PRESS/RELEASE DEFINITION
 	static bool	bLastF1 = false, bLastF2 = false, bLastF3 = false, bLastF4 = false, bLastF5 = false,
 				bLastF6 = false, bLastF7 = false, bLastF8 = false, bLastF9 = false, bLastF10 = false,
-				bLastEscape = false, bLastF = false;
+				bLastEscape = false, bLastF = false, bLastG = false, bLastH = false, bLastU = false;
 #define ON_KEY_PRESS_RELEASE(key, pressed_action, released_action){  \
 			bool pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::key);			\
 			if(pressed){											\
@@ -68,6 +68,57 @@ void AppClass::ProcessKeyboard(void)
 			m_v3O1.z -= 0.1f;
 	}
 #pragma endregion
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+	{
+		if (!bLastG)
+		{
+			showTree = !showTree;
+			bLastG = true;
+		}
+	}
+	else
+		bLastG = false;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+	{
+		if (!bLastF)
+		{
+			useTree = !useTree;
+			bLastF = true;
+		}
+	}
+	else
+		bLastF = false;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+	{
+		if (!bLastH)
+		{
+			showCollisions = !showCollisions;
+			bLastH = true;
+		}
+	}
+	else
+		bLastH = false;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::U))
+	{
+		if (!bLastU)
+		{
+			bLastU = true;
+
+			spaceOptimzer->Recreate(100, vector3(0.0f, 0.0f, -50.0f), 4);
+			spaceOptimzer->SetToDraw(true);
+
+			for (int i = 0; i < numObjects; i++)
+			{
+				spaceOptimzer->PlaceObject(m_pBOMngr->GetBoundingObject(std::to_string(i)));
+			}
+		}
+	}
+	else
+		bLastU = false;
 
 #pragma region Other Actions
 	ON_KEY_PRESS_RELEASE(Escape, NULL, PostMessage(m_pWindow->GetHandler(), WM_QUIT, NULL, NULL));

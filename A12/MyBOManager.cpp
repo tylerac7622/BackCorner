@@ -202,15 +202,15 @@ void MyBOManager::DisplayReAlligned(int a_nIndex, vector3 a_v3Color)
 		}
 	}
 }
-void MyBOManager::Update(void)
+void MyBOManager::Update(bool show)
 {
 	for (uint nObject = 0; nObject < m_nObjectCount; nObject++)
 	{
 		m_llCollidingIndices[nObject].clear();
 	}
-	CheckCollisions();
+	CheckCollisions(show);
 }
-void MyBOManager::CheckCollisions(void)
+void MyBOManager::CheckCollisions(bool show)
 {
 	for (uint nObjectA = 0; nObjectA < m_nObjectCount - 1; nObjectA++)
 	{
@@ -220,6 +220,12 @@ void MyBOManager::CheckCollisions(void)
 			{
 				m_llCollidingIndices[nObjectA].push_back(nObjectB);
 				m_llCollidingIndices[nObjectB].push_back(nObjectA);
+
+				if (show)
+				{
+					DisplaySphere(std::to_string(nObjectA), RERED);
+					DisplaySphere(std::to_string(nObjectB), RERED);
+				}
 			}
 		}
 	}

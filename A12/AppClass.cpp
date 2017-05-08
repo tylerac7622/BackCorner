@@ -12,35 +12,28 @@ void AppClass::InitWindow(String a_sWindowName)
 void AppClass::InitVariables(void)
 {
 	//spaceOptimzer = new SpatialOpt(500, vector3(0.0f, 0.0f, 0.0f), 8);
-	spaceOptimzer = new SpatialOpt(100, vector3(0.0f, 0.0f, 0.0f), 4);
+	spaceOptimzer = new SpatialOpt(100, vector3(0.0f, 0.0f, -50.0f), 4);
 	spaceOptimzer->SetToDraw(true);
 	//spaceOptimzer->GeneratePartionCenters();
 
 	m_bArcBallZ = false;
 
-	//Initialize positions
-	m_v3O1 = vector3(-2.5f, 0.0f, 0.0f);
-	m_v3O2 = vector3(2.5f, 0.0f, 0.0f);
-
 	//Load Models
-	m_pMeshMngr->LoadModel("Minecraft\\Steve.obj", "Steve");
-	m_pMeshMngr->LoadModel("Minecraft\\Creeper.obj", "Creeper");
 	for (int i = 0; i < numObjects; i++) {
-		SpatOptObj cow = SpatOptObj(std::to_string(i), vector3(0, 0, 0));
 		m_pMeshMngr->LoadModel("Minecraft\\Cow.obj", std::to_string(i));
 	}
 
 	m_pBOMngr = MyBOManager::GetInstance();
-	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Steve"), "Steve");
-	m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList("Creeper"), "Creeper");
+	
 	for (int i = 0; i < numObjects; i++) {
 		m_pBOMngr->AddObject(m_pMeshMngr->GetVertexList(std::to_string(i)), std::to_string(i));
 	}
 
 	for (int i = 0; i < numObjects; i++) {
-		float x = rand() % 50;
-		float y = rand() % 50;
-		float z = rand() % 50;
+		float x = rand() % 100;
+		float y = rand() % 100;
+		float z = rand() % 100;
+		z -= 50;
 		//x = 60 + (i*.5f);
 		//y = 60;
 		//z = 60;
@@ -72,62 +65,46 @@ void AppClass::Update(void)
 
 	ArcBall();
 	ArcBallZ();
-
-	//Object Movement
-	static float fTimer = 0.0f;
-	static int nClock = m_pSystem->GenClock();
-	float fDeltaTime = static_cast<float>(m_pSystem->LapClock(nClock));
-	fTimer += fDeltaTime;
-	static vector3 v3Start = vector3(2.5f, 0.0f, 0.0f);
-	static vector3 v3End = vector3(5.0, 0.0, 0.0);
-	float fPercentage = MapValue(fTimer, 0.0f, 3.0f, 0.0f, 1.0f);
-	m_v3O2 = glm::lerp(v3Start, v3End, fPercentage);
-	matrix4 mTranslation = glm::translate(m_v3O2);
-
-	//Set the model matrices for both objects and Bounding Spheres
-	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O1) * ToMatrix4(m_qArcBall), "Steve");
-	m_pMeshMngr->SetModelMatrix(glm::translate(m_v3O2), "Creeper");
-
-		
-	//Set the model matrix to the Bounding Object
-	m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"), "Steve");
-	m_pBOMngr->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"), "Creeper");
 	
 
-	m_pBOMngr->Update();//Update collision detection
+	//m_pBOMngr->Update();//Update collision detection
 	
 	//m_pBOMngr->DisplaySphere(-1, REWHITE);
-	m_pBOMngr->DisplayReAlligned();
-	m_pBOMngr->DisplayOriented(-1, REWHITE);
+	//m_pBOMngr->DisplayReAlligned();
+	//m_pBOMngr->DisplayOriented(-1, REWHITE);
 
-	spaceOptimzer->DrawAllPartions();
-
-	for (int i = 0; i < numObjects; i++)
+	if (showTree)
 	{
-		MyBOClass* current = m_pBOMngr->GetBoundingObject(std::to_string(i));
-		if (current->currentSpec->content.size() > 1)
+		spaceOptimzer->DrawAllPartions();
+	}
+
+	if (useTree) //spatial optimization
+	{
+		for (int i = 0; i < numObjects; i++)
 		{
-			for (int i2 = 0; i2 < current->currentSpec->content.size(); i2++)
+			MyBOClass* current = m_pBOMngr->GetBoundingObject(std::to_string(i));
+			if (current->currentSpec->content.size() > 1)
 			{
-				if (current->currentSpec->content[i2]->GetCenterGlobal() != current->GetCenterGlobal())
+				for (int i2 = 0; i2 < current->currentSpec->content.size(); i2++)
 				{
-					if (m_pBOMngr->GetBoundingObject(std::to_string(i))->IsColliding(current->currentSpec->content[i2]))
+					if (current->currentSpec->content[i2]->GetCenterGlobal() != current->GetCenterGlobal())
 					{
-						m_pBOMngr->DisplaySphere(std::to_string(i), RERED);
+						if (m_pBOMngr->GetBoundingObject(std::to_string(i))->IsColliding(current->currentSpec->content[i2]) && showCollisions)
+						{
+							m_pBOMngr->DisplaySphere(std::to_string(i), RERED);
+						}
 					}
 				}
 			}
 		}
 	}
+	else
+	{
+		m_pBOMngr->Update(showCollisions);   //Brute force
+	}
 
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
-
-	if (fPercentage > 1.0f)
-	{
-		fTimer = 0.0f;
-		std::swap(v3Start, v3End);
-	}
 
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
@@ -136,17 +113,37 @@ void AppClass::Update(void)
 	//Print info on the screen
 	m_pMeshMngr->PrintLine("");//Add a line on top
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
-
-	std::vector<int> list = m_pBOMngr->GetCollidingVector(0);
-	m_pMeshMngr->Print("Object 0 colliding with: ", REBLUE);
-	for (uint n = 0; n < list.size(); n++)
-	{
-		m_pMeshMngr->Print(std::to_string(list[n]) + " ", REYELLOW);
-	}
-	m_pMeshMngr->PrintLine(" ");
 	
 	m_pMeshMngr->Print("FPS:");
-	m_pMeshMngr->Print(std::to_string(nFPS), RERED);
+	m_pMeshMngr->PrintLine(std::to_string(nFPS), RERED);
+
+	m_pMeshMngr->Print("(F)  Collision Check:");
+	if (useTree)
+	{
+		m_pMeshMngr->PrintLine("Spatial Optimization", REGREEN);
+	}
+	else
+	{
+		m_pMeshMngr->PrintLine("Brute Force", RERED);
+	}
+	m_pMeshMngr->Print("(G)  Show Tree? ");
+	if (showTree)
+	{
+		m_pMeshMngr->PrintLine("True", REGREEN);
+	}
+	else
+	{
+		m_pMeshMngr->PrintLine("False", RERED);
+	}
+	m_pMeshMngr->Print("(H)  Show Collisions? ");
+	if (showCollisions)
+	{
+		m_pMeshMngr->PrintLine("True", REGREEN);
+	}
+	else
+	{
+		m_pMeshMngr->PrintLine("False", RERED);
+	}
 }
 
 void AppClass::Display(void)

@@ -18,6 +18,8 @@ class SpatialOpt {
 		void DrawAllPartions();
 		void PlaceObject(MyBOClass* toPlace);
 		void SetWorld(matrix4 a_m4ToWorld);
+		void ClearTree();
+		void Recreate(float size, vector3 location, int numDivisions);
 
 
 	private:

@@ -39,7 +39,6 @@ SpatialOpt::SpatialOpt(float size, vector3 location, int numDivisions)
 	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y - (size / 2), location.z - (size / 2))));
 	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y - (size / 2), location.z - (size / 2))));
 	collider = new MyBOClass(colliderPoints);
-
 }
 
 void SpatialOpt::SetToDraw(bool value)
@@ -105,6 +104,51 @@ void SpatialOpt::PlaceObject(MyBOClass* toPlace)
 	{
 		subdivisions[colliding].PlaceObject(toPlace);
 	}
+}
+
+void SpatialOpt::ClearTree()
+{
+	content.clear();
+	for (int i = 0; i < subdivisions.size(); i++) {
+		subdivisions[i].ClearTree();
+	}
+}
+void SpatialOpt::Recreate(float size, vector3 location, int numDivisions)
+{
+	ClearTree();
+
+	totalSize = size;
+	center = location;
+	divisions = numDivisions;
+	m_pBOMngr = MyBOManager::GetInstance();
+
+	numPartions = numDivisions * 8;
+	partitionSize = totalSize / numPartions;
+	m_pMeshMngr = MeshManagerSingleton::GetInstance();
+
+	subdivisions.clear();
+	if (numDivisions > 0)
+	{
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x + (size / 4), location.y + (size / 4), location.z + (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x - (size / 4), location.y + (size / 4), location.z + (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x + (size / 4), location.y - (size / 4), location.z + (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x - (size / 4), location.y - (size / 4), location.z + (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x + (size / 4), location.y + (size / 4), location.z - (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x - (size / 4), location.y + (size / 4), location.z - (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x + (size / 4), location.y - (size / 4), location.z - (size / 4)), numDivisions - 1));
+		subdivisions.push_back(SpatialOpt(size / 2, vector3(location.x - (size / 4), location.y - (size / 4), location.z - (size / 4)), numDivisions - 1));
+	}
+
+	std::vector<vector3> colliderPoints;
+	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y + (size / 2), location.z + (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y + (size / 2), location.z + (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y - (size / 2), location.z + (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y - (size / 2), location.z + (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y + (size / 2), location.z - (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y + (size / 2), location.z - (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y - (size / 2), location.z - (size / 2))));
+	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y - (size / 2), location.z - (size / 2))));
+	collider = new MyBOClass(colliderPoints);
 }
 
 void SpatialOpt::DrawAllPartions()

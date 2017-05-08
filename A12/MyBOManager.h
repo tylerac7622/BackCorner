@@ -154,7 +154,7 @@ public:
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
-	void Update(void);
+	void Update(bool show);
 
 private:
 	/*
@@ -198,7 +198,7 @@ private:
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
-	void CheckCollisions(void);
+	void CheckCollisions(bool show);
 };
 
 #endif //__MYBOMANAGER_H_
