@@ -61,11 +61,17 @@ void AppClass::InitVariables(void)
 	cam.SetTarget(ZERO_V3);
 	cam.SetUp(REAXISY);
 
+	optimizer = new SpatialOpt(500, vector3(0.0f, 0.0f, 0.0f), 2);
+	optimizer->SetToDraw(true);
+
 	srand(time(NULL));
 
-	//ground
-	m_pGround = new PrimitiveClass();
-	m_pGround->GeneratePlane(200.0f, REGREEN);
+	m_pMeshMngr->LoadModel("bullet.obj", "bullet");
+	m_pMeshMngr->InstanceCuboid(vector3(500, 0, 500), REGREEN, "ground");
+	m_pMeshMngr->InstanceCuboid(vector3(60, 5, 1), REGRAY, "obstac0");
+	m_pMeshMngr->InstanceCuboid(vector3(28, 4, 1), REGRAY, "obstac1");
+	m_pMeshMngr->InstanceCuboid(vector3(60, 1, 60), REGRAY, "obstac2");
+	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REBLUE, "target");
 
 	//"front" wall
 	world.push_back(Target(vector3(0.0f, -2.5f, -30.0f), vector3(0.0, 0.0, 0.0)));
@@ -123,14 +129,13 @@ void AppClass::InitVariables(void)
 	//Setting the color to black
 	m_v4ClearColor = vector4(0.0f);
 
-	m_pMeshMngr->LoadModel("bullet.obj", "bullet");
 	bullet.collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName("bullet")->GetVertexList());
 
-	m_pMeshMngr->InstanceCuboid(vector3(200, 0, 200), REGREEN, "ground");
-	m_pMeshMngr->InstanceCuboid(vector3(60, 5, 1), REGRAY, "obstac0");
-	m_pMeshMngr->InstanceCuboid(vector3(28, 4, 1), REGRAY, "obstac1");
-	m_pMeshMngr->InstanceCuboid(vector3(60, 1, 60), REGRAY, "obstac2");
-	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REBLUE, "target");
+
+	for (int i = 0; i < world.size(); i++)
+	{
+		optimizer->PlaceObject(&world[i]);
+	}
 }
 
 void AppClass::Update(void)
@@ -160,7 +165,7 @@ void AppClass::Update(void)
 	}
 
 	//limits the bullet and resets it if it goes too far
-	if (bullet.GetPosition().x + bullet.GetPosition().z > 500)
+	if (abs(bullet.GetPosition().x) + abs(bullet.GetPosition().z) > 700)
 	{
 		bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
 		followBullet = false;
@@ -338,6 +343,8 @@ void AppClass::Display(void)
 			//bullet.model->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), bullet.GetWorldMatrix());
 		}
 	}
+
+	optimizer->DrawAllPartions();
 
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render

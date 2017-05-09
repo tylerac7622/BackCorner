@@ -113,6 +113,7 @@ void AppClass::ProcessKeyboard(void)
 
 			for (int i = 0; i < numObjects; i++)
 			{
+				m_pBOMngr->GetBoundingObject(std::to_string(i))->currentSpec.clear();
 				spaceOptimzer->PlaceObject(m_pBOMngr->GetBoundingObject(std::to_string(i)));
 			}
 		}

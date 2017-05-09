@@ -7,11 +7,14 @@
 
 using namespace ReEng;
 
+class SpatialOpt;
+
 class Target {
 public:
 
 	MyBoundingBoxClass* collider;
 	PrimitiveClass* model = nullptr;
+	std::vector<SpatialOpt*> currentSpec;
 
 	Target(vector3 pos, vector3 rot);
 

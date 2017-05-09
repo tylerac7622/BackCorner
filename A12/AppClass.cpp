@@ -147,6 +147,7 @@ void AppClass::Update(void)
 	{
 		m_pMeshMngr->PrintLine("False", RERED);
 	}
+	m_pMeshMngr->Print("(U)  Recreate Tree (I don't know why, it's a homework requirement)");
 }
 
 void AppClass::Display(void)

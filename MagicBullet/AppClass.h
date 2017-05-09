@@ -17,6 +17,7 @@ Date: 2015/09
 #include <list>
 #include <algorithm>
 #include <iostream>
+#include "SpatialOpt.h"
 
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
@@ -27,6 +28,8 @@ class AppClass : public ReEngAppClass
 	Target target = Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0));
 	Player player = Player();
 	std::vector<Target> world;
+
+	SpatialOpt* optimizer;
 
 
 	//the speed that enables the world to slow down when following the bullet
