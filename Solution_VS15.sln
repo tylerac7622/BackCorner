@@ -5,13 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ref Code", "Ref Code", "{C0E8C6DD-2B8C-4CC4-942C-A47B6C6C6552}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A08", "\\banner.main.ad.rit.edu\students\ltr6702\IGMProfile\Documents\ReEngineApp_2016s\A08 - Final\A08.vcxproj", "{635F6252-1CFD-402C-A66D-775610C6220F}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MagicBullet", "MagicBullet\MagicBullet.vcxproj", "{605F2BD5-F21C-4E00-A2BA-6D7D99806125}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A11s_BoundingObjectSingleton", "A11s_BoundingObjectSingleton\A11s_BoundingObjectSingleton.vcxproj", "{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MagicBullet_modeltest", "MagicBullet_modeltest\MagicBullet_modeltest.vcxproj", "{219B40DB-B009-4E30-82DA-A817697257A4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A12", "A12\A12.vcxproj", "{13FA2754-46C1-49D8-B9A4-1DC856801931}"
 EndProject
@@ -23,30 +17,12 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{635F6252-1CFD-402C-A66D-775610C6220F}.Debug|x64.ActiveCfg = Debug|Win32
-		{635F6252-1CFD-402C-A66D-775610C6220F}.Debug|x86.ActiveCfg = Debug|Win32
-		{635F6252-1CFD-402C-A66D-775610C6220F}.Debug|x86.Build.0 = Debug|Win32
-		{635F6252-1CFD-402C-A66D-775610C6220F}.Release|x64.ActiveCfg = Release|Win32
-		{635F6252-1CFD-402C-A66D-775610C6220F}.Release|x86.ActiveCfg = Release|Win32
-		{635F6252-1CFD-402C-A66D-775610C6220F}.Release|x86.Build.0 = Release|Win32
 		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Debug|x64.ActiveCfg = Debug|Win32
 		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Debug|x86.ActiveCfg = Debug|Win32
 		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Debug|x86.Build.0 = Debug|Win32
 		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Release|x64.ActiveCfg = Release|Win32
 		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Release|x86.ActiveCfg = Release|Win32
 		{605F2BD5-F21C-4E00-A2BA-6D7D99806125}.Release|x86.Build.0 = Release|Win32
-		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Debug|x64.ActiveCfg = Debug|Win32
-		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Debug|x86.ActiveCfg = Debug|Win32
-		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Debug|x86.Build.0 = Debug|Win32
-		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Release|x64.ActiveCfg = Release|Win32
-		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Release|x86.ActiveCfg = Release|Win32
-		{6DD16126-FD6B-4BE1-8199-56C2720B8C9F}.Release|x86.Build.0 = Release|Win32
-		{219B40DB-B009-4E30-82DA-A817697257A4}.Debug|x64.ActiveCfg = Debug|Win32
-		{219B40DB-B009-4E30-82DA-A817697257A4}.Debug|x86.ActiveCfg = Debug|Win32
-		{219B40DB-B009-4E30-82DA-A817697257A4}.Debug|x86.Build.0 = Debug|Win32
-		{219B40DB-B009-4E30-82DA-A817697257A4}.Release|x64.ActiveCfg = Release|Win32
-		{219B40DB-B009-4E30-82DA-A817697257A4}.Release|x86.ActiveCfg = Release|Win32
-		{219B40DB-B009-4E30-82DA-A817697257A4}.Release|x86.Build.0 = Release|Win32
 		{13FA2754-46C1-49D8-B9A4-1DC856801931}.Debug|x64.ActiveCfg = Debug|Win32
 		{13FA2754-46C1-49D8-B9A4-1DC856801931}.Debug|x86.ActiveCfg = Debug|Win32
 		{13FA2754-46C1-49D8-B9A4-1DC856801931}.Debug|x86.Build.0 = Debug|Win32
@@ -56,8 +32,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{635F6252-1CFD-402C-A66D-775610C6220F} = {C0E8C6DD-2B8C-4CC4-942C-A47B6C6C6552}
 	EndGlobalSection
 EndGlobal
