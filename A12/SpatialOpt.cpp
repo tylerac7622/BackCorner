@@ -1,4 +1,4 @@
-#include "SpatialOpt.h"
+ #include "SpatialOpt.h"
 #include <stdio.h>      /* printf */
 #include <math.h>   
 
@@ -38,7 +38,7 @@ SpatialOpt::SpatialOpt(float size, vector3 location, int numDivisions)
 	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y + (size / 2), location.z - (size / 2))));
 	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y - (size / 2), location.z - (size / 2))));
 	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y - (size / 2), location.z - (size / 2))));
-	collider = new MyBOClass(colliderPoints);
+	collider = new MyBOClass(colliderPoints, "");
 }
 
 void SpatialOpt::SetToDraw(bool value)
@@ -140,7 +140,7 @@ void SpatialOpt::Recreate(float size, vector3 location, int numDivisions)
 	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y + (size / 2), location.z - (size / 2))));
 	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y - (size / 2), location.z - (size / 2))));
 	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y - (size / 2), location.z - (size / 2))));
-	collider = new MyBOClass(colliderPoints);
+	collider = new MyBOClass(colliderPoints, "");
 }
 
 void SpatialOpt::DrawAllPartions()

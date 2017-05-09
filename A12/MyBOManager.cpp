@@ -63,7 +63,7 @@ void MyBOManager::AddObject(String a_sName)
 }
 void MyBOManager::AddObject(std::vector<vector3> a_lVertex, String a_sName)
 {
-	MyBOClass* pObject = new MyBOClass(a_lVertex);
+	MyBOClass* pObject = new MyBOClass(a_lVertex, a_sName);
 	if (pObject != nullptr)
 	{
 		m_lObject.push_back(pObject);//Add the Object

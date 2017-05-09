@@ -89,7 +89,7 @@ void AppClass::Update(void)
 				{
 					for (int i2 = 0; i2 < current->currentSpec[i3]->content.size(); i2++)
 					{
-						if (current->currentSpec[i3]->content[i2]->GetCenterGlobal() != current->GetCenterGlobal())
+						if (current->currentSpec[i3]->content[i2]->name != current->name)
 						{
 							if (m_pBOMngr->GetBoundingObject(std::to_string(i))->IsColliding(current->currentSpec[i3]->content[i2]) && showCollisions)
 							{

@@ -32,12 +32,14 @@ class MyBOClass
 	
 public:
 	std::vector<SpatialOpt*> currentSpec;
+
+	String name;
 	/*
 	USAGE: Constructor
 	ARGUMENTS: ---
 	OUTPUT: class object
 	*/
-	MyBOClass(std::vector<vector3> a_lVectorList);
+	MyBOClass(std::vector<vector3> a_lVectorList, String a_name);
 	/*
 	USAGE: Copy Constructor
 	ARGUMENTS: class object to copy

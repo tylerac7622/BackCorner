@@ -40,10 +40,12 @@ void MyBOClass::Swap(MyBOClass& other)
 }
 void MyBOClass::Release(void) {/* No pointers allocated yet */ }
 //The big 3
-MyBOClass::MyBOClass(std::vector<vector3> a_lVectorList)
+MyBOClass::MyBOClass(std::vector<vector3> a_lVectorList, String a_name)
 {
 	//Init the default values
 	Init();
+
+	name = a_name;
 
 	//Count the points of the incoming list
 	uint nVertexCount = a_lVectorList.size();
