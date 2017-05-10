@@ -38,6 +38,7 @@ SpatialOpt::SpatialOpt(float size, vector3 location, int numDivisions)
 	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y - (size / 2), location.z - (size / 2))));
 	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y - (size / 2), location.z - (size / 2))));
 	collider = new MyBoundingBoxClass(colliderPoints, 1);
+	collider->SetModelMatrix(IDENTITY_M4);
 }
 
 void SpatialOpt::SetToDraw(bool value)
@@ -90,18 +91,75 @@ void SpatialOpt::PlaceObject(Object* toPlace)
 			subdivisions[i].PlaceObject(toPlace);
 		}
 	}
-
-	if (colliding != -1)
+}
+void SpatialOpt::PlaceTarget(Target* toPlace)
+{
+	int colliding = -1;
+	if (subdivisions.size() == 0)
 	{
-		subdivisions[colliding].PlaceObject(toPlace);
+		targets.push_back(toPlace);
+		toPlace->currentSpec.push_back(this);
+	}
+	for (int i = 0; i < subdivisions.size(); i++)
+	{
+		bool isCollide = toPlace->collider->IsColliding(subdivisions[i].collider);
+		if (isCollide)
+		{
+			subdivisions[i].PlaceTarget(toPlace);
+		}
+	}
+}
+void SpatialOpt::RemoveFromTargets(Target* toPlace)
+{
+	for (int i = 0; i < targets.size(); i++)
+	{
+		if (targets[i]->GetName() == toPlace->GetName() && targets[i]->GetWorldMatrix() == toPlace->GetWorldMatrix())
+		{
+			targets.erase(targets.begin() + i);
+		}
+	}
+	for (int i = 0; i < subdivisions.size(); i++)
+	{
+		subdivisions[i].RemoveFromTargets(toPlace);
+	}
+}
+void SpatialOpt::GetPlacement(Object* toPlace)
+{
+	int colliding = -1;
+	if (subdivisions.size() == 0)
+	{
+		toPlace->currentSpec.push_back(this);
+	}
+	for (int i = 0; i < subdivisions.size(); i++)
+	{
+		bool isCollide = toPlace->collider->IsColliding(subdivisions[i].collider);
+		if (isCollide)
+		{
+			subdivisions[i].GetPlacement(toPlace);
+		}
 	}
 }
 
 void SpatialOpt::ClearTree()
 {
 	content.clear();
+	targets.clear();
 	for (int i = 0; i < subdivisions.size(); i++) {
 		subdivisions[i].ClearTree();
+	}
+}
+void SpatialOpt::ClearContent()
+{
+	content.clear();
+	for (int i = 0; i < subdivisions.size(); i++) {
+		subdivisions[i].ClearContent();
+	}
+}
+void SpatialOpt::ClearTargets()
+{
+	targets.clear();
+	for (int i = 0; i < subdivisions.size(); i++) {
+		subdivisions[i].ClearTargets();
 	}
 }
 void SpatialOpt::Recreate(float size, vector3 location, int numDivisions)
@@ -145,8 +203,20 @@ void SpatialOpt::DrawAllPartions()
 {
 	if (!toDraw) { return; }
 
-	m_pMeshMngr->AddCubeToRenderList(glm::translate(m_m4ToWorld, center) *
-		glm::scale(vector3(totalSize, totalSize, totalSize)), RERED, WIRE);
+	if (subdivisions.size() == 0)
+	{
+		//collider->RenderSphere();
+		if (targets.size() > 0 || content.size() > 0)
+		{
+			m_pMeshMngr->AddCubeToRenderList(glm::translate(m_m4ToWorld, center) *
+				glm::scale(vector3(totalSize, totalSize, totalSize)), RERED, WIRE);
+		}
+		else
+		{
+			//m_pMeshMngr->AddCubeToRenderList(glm::translate(m_m4ToWorld, center) *
+				//glm::scale(vector3(totalSize, totalSize, totalSize)), REBLUE, WIRE);
+		}
+	}
 	for (int i = 0; i < subdivisions.size(); i++) {
 		subdivisions[i].DrawAllPartions();
 	}

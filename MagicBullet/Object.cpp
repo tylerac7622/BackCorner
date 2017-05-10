@@ -53,7 +53,13 @@ quaternion Object::GetRotation(void) { return rotation; }
 matrix4 Object::GetWorldMatrix(void) { return worldMatrix; }
 String Object::GetName(void) { return modelName; }
 
-void Object::SetPosition(vector3 position2) { position = position2; }
+void Object::SetPosition(vector3 position2) 
+{ 
+	position = position2;
+	UpdateWorldMatrix();
+
+	collider->SetModelMatrix(worldMatrix);
+}
 void Object::SetRotation(quaternion rotation2) { }
 void Object::SetWorldMatrix(matrix4 mat) { worldMatrix = mat; }
 

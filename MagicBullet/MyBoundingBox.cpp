@@ -86,8 +86,10 @@ void MyBoundingBoxClass::RenderSphere()
 	// m_pMeshMngr->AddCubeToRenderList(glm::translate(m_v3CenterGlobal) * glm::scale(m_v3Size), v3Color, WIRE);
 	m_pMeshMngr->AddCubeToRenderList(m_m4ToWorld * glm::translate(m_v3CenterLocal) * glm::scale(m_v3Size), v3Color, WIRE);
 	m_pMeshMngr->AddCubeToRenderList(IDENTITY_M4 * glm::translate(m_v3CenterGlobal) * glm::scale(reSize), v3Color, WIRE);*/
-	m_pMeshMngr->AddCubeToRenderList(glm::translate(IDENTITY_M4, m_v3CenterGlobal) *
-		glm::scale(m_v3HalfWidthGlobal * 2.0f), RERED, WIRE);
+	//m_pMeshMngr->AddCubeToRenderList(glm::translate(IDENTITY_M4, m_v3CenterGlobal) *
+	//	glm::scale(m_v3HalfWidthGlobal * 2.0f), RERED, WIRE);
+	m_pMeshMngr->AddCubeToRenderList(glm::translate(m_m4ToWorld, m_v3CenterLocal) *
+		glm::scale(m_v3HalfWidthLocal * 2.0f), REBLUE, WIRE);
 }
 void MyBoundingBoxClass::SetModelMatrix(matrix4 a_m4ToWorld)
 {

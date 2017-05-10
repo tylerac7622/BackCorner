@@ -83,10 +83,12 @@ void Bullet::Update(float globalTime)
 		//bulletCam.SetRotation(rotation);
 		bulletCam.SetUp(adjustedRotation * vector3(0, 1, 0));
 
+	}
 	UpdateWorldMatrix();
 
 	collider->SetModelMatrix(worldMatrix);
-	}
+
+	currentSpec.clear();
 }
 
 void Bullet::UpdateWorldMatrix(void) 

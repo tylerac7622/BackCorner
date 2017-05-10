@@ -8,8 +8,10 @@ using namespace ReEng;
 class SpatialOpt {
 	public:
 		std::vector<Object*> content;
+		std::vector<Target*> targets;
 		std::vector<SpatialOpt> subdivisions;
 		MyBoundingBoxClass* collider;
+		vector3 center;
 
 		SpatialOpt(float size, vector3 location, int numDivisions);
 		void SetToDraw(bool value);
@@ -17,9 +19,13 @@ class SpatialOpt {
 		void GeneratePartionCenters();
 		void DrawAllPartions();
 		void PlaceObject(Object* toPlace);
+		void PlaceTarget(Target* toPlace);
 		void GetPlacement(Object* toPlace);
 		void SetWorld(matrix4 a_m4ToWorld);
-		void ClearTree();
+		void ClearTree(void);
+		void ClearContent(void);
+		void ClearTargets(void);
+		void RemoveFromTargets(Target* toRemove);
 		void Recreate(float size, vector3 location, int numDivisions);
 
 
@@ -32,6 +38,5 @@ class SpatialOpt {
 		float partitionSize;
 		int numPartions;
 		int divisions;
-		vector3 center;
 		std::vector<vector3> partionCenters;
 };
