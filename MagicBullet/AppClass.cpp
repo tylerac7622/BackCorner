@@ -72,33 +72,45 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->InstanceCuboid(vector3(28, 4, 1), REGRAY, "obstac1");
 	m_pMeshMngr->InstanceCuboid(vector3(60, 1, 60), REGRAY, "obstac2");
 	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REBLUE, "target");
+	m_pMeshMngr->InstanceCuboid(vector3(10, 15, 20), REBROWN, "obstac3");
+	m_pMeshMngr->InstanceCuboid(vector3(10, 100, 10), RERED, "obstac4");
+
 
 	//"front" wall
-	world.push_back(Target(vector3(0.0f, -2.5f, -30.0f), vector3(0.0, 0.0, 0.0)));
-	world.push_back(Target(vector3(-16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0)));
-	world.push_back(Target(vector3(16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0)));
-	world.push_back(Target(vector3(0.0f, 6.5f, -30.0f), vector3(0.0, 0.0, 0.0)));
+	world.push_back(Target(vector3(0.0f, -2.5f, -30.0f), vector3(0.0, 0.0, 0.0)));	//0
+	world.push_back(Target(vector3(-16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0)));	//1
+	world.push_back(Target(vector3(16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0)));	//2
+	world.push_back(Target(vector3(0.0f, 6.5f, -30.0f), vector3(0.0, 0.0, 0.0)));	//3
 
 	//"left" wall
-	world.push_back(Target(vector3(-30.0f, -2.5f, 0.0f), vector3(0.0, 90.0, 0.0)));
-	world.push_back(Target(vector3(-30.0f, 2.0f, -16.0f), vector3(0.0, 90.0, 0.0)));
-	world.push_back(Target(vector3(-30.0f, 2.0f, 16.0f), vector3(0.0, 90.0, 0.0)));
-	world.push_back(Target(vector3(-30.0f, 6.5f, 0.0f), vector3(0.0, 90.0, 0.0)));
+	world.push_back(Target(vector3(-30.0f, -2.5f, 0.0f), vector3(0.0, 90.0, 0.0)));	//4
+	world.push_back(Target(vector3(-30.0f, 2.0f, -16.0f), vector3(0.0, 90.0, 0.0)));//5
+	world.push_back(Target(vector3(-30.0f, 2.0f, 16.0f), vector3(0.0, 90.0, 0.0)));	//6
+	world.push_back(Target(vector3(-30.0f, 6.5f, 0.0f), vector3(0.0, 90.0, 0.0)));	//7
 
 	//"back" wall
-	world.push_back(Target(vector3(0.0f, -2.5f, 30.0f), vector3(0.0, 180.0, 0.0)));
-	world.push_back(Target(vector3(16.0f, 2.0f, 30.0f), vector3(0.0, 180.0, 0.0)));
-	world.push_back(Target(vector3(-16.0f, 2.0f, 30.0f), vector3(0.0, 180.0, 0.0)));
-	world.push_back(Target(vector3(0.0f, 6.5f, 30.0f), vector3(0.0, 180.0, 0.0)));
+	world.push_back(Target(vector3(0.0f, -2.5f, 30.0f), vector3(0.0, 180.0, 0.0)));	//8
+	world.push_back(Target(vector3(16.0f, 2.0f, 30.0f), vector3(0.0, 180.0, 0.0)));	//9
+	world.push_back(Target(vector3(-16.0f, 2.0f, 30.0f), vector3(0.0, 180.0, 0.0)));//10
+	world.push_back(Target(vector3(0.0f, 6.5f, 30.0f), vector3(0.0, 180.0, 0.0)));	//11
 
 	//"right" wall
-	world.push_back(Target(vector3(30.0f, -2.5f, 0.0f), vector3(0.0, 270.0, 0.0)));
-	world.push_back(Target(vector3(30.0f, 2.0f, 16.0f), vector3(0.0, 270.0, 0.0)));
-	world.push_back(Target(vector3(30.0f, 2.0f, -16.0f), vector3(0.0, 270.0, 0.0)));
-	world.push_back(Target(vector3(30.0f, 6.5f, 0.0f), vector3(0.0, 270.0, 0.0)));
+	world.push_back(Target(vector3(30.0f, -2.5f, 0.0f), vector3(0.0, 270.0, 0.0)));	//12
+	world.push_back(Target(vector3(30.0f, 2.0f, 16.0f), vector3(0.0, 270.0, 0.0)));	//13
+	world.push_back(Target(vector3(30.0f, 2.0f, -16.0f), vector3(0.0, 270.0, 0.0)));//14
+	world.push_back(Target(vector3(30.0f, 6.5f, 0.0f), vector3(0.0, 270.0, 0.0)));	//15
 
 	//"top"
-	world.push_back(Target(vector3(0.0f, 9.5f, 0.0f), vector3(0.0, 0.0, 0.0)));
+	world.push_back(Target(vector3(0.0f, 9.5f, 0.0f), vector3(0.0, 0.0, 0.0)));		//16
+
+	// obstacles
+	world.push_back(Target(vector3(30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0)));		//17
+	world.push_back(Target(vector3(30.0f, 2.0f, -70.0f), vector3(0.0, 90.0, 0.0)));		//18
+	world.push_back(Target(vector3(-30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0)));		//19
+	world.push_back(Target(vector3(60.0f, 2.0f, 10.0f), vector3(0.0, 0.0, 0.0)));		//20
+	world.push_back(Target(vector3(-30.0f, 2.0f, -70.0f), vector3(0.0, 0.0, 0.0)));		//21
+	world.push_back(Target(vector3(-10.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0)));		//22
+
 
 	bullet.InitBullet();
 	world[0].InitTarget(vector3(60, 5, 1), "obstac0");
@@ -122,7 +134,14 @@ void AppClass::InitVariables(void)
 	world[15].InitTarget(vector3(60, 5, 1), "obstac0");
 
 	world[16].InitTarget(vector3(60, 1, 60), "obstac2");
-	
+
+	world[17].InitTarget(vector3(10, 15, 20), "obstac3");
+	world[18].InitTarget(vector3(10, 15, 20), "obstac3");
+	world[19].InitTarget(vector3(10, 15, 20), "obstac3");
+	world[20].InitTarget(vector3(10, 100, 10), "obstac4");
+	world[21].InitTarget(vector3(10, 100, 10), "obstac4");
+	world[22].InitTarget(vector3(10, 100, 10), "obstac4");
+
 	target.InitTarget(vector2(2, .5), "target");
 	player.InitPlayer();
 
