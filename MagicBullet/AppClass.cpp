@@ -75,81 +75,58 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->InstanceCuboid(vector3(10, 15, 20), REBROWN, "obstac3");
 	m_pMeshMngr->InstanceCuboid(vector3(10, 100, 10), RERED, "obstac4");
 
-
-	//"front" wall
-	world.push_back(Target(vector3(0.0f, -2.5f, -30.0f), vector3(0.0, 0.0, 0.0)));	//0
-	world.push_back(Target(vector3(-16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0)));	//1
-	world.push_back(Target(vector3(16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0)));	//2
-	world.push_back(Target(vector3(0.0f, 6.5f, -30.0f), vector3(0.0, 0.0, 0.0)));	//3
+	world.push_back(Object(vector3(0.0f, -2.5f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac0"));
+	world.push_back(Object(vector3(-16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac1"));
+	world.push_back(Object(vector3(16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac1"));
+	world.push_back(Object(vector3(0.0f, 6.5f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac0"));
 
 	//"left" wall
-	world.push_back(Target(vector3(-30.0f, -2.5f, 0.0f), vector3(0.0, 90.0, 0.0)));	//4
-	world.push_back(Target(vector3(-30.0f, 2.0f, -16.0f), vector3(0.0, 90.0, 0.0)));//5
-	world.push_back(Target(vector3(-30.0f, 2.0f, 16.0f), vector3(0.0, 90.0, 0.0)));	//6
-	world.push_back(Target(vector3(-30.0f, 6.5f, 0.0f), vector3(0.0, 90.0, 0.0)));	//7
+	world.push_back(Object(vector3(-30.0f, -2.5f, 0.0f), vector3(0.0, 90.0, 0.0), "obstac0"));
+	world.push_back(Object(vector3(-30.0f, 2.0f, -16.0f), vector3(0.0, 90.0, 0.0), "obstac1"));
+	world.push_back(Object(vector3(-30.0f, 2.0f, 16.0f), vector3(0.0, 90.0, 0.0), "obstac1"));
+	world.push_back(Object(vector3(-30.0f, 6.5f, 0.0f), vector3(0.0, 90.0, 0.0), "obstac0"));
 
 	//"back" wall
-	world.push_back(Target(vector3(0.0f, -2.5f, 30.0f), vector3(0.0, 180.0, 0.0)));	//8
-	world.push_back(Target(vector3(16.0f, 2.0f, 30.0f), vector3(0.0, 180.0, 0.0)));	//9
-	world.push_back(Target(vector3(-16.0f, 2.0f, 30.0f), vector3(0.0, 180.0, 0.0)));//10
-	world.push_back(Target(vector3(0.0f, 6.5f, 30.0f), vector3(0.0, 180.0, 0.0)));	//11
+	world.push_back(Object(vector3(0.0f, -2.5f, 30.0f), vector3(0.0, 180.0, 0.0), "obstac0"));
+	world.push_back(Object(vector3(16.0f, 2.0f, 30.0f), vector3(0.0, 180.0, 0.0), "obstac1"));
+	world.push_back(Object(vector3(-16.0f, 2.0f, 30.0f), vector3(0.0, 180.0, 0.0), "obstac1"));
+	world.push_back(Object(vector3(0.0f, 6.5f, 30.0f), vector3(0.0, 180.0, 0.0), "obstac0"));
 
 	//"right" wall
-	world.push_back(Target(vector3(30.0f, -2.5f, 0.0f), vector3(0.0, 270.0, 0.0)));	//12
-	world.push_back(Target(vector3(30.0f, 2.0f, 16.0f), vector3(0.0, 270.0, 0.0)));	//13
-	world.push_back(Target(vector3(30.0f, 2.0f, -16.0f), vector3(0.0, 270.0, 0.0)));//14
-	world.push_back(Target(vector3(30.0f, 6.5f, 0.0f), vector3(0.0, 270.0, 0.0)));	//15
+	world.push_back(Object(vector3(30.0f, -2.5f, 0.0f), vector3(0.0, 270.0, 0.0), "obstac0"));
+	world.push_back(Object(vector3(30.0f, 2.0f, 16.0f), vector3(0.0, 270.0, 0.0), "obstac1"));
+	world.push_back(Object(vector3(30.0f, 2.0f, -16.0f), vector3(0.0, 270.0, 0.0), "obstac1"));
+	world.push_back(Object(vector3(30.0f, 6.5f, 0.0f), vector3(0.0, 270.0, 0.0), "obstac0"));
 
 	//"top"
-	world.push_back(Target(vector3(0.0f, 9.5f, 0.0f), vector3(0.0, 0.0, 0.0)));		//16
+	world.push_back(Object(vector3(0.0f, 9.5f, 0.0f), vector3(0.0, 0.0, 0.0), "obstac2"));
 
 	// obstacles
-	world.push_back(Target(vector3(30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0)));		//17
-	world.push_back(Target(vector3(30.0f, 2.0f, -70.0f), vector3(0.0, 90.0, 0.0)));		//18
-	world.push_back(Target(vector3(-30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0)));		//19
-	world.push_back(Target(vector3(60.0f, 2.0f, 10.0f), vector3(0.0, 0.0, 0.0)));		//20
-	world.push_back(Target(vector3(-30.0f, 2.0f, -70.0f), vector3(0.0, 0.0, 0.0)));		//21
-	world.push_back(Target(vector3(-10.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0)));		//22
+	world.push_back(Object(vector3(30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac3"));
+	world.push_back(Object(vector3(30.0f, 2.0f, -70.0f), vector3(0.0, 90.0, 0.0), "obstac3"));
+	world.push_back(Object(vector3(-30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac3"));
+	world.push_back(Object(vector3(60.0f, 2.0f, 10.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
+	world.push_back(Object(vector3(-30.0f, 2.0f, -70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
+	world.push_back(Object(vector3(-10.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
 
+	targets.push_back(Target(vector3(20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0)));
+	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0)));
 
-	bullet.InitBullet();
-	world[0].InitTarget(vector3(60, 5, 1), "obstac0");
-	world[1].InitTarget(vector3(28, 4, 1), "obstac1");
-	world[2].InitTarget(vector3(28, 4, 1), "obstac1");
-	world[3].InitTarget(vector3(60, 5, 1), "obstac0");
-
-	world[4].InitTarget(vector3(60, 5, 1), "obstac0");
-	world[5].InitTarget(vector3(28, 4, 1), "obstac1");
-	world[6].InitTarget(vector3(28, 4, 1), "obstac1");
-	world[7].InitTarget(vector3(60, 5, 1), "obstac0");
-
-	world[8].InitTarget(vector3(60, 5, 1), "obstac0");
-	world[9].InitTarget(vector3(28, 4, 1), "obstac1");
-	world[10].InitTarget(vector3(28, 4, 1), "obstac1");
-	world[11].InitTarget(vector3(60, 5, 1), "obstac0");
-
-	world[12].InitTarget(vector3(60, 5, 1), "obstac0");
-	world[13].InitTarget(vector3(28, 4, 1), "obstac1");
-	world[14].InitTarget(vector3(28, 4, 1), "obstac1");
-	world[15].InitTarget(vector3(60, 5, 1), "obstac0");
-
-	world[16].InitTarget(vector3(60, 1, 60), "obstac2");
-
-	world[17].InitTarget(vector3(10, 15, 20), "obstac3");
-	world[18].InitTarget(vector3(10, 15, 20), "obstac3");
-	world[19].InitTarget(vector3(10, 15, 20), "obstac3");
-	world[20].InitTarget(vector3(10, 100, 10), "obstac4");
-	world[21].InitTarget(vector3(10, 100, 10), "obstac4");
-	world[22].InitTarget(vector3(10, 100, 10), "obstac4");
-
-	target.InitTarget(vector2(2, .5), "target");
-	player.InitPlayer();
+	player.Init();
 
 	//Setting the color to black
 	m_v4ClearColor = vector4(0.0f);
 
 	bullet.collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName("bullet")->GetVertexList());
 
+	for (int i = 0; i < world.size(); i++)
+	{
+		world[i].collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName(world[i].GetName())->GetVertexList());
+	}
+	for (int i = 0; i < targets.size(); i++)
+	{
+		targets[i].collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName(targets[i].GetName())->GetVertexList());
+	}
 
 	for (int i = 0; i < world.size(); i++)
 	{
@@ -172,15 +149,21 @@ void AppClass::Update(void)
 
 	bullet.Update(globalTime);
 	m_pMeshMngr->SetModelMatrix(bullet.GetWorldMatrix(), "bullet");
-	target.Update(globalTime);
-	m_pMeshMngr->SetModelMatrix(target.GetWorldMatrix(), "target");
-	m_pMeshMngr->AddInstanceToRenderList("target");
+	//target.Update(globalTime);
+	//m_pMeshMngr->SetModelMatrix(target.GetWorldMatrix(), "target");
+	//m_pMeshMngr->AddInstanceToRenderList("target");
 	player.Update(globalTime);
 	for (int i = 0; i < world.size(); i++)
 	{
 		world[i].Update(globalTime);
 		m_pMeshMngr->SetModelMatrix(world[i].GetWorldMatrix(),  world[i].GetName());
 		m_pMeshMngr->AddInstanceToRenderList( world[i].GetName());
+	}
+	for (int i = 0; i < targets.size(); i++)
+	{
+		targets[i].Update(globalTime);
+		m_pMeshMngr->SetModelMatrix(targets[i].GetWorldMatrix(), targets[i].GetName());
+		m_pMeshMngr->AddInstanceToRenderList(targets[i].GetName());
 	}
 
 	//limits the bullet and resets it if it goes too far
@@ -214,53 +197,54 @@ void AppClass::Update(void)
 	fRunTime += fCallTime;
 
 	//update bullet collis
-	if (bullet.collider->IsColliding(target.collider))
+	if (bullet.GetFired())
 	{
-		target.model->GenerateCylinder(2.0f, 0.5f, 10, RERED);
+		for (int i = 0; i < targets.size(); i++)
+		{
+			if (bullet.collider->IsColliding(targets[i].collider))
+			{
+				int posX = rand() % 130;
+				int posZ = rand() % 130;
+				if (posX < 65)
+				{
+					posX = -100 + posX;
+				}
+				else
+				{
+					posX = 100 - (posX - 65);
+				}
+				if (posZ < 65)
+				{
+					posZ = -100 + posZ;
+				}
+				else
+				{
+					posZ = 100 - (posZ - 65);
+				}
+				targets[i].SetPosition(vector3(posX, 2, posZ));
+				//target.SetEuler(vector3(0, 0, 90.0f));
 
-		int posX = rand() % 130;
-		int posZ = rand() % 130;
-		if (posX < 65)
-		{
-			posX = -100 + posX;
-		}
-		else
-		{
-			posX = 100 - (posX - 65);
-		}
-		if (posZ < 65)
-		{
-			posZ = -100 + posZ;
-		}
-		else
-		{
-			posZ = 100 - (posZ - 65);
-		}
-		target.SetPosition(vector3(posX, 2, posZ));
-		//target.SetEuler(vector3(0, 0, 90.0f));
+				bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
+				followBullet = false;
+				globalTime = 1;
 
-		bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
-		followBullet = false;
-		globalTime = 1;
-
-		startLocation = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
-		endLoaction = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
-		negStartLocation = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
-		negEndLoaction = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
+				//startLocation = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
+				//endLoaction = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
+				//negStartLocation = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
+				//negEndLoaction = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
+			}
+		}
+		for (int i = 0; i < world.size(); i++)
+		{
+			if (bullet.collider->IsColliding(world[i].collider))
+			{
+				bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
+				followBullet = false;
+				globalTime = 1;
+			}
+		}
 	}
-	else {
-		target.model->GenerateCylinder(2.0f, 0.5f, 10, REBLUE);
-	}
 
-	for (int i = 0; i < world.size(); i++)
-	{
-		if (bullet.collider->IsColliding(world[i].collider))
-		{
-			bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
-			followBullet = false;
-			globalTime = 1;
-		}
-	}
 	player.collider->SetColliding(false);
 	for (int i = 0; i < world.size(); i++)
 	{

@@ -74,7 +74,7 @@ void SpatialOpt::GeneratePartionCenters()
 	}
 }
 
-void SpatialOpt::PlaceObject(Target* toPlace)
+void SpatialOpt::PlaceObject(Object* toPlace)
 {
 	int colliding = -1;
 	if (subdivisions.size() == 0)
