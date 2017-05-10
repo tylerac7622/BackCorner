@@ -74,8 +74,9 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REBLUE, "target");
 	m_pMeshMngr->InstanceCuboid(vector3(10, 15, 20), REBROWN, "obstac3");
 	m_pMeshMngr->InstanceCuboid(vector3(10, 100, 10), RERED, "obstac4");
-	m_pMeshMngr->InstanceCuboid(vector3(100, 100, 5), REWHITE, "obstac5");
+	m_pMeshMngr->InstanceCuboid(vector3(100, 100, 5), REYELLOW, "obstac5");
 	m_pMeshMngr->InstanceCuboid(vector3(100, 100, 5), REYELLOW, "obstac6");
+	m_pMeshMngr->InstanceCuboid(vector3(35, 5, 25), REWHITE, "obstac7");
 
 	world.push_back(Object(vector3(0.0f, -2.5f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac0"));
 	world.push_back(Object(vector3(-16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac1"));
@@ -111,15 +112,44 @@ void AppClass::InitVariables(void)
 	world.push_back(Object(vector3(60.0f, 2.0f, 10.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-30.0f, 2.0f, -70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-10.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
+	world.push_back(Object(vector3(-60.0f, 2.0f, 10.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
+	world.push_back(Object(vector3(0.0f, 2.0f, -70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
+	world.push_back(Object(vector3(100.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
+	world.push_back(Object(vector3(-60.0f, 2.0f, 100.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
+	world.push_back(Object(vector3(0.0f, 2.0f, 50.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
+	world.push_back(Object(vector3(100.0f, 2.0f, 0.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-100.0f, 2.0f, 70.0f), vector3(0.0, 90.0, 0.0), "obstac5"));
 	world.push_back(Object(vector3(-105.0f, 15.0f, 70.0f), vector3(90.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-105.0f, 30.0f, 70.0f), vector3(90.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-110.0f, 2.0f, 70.0f), vector3(0.0, 90.0, 0.0), "obstac6"));
+	
+	//sky clouds
+	world.push_back(Object(vector3(50.0f, 60.0f, 100.0f), vector3(0.0, 90.0, 0.0), "obstac7"));
+	world.push_back(Object(vector3(52.0f, 62.0f, 100.0f), vector3(0.0, 120, 0.0), "obstac7"));
+	world.push_back(Object(vector3(54.0f, 64.0f, 100.0f), vector3(0.0, 150.0, 0.0), "obstac7"));
+	world.push_back(Object(vector3(56.0f, 66.0f, 100.0f), vector3(0.0, 180, 0.0), "obstac7"));
+	world.push_back(Object(vector3(-50.0f, 60.0f, 50.0f), vector3(0.0, 90.0, 0.0), "obstac7"));
+	world.push_back(Object(vector3(-52.0f, 62.0f, 50.0f), vector3(0.0, 120, 0.0), "obstac7"));
+	world.push_back(Object(vector3(-54.0f, 64.0f, 50.0f), vector3(0.0, 150.0, 0.0), "obstac7"));
+	world.push_back(Object(vector3(-56.0f, 66.0f, 50.0f), vector3(0.0, 180, 0.0), "obstac7"));
+	world.push_back(Object(vector3(-50.0f, 60.0f, -25.0f), vector3(0.0, 90.0, 0.0), "obstac7"));
+	world.push_back(Object(vector3(-52.0f, 62.0f, -25.0f), vector3(0.0, 120, 0.0), "obstac7"));
+	world.push_back(Object(vector3(-54.0f, 64.0f, -25.0f), vector3(0.0, 150.0, 0.0), "obstac7"));
+	world.push_back(Object(vector3(-56.0f, 66.0f, -25.0f), vector3(0.0, 180, 0.0), "obstac7"));
 
-	targets.push_back(Target(vector3(20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0)));
 	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0)));
-
+	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0)));
+	targets.push_back(Target(vector3(66.0f, 76.0f, 110.0f), vector3(0.0, 0.0, 90.0)));
+	targets.push_back(Target(vector3(-105.0f, 40.0f, 70.0f), vector3(90.0, .0, 90.0)));
+	targets.push_back(Target(vector3(-105.0f, 22.5f, 70.0f), vector3(90.0, .0, 90.0)));
 	player.Init();
+
+	
+	m_pLightMngr->AddLight();
+	m_pLightMngr->AddLight();
+	m_pLightMngr->SetIntensity(100000, 1);
+	m_pLightMngr->SetPosition(vector3(300.0f, 300.0f, 300.0f), 1);
+	m_pLightMngr->SetIntensity(10, 2);
 
 	//Setting the color to black
 	m_v4ClearColor = vector4(0.0f);
@@ -147,6 +177,9 @@ void AppClass::Update(void)
 	static vector3 endLoaction = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
 	static vector3 negStartLocation = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
 	static vector3 negEndLoaction = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
+
+	//m_pLightMngr->SetPosition(player.GetPosition(), 0);
+	m_pLightMngr->SetPosition(bullet.GetPosition(), 2);
 
 	//Update the system's time
 	m_pSystem->UpdateTime();
