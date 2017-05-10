@@ -66,7 +66,7 @@ void AppClass::InitVariables(void)
 
 	srand(time(NULL));
 
-	m_pMeshMngr->LoadModel("bullet.obj", "bullet");
+	m_pMeshMngr->LoadModel("bullet.obj", "bullet", false, glm::scale(.4f,.4f,.4f));
 	m_pMeshMngr->InstanceCuboid(vector3(500, 0, 500), REGREEN, "ground");
 	m_pMeshMngr->InstanceCuboid(vector3(60, 5, 1), REGRAY, "obstac0");
 	m_pMeshMngr->InstanceCuboid(vector3(28, 4, 1), REGRAY, "obstac1");
@@ -124,15 +124,15 @@ void AppClass::InitVariables(void)
 	//Setting the color to black
 	m_v4ClearColor = vector4(0.0f);
 
-	bullet.collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName("bullet")->GetVertexList());
+	bullet.collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName("bullet")->GetVertexList(), 1);
 
 	for (int i = 0; i < world.size(); i++)
 	{
-		world[i].collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName(world[i].GetName())->GetVertexList());
+		world[i].collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName(world[i].GetName())->GetVertexList(), 1);
 	}
 	for (int i = 0; i < targets.size(); i++)
 	{
-		targets[i].collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName(targets[i].GetName())->GetVertexList());
+		targets[i].collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName(targets[i].GetName())->GetVertexList(), 1);
 	}
 
 	for (int i = 0; i < world.size(); i++)

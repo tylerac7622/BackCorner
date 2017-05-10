@@ -18,7 +18,7 @@ void Bullet::Reset(vector3 pos, vector3 rot)
 	Object::Reset(pos, rot);
 	velocity = 20.0f;
 	forward = rotation * vector3(0, 0, -1);
-	rotationSpeed = vector3(0, 0, 2);
+	rotationSpeed = vector3(0, 0, 1);
 
 	bulletCam.SetPosition(vector3(0.0f, 0.0f, 15.0f));
 	bulletCam.SetTarget(ZERO_V3);
@@ -82,10 +82,11 @@ void Bullet::Update(float globalTime)
 		bulletCam.SetTarget(position);
 		//bulletCam.SetRotation(rotation);
 		bulletCam.SetUp(adjustedRotation * vector3(0, 1, 0));
-	}
+
 	UpdateWorldMatrix();
 
 	collider->SetModelMatrix(worldMatrix);
+	}
 }
 
 void Bullet::UpdateWorldMatrix(void) 
@@ -93,7 +94,7 @@ void Bullet::UpdateWorldMatrix(void)
 	worldMatrix = glm::translate(GetPosition());
 	worldMatrix *= ToMatrix4(GetRotationNoZ());
 	worldMatrix *= ToMatrix4(GetRotationOnlyZ());
-	worldMatrix *= glm::scale(vector3(.4, .4, .4));
+	//worldMatrix *= glm::scale(vector3(.4, .4, .4));
 }
 
 vector3 Bullet::GetForward(void) { return forward; }

@@ -37,7 +37,7 @@ SpatialOpt::SpatialOpt(float size, vector3 location, int numDivisions)
 	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y + (size / 2), location.z - (size / 2))));
 	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y - (size / 2), location.z - (size / 2))));
 	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y - (size / 2), location.z - (size / 2))));
-	collider = new MyBoundingBoxClass(colliderPoints);
+	collider = new MyBoundingBoxClass(colliderPoints, 1);
 }
 
 void SpatialOpt::SetToDraw(bool value)
@@ -138,7 +138,7 @@ void SpatialOpt::Recreate(float size, vector3 location, int numDivisions)
 	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y + (size / 2), location.z - (size / 2))));
 	colliderPoints.push_back(vector3(vector3(location.x + (size / 2), location.y - (size / 2), location.z - (size / 2))));
 	colliderPoints.push_back(vector3(vector3(location.x - (size / 2), location.y - (size / 2), location.z - (size / 2))));
-	collider = new MyBoundingBoxClass(colliderPoints);
+	collider = new MyBoundingBoxClass(colliderPoints, 1);
 }
 
 void SpatialOpt::DrawAllPartions()

@@ -11,6 +11,8 @@ private:
 	vector3 m_v3Min = vector3(0.0f);
 	vector3 m_v3MinGlobal = vector3(0.0f);
 	vector3 m_v3MaxGlobal = vector3(0.0f);
+	vector3 m_v3HalfWidthGlobal = vector3(0.0f);
+	vector3 m_v3HalfWidthLocal = vector3(0.0f);
 	vector3 reSize = vector3(0.0f);
 	std::vector<vector4> reVertexList;
 	matrix4 m_m4ToWorld = IDENTITY_M4; //matrix that takes you from local to global space
@@ -66,7 +68,7 @@ public:
 	/*
 	Constructor, needs a vertex list
 	*/
-	MyBoundingBoxClass(std::vector<vector3> vertexList);
+	MyBoundingBoxClass(std::vector<vector3> vertexList, float scale);
 	/*
 	Renders the sphere based on the radius and the center in global space
 	*/
@@ -80,4 +82,6 @@ public:
 	Will check the collision with another object
 	*/
 	bool IsColliding(MyBoundingBoxClass* a_other);
+
+	bool SAT(MyBoundingBoxClass* a_other);
 };
