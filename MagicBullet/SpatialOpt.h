@@ -7,7 +7,7 @@ using namespace ReEng;
 
 class SpatialOpt {
 	public:
-		std::vector<Target*> content;
+		std::vector<Object*> content;
 		std::vector<SpatialOpt> subdivisions;
 		MyBoundingBoxClass* collider;
 
@@ -16,7 +16,8 @@ class SpatialOpt {
 		bool GetToDraw();
 		void GeneratePartionCenters();
 		void DrawAllPartions();
-		void PlaceObject(Target* toPlace);
+		void PlaceObject(Object* toPlace);
+		void GetPlacement(Object* toPlace);
 		void SetWorld(matrix4 a_m4ToWorld);
 		void ClearTree();
 		void Recreate(float size, vector3 location, int numDivisions);
