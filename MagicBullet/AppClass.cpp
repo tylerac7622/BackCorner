@@ -74,6 +74,8 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REBLUE, "target");
 	m_pMeshMngr->InstanceCuboid(vector3(10, 15, 20), REBROWN, "obstac3");
 	m_pMeshMngr->InstanceCuboid(vector3(10, 100, 10), RERED, "obstac4");
+	m_pMeshMngr->InstanceCuboid(vector3(100, 100, 5), REWHITE, "obstac5");
+	m_pMeshMngr->InstanceCuboid(vector3(100, 100, 5), REYELLOW, "obstac6");
 
 	world.push_back(Object(vector3(0.0f, -2.5f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac0"));
 	world.push_back(Object(vector3(-16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac1"));
@@ -105,9 +107,14 @@ void AppClass::InitVariables(void)
 	world.push_back(Object(vector3(30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac3"));
 	world.push_back(Object(vector3(30.0f, 2.0f, -70.0f), vector3(0.0, 90.0, 0.0), "obstac3"));
 	world.push_back(Object(vector3(-30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac3"));
+	world.push_back(Object(vector3(-80.0f, 2.0f, 10.0f), vector3(0.0, 90.0, 0.0), "obstac3"));
 	world.push_back(Object(vector3(60.0f, 2.0f, 10.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-30.0f, 2.0f, -70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-10.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
+	world.push_back(Object(vector3(-100.0f, 2.0f, 70.0f), vector3(0.0, 90.0, 0.0), "obstac5"));
+	world.push_back(Object(vector3(-105.0f, 15.0f, 70.0f), vector3(90.0, 0.0, 0.0), "obstac4"));
+	world.push_back(Object(vector3(-105.0f, 30.0f, 70.0f), vector3(90.0, 0.0, 0.0), "obstac4"));
+	world.push_back(Object(vector3(-110.0f, 2.0f, 70.0f), vector3(0.0, 90.0, 0.0), "obstac6"));
 
 	targets.push_back(Target(vector3(20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0)));
 	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0)));
