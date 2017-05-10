@@ -42,7 +42,7 @@ class AppClass : public ReEngAppClass
 	bool hitTarget = false;
 	float gameTime = 0.0f;
 	float timer = 0.0f;
-	float timeCheck = 20.0f;
+	float timeCheck = 45.0f;
 	int score = 0;
 
 public:

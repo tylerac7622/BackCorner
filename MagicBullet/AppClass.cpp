@@ -357,35 +357,34 @@ void AppClass::Update(void)
 	}
 
 	//target.SetPosition(lerpedLocation);
-
+	/*
 	if (player.collider->GetColliding())
 	{
 		player.ChangePosition(quaternion(vector3(0, PI *player.GetEuler().y / 180, 0)) * -player.GetVelocity() * globalTime);
 	}
-
+	*/
 	player.SetVelocity(vector3(0, 0, 0));
 
 	int fps = m_pSystem->GetFPS();
 	m_pMeshMngr->PrintLine("");
-	m_pMeshMngr->Print("FPS: ");
-	m_pMeshMngr->Print(std::to_string(fps));
+	m_pMeshMngr->Print("                             Time: " + std::to_string(fRunTime));
+	m_pMeshMngr->Print("                     FPS: " + std::to_string(fps), REYELLOW);
 	m_pMeshMngr->PrintLine("");
-	m_pMeshMngr->Print("Time:");
-	m_pMeshMngr->PrintLine(std::to_string(fRunTime));
+	m_pMeshMngr->Print("Targets Left: ");
+	m_pMeshMngr->Print(std::to_string(targets.size()));
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->Print("Score: ");
 	m_pMeshMngr->Print(std::to_string(score));
 	m_pMeshMngr->PrintLine("");
 	if (hitTarget) {
 		timer++;
-		m_pMeshMngr->PrintLine("TARGET HIT", REBLUE);
-		m_pMeshMngr->Print("+1", REBLUE);
+		m_pMeshMngr->PrintLine("                               TARGET HIT", REBLUE);
+		m_pMeshMngr->Print("                                    +1", REBLUE);
 		if (timer > timeCheck) {
 			hitTarget = false;
 		}
 	}
-	m_pMeshMngr->Print("Collisions Being Checked : ");
-	m_pMeshMngr->PrintLine(std::to_string(collisionChecks));
+
 
 	
 
@@ -405,6 +404,8 @@ void AppClass::Update(void)
 		m_pMeshMngr->PrintLine("FOLLOWING BULLET");
 	}
 	//m_pMeshMngr->PrintLine("Hold right click to free mouse");
+	m_pMeshMngr->Print("Collisions Being Checked : ");
+	m_pMeshMngr->PrintLine(std::to_string(collisionChecks));
 	*/
 }
 
