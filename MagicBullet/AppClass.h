@@ -39,6 +39,11 @@ class AppClass : public ReEngAppClass
 	PrimitiveClass* m_pGround = nullptr;
 
 	bool followBullet = false;
+	bool hitTarget = false;
+	float gameTime = 0.0f;
+	float timer = 0.0f;
+	float timeCheck = 20.0f;
+	int score = 0;
 
 public:
 	typedef ReEngAppClass super;

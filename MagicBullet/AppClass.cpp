@@ -66,7 +66,6 @@ void AppClass::InitVariables(void)
 
 	srand(time(NULL));
 
-	m_pMeshMngr->LoadModel("crosshair.obj", "crosshair", false, glm::scale(.4f, .4f, .4f));
 	m_pMeshMngr->LoadModel("bullet.obj", "bullet", false, glm::scale(.4f,.4f,.4f));
 	m_pMeshMngr->InstanceCuboid(vector3(500, 0, 500), REGREEN, "ground");
 	m_pMeshMngr->InstanceCuboid(vector3(60, 5, 1), REGRAY, "obstac0");
@@ -194,7 +193,7 @@ void AppClass::Update(void)
 
 	//Update the mesh manager's time without updating for collision detection
 	m_pMeshMngr->Update();
-	m_pMeshMngr->AddSkyboxToRenderList();
+	//m_pMeshMngr->AddSkyboxToRenderList();
 
 	bullet.Update(globalTime);
 	m_pMeshMngr->SetModelMatrix(bullet.GetWorldMatrix(), "bullet");
@@ -301,6 +300,9 @@ void AppClass::Update(void)
 						bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
 						followBullet = false;
 						globalTime = 1;
+						hitTarget = true;
+						timer = 0.0f;
+						score++;
 					}
 				}
 			}
@@ -362,6 +364,31 @@ void AppClass::Update(void)
 
 	player.SetVelocity(vector3(0, 0, 0));
 
+	int fps = m_pSystem->GetFPS();
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->Print("FPS: ");
+	m_pMeshMngr->Print(std::to_string(fps));
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->Print("Time:");
+	m_pMeshMngr->PrintLine(std::to_string(fRunTime));
+	m_pMeshMngr->PrintLine("");
+	m_pMeshMngr->Print("Score: ");
+	m_pMeshMngr->Print(std::to_string(score));
+	m_pMeshMngr->PrintLine("");
+	if (hitTarget) {
+		timer++;
+		m_pMeshMngr->PrintLine("TARGET HIT", REBLUE);
+		m_pMeshMngr->Print("+1", REBLUE);
+		if (timer > timeCheck) {
+			hitTarget = false;
+		}
+	}
+
+
+
+	
+
+	/*Debug lines
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->Print("Position:");
 	m_pMeshMngr->Print(std::to_string(player.collider->GetCenterGlobal().x) + ", ");
@@ -377,6 +404,7 @@ void AppClass::Update(void)
 		m_pMeshMngr->PrintLine("FOLLOWING BULLET");
 	}
 	//m_pMeshMngr->PrintLine("Hold right click to free mouse");
+	*/
 }
 
 void AppClass::Display(void)
