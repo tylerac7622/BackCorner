@@ -171,7 +171,7 @@ public:
 	ARGUMENTS:
 	OUTPUT: ---
 	*/
-	void AddSkyboxToRenderList(String a_sTextureName = "Skybox.png");
+	void AddSkyboxToRenderList(String a_sTextureName = "Skybox1.png");
 	/*
 	USAGE: Renders the cone on the specified position
 	ARGUMENTS:

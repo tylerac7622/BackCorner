@@ -66,6 +66,7 @@ void AppClass::InitVariables(void)
 
 	srand(time(NULL));
 
+	m_pMeshMngr->LoadModel("crosshair.obj", "crosshair", false, glm::scale(.4f, .4f, .4f));
 	m_pMeshMngr->LoadModel("bullet.obj", "bullet", false, glm::scale(.4f,.4f,.4f));
 	m_pMeshMngr->InstanceCuboid(vector3(500, 0, 500), REGREEN, "ground");
 	m_pMeshMngr->InstanceCuboid(vector3(60, 5, 1), REGRAY, "obstac0");
@@ -181,11 +182,13 @@ void AppClass::Update(void)
 	//m_pLightMngr->SetPosition(player.GetPosition(), 0);
 	m_pLightMngr->SetPosition(bullet.GetPosition(), 2);
 
+
 	//Update the system's time
 	m_pSystem->UpdateTime();
 
 	//Update the mesh manager's time without updating for collision detection
 	m_pMeshMngr->Update();
+	m_pMeshMngr->AddSkyboxToRenderList();
 
 	bullet.Update(globalTime);
 	m_pMeshMngr->SetModelMatrix(bullet.GetWorldMatrix(), "bullet");
@@ -198,6 +201,7 @@ void AppClass::Update(void)
 		world[i].Update(globalTime);
 		m_pMeshMngr->SetModelMatrix(world[i].GetWorldMatrix(),  world[i].GetName());
 		m_pMeshMngr->AddInstanceToRenderList( world[i].GetName());
+		m_pMeshMngr->AddInstanceToRenderList("crosshair");
 	}
 	for (int i = 0; i < targets.size(); i++)
 	{
