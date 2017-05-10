@@ -61,7 +61,7 @@ void AppClass::InitVariables(void)
 	cam.SetTarget(ZERO_V3);
 	cam.SetUp(REAXISY);
 
-	optimizer = new SpatialOpt(500, vector3(0.0f, 0.0f, 0.0f), 2);
+	optimizer = new SpatialOpt(500, vector3(0.0f, 0.0f, 0.0f), 4);
 	optimizer->SetToDraw(true);
 
 	srand(time(NULL));
@@ -142,9 +142,9 @@ void AppClass::InitVariables(void)
 	targets.push_back(Target(vector3(66.0f, 76.0f, 110.0f), vector3(0.0, 0.0, 90.0)));
 	targets.push_back(Target(vector3(-105.0f, 40.0f, 70.0f), vector3(90.0, .0, 90.0)));
 	targets.push_back(Target(vector3(-105.0f, 22.5f, 70.0f), vector3(90.0, .0, 90.0)));
+
 	player.Init();
 
-	
 	m_pLightMngr->AddLight();
 	m_pLightMngr->AddLight();
 	m_pLightMngr->SetIntensity(100000, 1);
@@ -159,15 +159,21 @@ void AppClass::InitVariables(void)
 	for (int i = 0; i < world.size(); i++)
 	{
 		world[i].collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName(world[i].GetName())->GetVertexList(), 1);
+		world[i].Update(globalTime);
 	}
 	for (int i = 0; i < targets.size(); i++)
 	{
 		targets[i].collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName(targets[i].GetName())->GetVertexList(), 1);
+		targets[i].Update(globalTime);
 	}
 
 	for (int i = 0; i < world.size(); i++)
 	{
 		optimizer->PlaceObject(&world[i]);
+	}
+	for (int i = 0; i < targets.size(); i++)
+	{
+		optimizer->PlaceTarget(&targets[i]);
 	}
 }
 
@@ -189,10 +195,12 @@ void AppClass::Update(void)
 
 	bullet.Update(globalTime);
 	m_pMeshMngr->SetModelMatrix(bullet.GetWorldMatrix(), "bullet");
+	optimizer->GetPlacement(&bullet);
 	//target.Update(globalTime);
 	//m_pMeshMngr->SetModelMatrix(target.GetWorldMatrix(), "target");
 	//m_pMeshMngr->AddInstanceToRenderList("target");
 	player.Update(globalTime);
+	optimizer->GetPlacement(&player);
 	for (int i = 0; i < world.size(); i++)
 	{
 		world[i].Update(globalTime);
@@ -236,61 +244,77 @@ void AppClass::Update(void)
 	static double fRunTime = 0.0f;
 	fRunTime += fCallTime;
 
+	int collisionChecks = 0;
 	//update bullet collis
 	if (bullet.GetFired())
 	{
-		for (int i = 0; i < targets.size(); i++)
+		for (int i = 0; i < bullet.currentSpec.size(); i++)
 		{
-			if (bullet.collider->IsColliding(targets[i].collider))
+			if (bullet.currentSpec[i]->content.size() > 0)
 			{
-				int posX = rand() % 130;
-				int posZ = rand() % 130;
-				if (posX < 65)
+				for (int i2 = 0; i2 < bullet.currentSpec[i]->content.size(); i2++)
 				{
-					posX = -100 + posX;
+					collisionChecks++;
+					if (bullet.collider->IsColliding(bullet.currentSpec[i]->content[i2]->collider))
+					{
+						bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
+						followBullet = false;
+						globalTime = 1;
+					}
 				}
-				else
-				{
-					posX = 100 - (posX - 65);
-				}
-				if (posZ < 65)
-				{
-					posZ = -100 + posZ;
-				}
-				else
-				{
-					posZ = 100 - (posZ - 65);
-				}
-				targets[i].SetPosition(vector3(posX, 2, posZ));
-				//target.SetEuler(vector3(0, 0, 90.0f));
-
-				bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
-				followBullet = false;
-				globalTime = 1;
-
-				//startLocation = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
-				//endLoaction = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
-				//negStartLocation = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
-				//negEndLoaction = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
 			}
-		}
-		for (int i = 0; i < world.size(); i++)
-		{
-			if (bullet.collider->IsColliding(world[i].collider))
+			if (bullet.currentSpec[i]->targets.size() > 0)
 			{
-				bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
-				followBullet = false;
-				globalTime = 1;
+				for (int i2 = 0; i2 < bullet.currentSpec[i]->targets.size(); i2++)
+				{
+					collisionChecks++;
+					if (bullet.collider->IsColliding(bullet.currentSpec[i]->targets[i2]->collider))
+					{
+						Target* saveTarget = bullet.currentSpec[i]->targets[i2];
+						int posX = rand() % 130;
+						int posZ = rand() % 130;
+						if (posX < 65)
+						{
+							posX = -100 + posX;
+						}
+						else
+						{
+							posX = 100 - (posX - 65);
+						}
+						if (posZ < 65)
+						{
+							posZ = -100 + posZ;
+						}
+						else
+						{
+							posZ = 100 - (posZ - 65);
+						}
+						optimizer->RemoveFromTargets(saveTarget);
+						saveTarget->SetPosition(vector3(posX, 2, posZ));
+						saveTarget->currentSpec.clear();
+						optimizer->PlaceTarget(saveTarget);
+
+						bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
+						followBullet = false;
+						globalTime = 1;
+					}
+				}
 			}
 		}
 	}
 
 	player.collider->SetColliding(false);
-	for (int i = 0; i < world.size(); i++)
+	for (int i = 0; i < player.currentSpec.size(); i++)
 	{
-		if (player.collider->IsColliding(world[i].collider))
+		if (player.currentSpec[i]->content.size() > 0)
 		{
-			player.collider->SetColliding(true);
+			for (int i2 = 0; i2 < player.currentSpec[i]->content.size(); i2++)
+			{
+				if (player.collider->IsColliding(player.currentSpec[i]->content[i2]->collider))
+				{
+					player.collider->SetColliding(true);
+				}
+			}
 		}
 	}
 
@@ -325,7 +349,7 @@ void AppClass::Update(void)
 		}
 	}
 
-	target.SetPosition(lerpedLocation);
+	//target.SetPosition(lerpedLocation);
 
 	if (player.collider->GetColliding())
 	{

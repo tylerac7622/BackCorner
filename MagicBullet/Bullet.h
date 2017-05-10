@@ -11,8 +11,6 @@ using namespace ReEng;
 class Bullet : public Object{
 public:
 
-	MyBoundingBoxClass* collider;
-	PrimitiveClass* model = nullptr;
 
 	Bullet(vector3 pos, vector3 rot) ;
 
