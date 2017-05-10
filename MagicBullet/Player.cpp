@@ -39,6 +39,8 @@ void Player::Update(float globalTime)
 {
 	Object::Update(globalTime);
 	ChangePosition(quaternion(vector3(0, PI * eulerRotation.y / 180, 0)) * velocity * globalTime);
+
+	currentSpec.clear();
 }
 
 

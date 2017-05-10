@@ -316,6 +316,7 @@ void AppClass::Update(void)
 		{
 			for (int i2 = 0; i2 < player.currentSpec[i]->content.size(); i2++)
 			{
+				collisionChecks++;
 				if (player.collider->IsColliding(player.currentSpec[i]->content[i2]->collider))
 				{
 					player.collider->SetColliding(true);
@@ -383,8 +384,8 @@ void AppClass::Update(void)
 			hitTarget = false;
 		}
 	}
-
-
+	m_pMeshMngr->Print("Collisions Being Checked : ");
+	m_pMeshMngr->PrintLine(std::to_string(collisionChecks));
 
 	
 

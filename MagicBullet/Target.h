@@ -15,6 +15,11 @@ public:
 	~Target(void);
 
 	void Update(float globalTime) override;
+
+	bool IsActive(void);
+
+	void SetActive(bool act);
 private:
+	bool active;
 };
 #endif
