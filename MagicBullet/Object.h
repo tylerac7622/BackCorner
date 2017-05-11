@@ -29,6 +29,7 @@ public:
 	//sets each respective variable
 	virtual void SetPosition(vector3 position2);
 	void SetRotation(quaternion rotation2);
+	void SetName(String name2);
 	//add a change to each respective variable
 	virtual void ChangePosition(vector3 offset);
 	virtual void ChangeEuler(vector3 offset);

@@ -62,6 +62,7 @@ void Object::SetPosition(vector3 position2)
 }
 void Object::SetRotation(quaternion rotation2) { }
 void Object::SetWorldMatrix(matrix4 mat) { worldMatrix = mat; }
+void Object::SetName(String name2) { modelName = name2; }
 
 void Object::ChangeEuler(vector3 offset)
 {
