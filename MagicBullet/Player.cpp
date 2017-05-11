@@ -28,7 +28,7 @@ Player::~Player(void)
 void Player::Init(void)
 {
 	model = new PrimitiveClass();
-	model->GenerateCube(1.0f, RERED);
+	model->GenerateCube(2.1f, RERED);
 	//m_pCone->LoadModel("bullet.obj", "bullet");
 
 	collider = new MyBoundingBoxClass(model->GetVertexList(), 1);
