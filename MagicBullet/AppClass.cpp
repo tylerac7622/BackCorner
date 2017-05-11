@@ -3,7 +3,7 @@ void AppClass::InitWindow(String a_sWindowName)
 {
 	super::InitWindow("Magic Bullet - Back Corner"); // Window Name
 
-	//Setting the color to black
+													 //Setting the color to black
 	m_v4ClearColor = vector4(0.0f);
 }
 
@@ -51,6 +51,48 @@ void AppClass::RotateCam(float a_fSpeed = 0.005f)
 	player.ChangeEuler(vector3(-fAngleX * 7.0f, 0, 0));
 	player.ChangeEuler(vector3(0, fAngleY * 5.0f, 0));
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
+}
+
+void AppClass::ResetWorld(void)
+{
+	player = Player(vector3(0, 0, 0), vector3(0, 0, 0));
+	optimizer = new SpatialOpt(500, vector3(0.0f, 0.0f, 0.0f), 4);
+	optimizer->SetToDraw(true);
+
+	bullet = Bullet(vector3(0, 2, 0), vector3(0, 0, 0));
+	followBullet = false;
+	hitTarget = false;
+	gameTime = 0.0f;
+	timer = 0.0f;
+	timeCheck = 45.0f;
+	score = 0;
+
+	gameOver = false;
+	fRunTime = 0.0f;
+
+	targets.clear();
+	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0), "targetblue"));
+	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0), "targetyellow"));
+
+	player.Init();
+
+	bullet.collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName("bullet")->GetVertexList(), 1);
+
+	for (int i = 0; i < targets.size(); i++)
+	{
+		targets[i].collider = new MyBoundingBoxClass(m_pMeshMngr->GetInstanceByName(targets[i].GetName())->GetVertexList(), 1);
+		targets[i].Update(globalTime);
+	}
+
+	for (int i = 0; i < world.size(); i++)
+	{
+		optimizer->PlaceObject(&world[i]);
+	}
+	for (int i = 0; i < targets.size(); i++)
+	{
+		optimizer->PlaceTarget(&targets[i]);
+	}
+	targetsLeft = targets.size();
 }
 
 void AppClass::InitVariables(void)
@@ -127,7 +169,7 @@ void AppClass::InitVariables(void)
 	world.push_back(Object(vector3(-105.0f, 15.0f, 70.0f), vector3(90.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-105.0f, 30.0f, 70.0f), vector3(90.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-110.0f, 2.0f, 70.0f), vector3(0.0, 90.0, 0.0), "obstac6"));
-	
+
 	//sky clouds
 	world.push_back(Object(vector3(50.0f, 60.0f, 100.0f), vector3(0.0, 90.0, 0.0), "obstac7"));
 	world.push_back(Object(vector3(52.0f, 62.0f, 100.0f), vector3(0.0, 120, 0.0), "obstac7"));
@@ -210,229 +252,257 @@ void AppClass::InitVariables(void)
 
 void AppClass::Update(void)
 {
-	static vector3 startLocation = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
-	static vector3 endLoaction = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
-	static vector3 negStartLocation = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
-	static vector3 negEndLoaction = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
-
-	//m_pLightMngr->SetPosition(player.GetPosition(), 0);
-	m_pLightMngr->SetPosition(bullet.GetPosition(), 2);
-
-
-	//Update the system's time
-	m_pSystem->UpdateTime();
-
-	//Update the mesh manager's time without updating for collision detection
-	m_pMeshMngr->Update();
-	m_pMeshMngr->AddSkyboxToRenderList();
-
-	bullet.Update(globalTime);
-	m_pMeshMngr->SetModelMatrix(bullet.GetWorldMatrix(), "bullet");
-	optimizer->GetPlacement(&bullet);
-	//target.Update(globalTime);
-	//m_pMeshMngr->SetModelMatrix(target.GetWorldMatrix(), "target");
-	//m_pMeshMngr->AddInstanceToRenderList("target");
-	player.Update(globalTime);
-	optimizer->GetPlacement(&player);
-	for (int i = 0; i < world.size(); i++)
+	if (!gameOver)
 	{
-		world[i].Update(globalTime);
-		m_pMeshMngr->SetModelMatrix(world[i].GetWorldMatrix(),  world[i].GetName());
-		m_pMeshMngr->AddInstanceToRenderList( world[i].GetName());
-	}
-	m_pMeshMngr->AddInstanceToRenderList("crosshair");
-	for (int i = 0; i < targets.size(); i++)
-	{
-		targets[i].Update(globalTime);
-		m_pMeshMngr->SetModelMatrix(targets[i].GetWorldMatrix(), targets[i].GetName());
-		m_pMeshMngr->AddInstanceToRenderList(targets[i].GetName());
-	}
+		static vector3 startLocation = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
+		static vector3 endLoaction = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
+		static vector3 negStartLocation = vector3(target.GetPosition().x, target.GetPosition().y + 6.0f, target.GetPosition().z);
+		static vector3 negEndLoaction = vector3(target.GetPosition().x, target.GetPosition().y, target.GetPosition().z);
 
-	//limits the bullet and resets it if it goes too far
-	if (abs(bullet.GetPosition().x) + abs(bullet.GetPosition().z) > 700)
-	{
-		bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
-		followBullet = false;
-		globalTime = 1;
-	}
-	if (bullet.GetPosition().y <= -5)
-	{
-		bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
-		followBullet = false;
-		globalTime = 1;
-	}
+		//m_pLightMngr->SetPosition(player.GetPosition(), 0);
+		m_pLightMngr->SetPosition(bullet.GetPosition(), 2);
 
-	if (bullet.GetFired())
-	{
-		//Adds the bullet model to the render list
-		m_pMeshMngr->AddInstanceToRenderList("bullet");
-	}
 
-	//First person camera movement
-	if (m_bFPC == true)
-		RotateCam();
+		//Update the system's time
+		m_pSystem->UpdateTime();
 
-	//Getting the time between calls
-	double fCallTime = m_pSystem->LapClock();
-	//Counting the cumulative time
-	static double fRunTime = 0.0f;
-	fRunTime += fCallTime;
+		//Update the mesh manager's time without updating for collision detection
+		m_pMeshMngr->Update();
+		m_pMeshMngr->AddSkyboxToRenderList();
 
-	int collisionChecks = 0;
-	//update bullet collis
-	if (bullet.GetFired())
-	{
-		for (int i = 0; i < bullet.currentSpec.size(); i++)
+		bullet.Update(globalTime);
+		m_pMeshMngr->SetModelMatrix(bullet.GetWorldMatrix(), "bullet");
+		optimizer->GetPlacement(&bullet);
+		//target.Update(globalTime);
+		//m_pMeshMngr->SetModelMatrix(target.GetWorldMatrix(), "target");
+		//m_pMeshMngr->AddInstanceToRenderList("target");
+		player.Update(globalTime);
+		optimizer->GetPlacement(&player);
+		for (int i = 0; i < world.size(); i++)
 		{
-			if (bullet.currentSpec[i]->content.size() > 0)
+			world[i].Update(globalTime);
+			m_pMeshMngr->SetModelMatrix(world[i].GetWorldMatrix(), world[i].GetName());
+			m_pMeshMngr->AddInstanceToRenderList(world[i].GetName());
+		}
+		m_pMeshMngr->AddInstanceToRenderList("crosshair");
+		for (int i = 0; i < targets.size(); i++)
+		{
+			targets[i].Update(globalTime);
+			m_pMeshMngr->SetModelMatrix(targets[i].GetWorldMatrix(), targets[i].GetName());
+			m_pMeshMngr->AddInstanceToRenderList(targets[i].GetName());
+		}
+
+		//limits the bullet and resets it if it goes too far
+		if (abs(bullet.GetPosition().x) + abs(bullet.GetPosition().z) > 700)
+		{
+			bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
+			followBullet = false;
+			globalTime = 1;
+		}
+		if (bullet.GetPosition().y <= -5)
+		{
+			bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
+			followBullet = false;
+			globalTime = 1;
+		}
+
+		if (bullet.GetFired())
+		{
+			//Adds the bullet model to the render list
+			m_pMeshMngr->AddInstanceToRenderList("bullet");
+		}
+
+		//First person camera movement
+		if (m_bFPC == true)
+			RotateCam();
+
+		//Getting the time between calls
+		double fCallTime = m_pSystem->LapClock();
+		//Counting the cumulative time
+		fRunTime += fCallTime;
+
+		int collisionChecks = 0;
+		//update bullet collis
+		if (bullet.GetFired())
+		{
+			for (int i = 0; i < bullet.currentSpec.size(); i++)
 			{
-				for (int i2 = 0; i2 < bullet.currentSpec[i]->content.size(); i2++)
+				if (bullet.currentSpec[i]->content.size() > 0)
 				{
-					collisionChecks++;
-					if (bullet.collider->IsColliding(bullet.currentSpec[i]->content[i2]->collider))
+					for (int i2 = 0; i2 < bullet.currentSpec[i]->content.size(); i2++)
 					{
-						bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
-						followBullet = false;
-						globalTime = 1;
-					}
-				}
-			}
-			if (bullet.currentSpec[i]->targets.size() > 0)
-			{
-				for (int i2 = 0; i2 < bullet.currentSpec[i]->targets.size(); i2++)
-				{
-					collisionChecks++;
-					if (bullet.collider->IsColliding(bullet.currentSpec[i]->targets[i2]->collider))
-					{
-						Target* saveTarget = bullet.currentSpec[i]->targets[i2];
-						if (saveTarget->IsActive())
+						collisionChecks++;
+						if (bullet.collider->IsColliding(bullet.currentSpec[i]->content[i2]->collider))
 						{
-							/*int posX = rand() % 130;
-							int posZ = rand() % 130;
-							if (posX < 65)
-							{
-							posX = -100 + posX;
-							}
-							else
-							{
-							posX = 100 - (posX - 65);
-							}
-							if (posZ < 65)
-							{
-							posZ = -100 + posZ;
-							}
-							else
-							{
-							posZ = 100 - (posZ - 65);
-							}*/
-							//optimizer->RemoveFromTargets(saveTarget);
-							//saveTarget->SetPosition(vector3(posX, 2, posZ));
-							//saveTarget->currentSpec.clear();
-							//optimizer->PlaceTarget(saveTarget);
-							saveTarget->SetName("usedtarget");
-							hitTarget = true;
-							timer = 0.0f;
-							score++;
-							saveTarget->SetActive(false);
-							targetsLeft -= 1;
+							bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
+							followBullet = false;
+							globalTime = 1;
 						}
+					}
+				}
+				if (bullet.currentSpec[i]->targets.size() > 0)
+				{
+					for (int i2 = 0; i2 < bullet.currentSpec[i]->targets.size(); i2++)
+					{
+						collisionChecks++;
+						if (bullet.collider->IsColliding(bullet.currentSpec[i]->targets[i2]->collider))
+						{
+							Target* saveTarget = bullet.currentSpec[i]->targets[i2];
+							if (saveTarget->IsActive())
+							{
+								/*int posX = rand() % 130;
+								int posZ = rand() % 130;
+								if (posX < 65)
+								{
+								posX = -100 + posX;
+								}
+								else
+								{
+								posX = 100 - (posX - 65);
+								}
+								if (posZ < 65)
+								{
+								posZ = -100 + posZ;
+								}
+								else
+								{
+								posZ = 100 - (posZ - 65);
+								}*/
+								//optimizer->RemoveFromTargets(saveTarget);
+								//saveTarget->SetPosition(vector3(posX, 2, posZ));
+								//saveTarget->currentSpec.clear();
+								//optimizer->PlaceTarget(saveTarget);
+								saveTarget->SetName("usedtarget");
+								hitTarget = true;
+								timer = 0.0f;
+								score++;
+								saveTarget->SetActive(false);
+								targetsLeft -= 1;
+								if (targetsLeft <= 0)
+								{
+									gameOver = true;
+								}
+							}
 
-						bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
-						followBullet = false;
-						globalTime = 1;
+							bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
+							followBullet = false;
+							globalTime = 1;
+						}
 					}
 				}
 			}
 		}
-	}
 
-	player.collider->SetColliding(false);
-	for (int i = 0; i < player.currentSpec.size(); i++)
-	{
-		if (player.currentSpec[i]->content.size() > 0)
+		player.collider->SetColliding(false);
+		for (int i = 0; i < player.currentSpec.size(); i++)
 		{
-			for (int i2 = 0; i2 < player.currentSpec[i]->content.size(); i2++)
+			if (player.currentSpec[i]->content.size() > 0)
 			{
-				collisionChecks++;
-				if (player.collider->IsColliding(player.currentSpec[i]->content[i2]->collider))
+				for (int i2 = 0; i2 < player.currentSpec[i]->content.size(); i2++)
 				{
-					player.collider->SetColliding(true);
+					collisionChecks++;
+					if (player.collider->IsColliding(player.currentSpec[i]->content[i2]->collider))
+					{
+						player.collider->SetColliding(true);
+					}
 				}
 			}
 		}
-	}
 
-	static bool up = true;
-	static bool down = false;
+		static bool up = true;
+		static bool down = false;
 
-	const float translationTime = 1.5f;
-	static int translationClockIndex = m_pSystem->GenClock();
-	static float translationTimer = 0.0f;
-	translationTimer += m_pSystem->LapClock(translationClockIndex);
-	float locationMaped = MapValue(translationTimer, 0.0f, translationTime, 0.0f, 1.0f);
+		const float translationTime = 1.5f;
+		static int translationClockIndex = m_pSystem->GenClock();
+		static float translationTimer = 0.0f;
+		translationTimer += m_pSystem->LapClock(translationClockIndex);
+		float locationMaped = MapValue(translationTimer, 0.0f, translationTime, 0.0f, 1.0f);
 
-	vector3 lerpedLocation;
-
-	if (up) {
-		lerpedLocation = glm::lerp(startLocation, endLoaction, locationMaped);
-	}
-	if (down) {
-		lerpedLocation = glm::lerp(negStartLocation, negEndLoaction, locationMaped);
-	}
-
-	if (locationMaped >= 1.0f) {
-		translationTimer = 0.0f;
+		vector3 lerpedLocation;
 
 		if (up) {
-			up = false;
-			down = true;
+			lerpedLocation = glm::lerp(startLocation, endLoaction, locationMaped);
 		}
-		else if (down) {
-			down = false;
-			up = true;
+		if (down) {
+			lerpedLocation = glm::lerp(negStartLocation, negEndLoaction, locationMaped);
+		}
+
+		if (locationMaped >= 1.0f) {
+			translationTimer = 0.0f;
+
+			if (up) {
+				up = false;
+				down = true;
+			}
+			else if (down) {
+				down = false;
+				up = true;
+			}
+		}
+
+		//target.SetPosition(lerpedLocation);
+
+		if (player.collider->GetColliding())
+		{
+			player.ChangePosition(quaternion(vector3(0, PI *player.GetEuler().y / 180, 0)) * -player.GetVelocity() * globalTime);
+		}
+
+		player.SetVelocity(vector3(0, 0, 0));
+
+		int fps = m_pSystem->GetFPS();
+		m_pMeshMngr->PrintLine("");
+		if (fRunTime <= 30.0f) {
+			m_pMeshMngr->Print("                             Time: " + std::to_string(fRunTime), vector3(0.83f, 0.69f, 0.22f));
+		}
+		else if (fRunTime > 30.0f && fRunTime <= 45.0f) {
+			m_pMeshMngr->Print("                             Time: " + std::to_string(fRunTime), vector3(.75f, .75f, .75f));
+		}
+		else {
+			m_pMeshMngr->Print("                             Time: " + std::to_string(fRunTime), vector3(0.50f, 0.25f, 0.00f));
+		}
+
+		m_pMeshMngr->Print("                  FPS: " + std::to_string(fps), REYELLOW);
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->Print("Targets Left: ");
+		m_pMeshMngr->Print(std::to_string(targetsLeft));
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->Print("Score: ");
+		m_pMeshMngr->Print(std::to_string(score));
+		m_pMeshMngr->PrintLine("");
+		if (hitTarget) {
+			timer++;
+			m_pMeshMngr->PrintLine("                               TARGET HIT", REBLUE);
+			m_pMeshMngr->Print("                                    +1", REBLUE);
+			if (timer > timeCheck) {
+				hitTarget = false;
+			}
 		}
 	}
-
-	//target.SetPosition(lerpedLocation);
-	/*
-	if (player.collider->GetColliding())
+	else
 	{
-		player.ChangePosition(quaternion(vector3(0, PI *player.GetEuler().y / 180, 0)) * -player.GetVelocity() * globalTime);
-	}
-	*/
-	player.SetVelocity(vector3(0, 0, 0));
-
-	int fps = m_pSystem->GetFPS();
-	m_pMeshMngr->PrintLine("");
-	if (fRunTime <= 30.0f) {
-		m_pMeshMngr->Print("                             Time: " + std::to_string(fRunTime), vector3(0.83f, 0.69f, 0.22f));
-	}
-	else if (fRunTime > 30.0f && fRunTime <= 45.0f) {
-		m_pMeshMngr->Print("                             Time: " + std::to_string(fRunTime), vector3(.75f, .75f, .75f));
-	}
-	else {
-		m_pMeshMngr->Print("                             Time: " + std::to_string(fRunTime), vector3(0.50f, 0.25f, 0.00f));
-	}
-	
-	m_pMeshMngr->Print("                     FPS: " + std::to_string(fps), REYELLOW);
-	m_pMeshMngr->PrintLine("");
-	m_pMeshMngr->Print("Targets Left: ");
-	m_pMeshMngr->Print(std::to_string(targetsLeft));
-	m_pMeshMngr->PrintLine("");
-	m_pMeshMngr->Print("Score: ");
-	m_pMeshMngr->Print(std::to_string(score));
-	m_pMeshMngr->PrintLine("");
-	if (hitTarget) {
-		timer++;
-		m_pMeshMngr->PrintLine("                               TARGET HIT", REBLUE);
-		m_pMeshMngr->Print("                                    +1", REBLUE);
-		if (timer > timeCheck) {
-			hitTarget = false;
-		}
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("                                Game Over!");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("                             " + std::to_string(fRunTime) + " seconds");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("");
+		m_pMeshMngr->PrintLine("                            Press Tab to Reset");
 	}
 
 
-	
+
 
 	/*Debug lines
 	m_pMeshMngr->PrintLine("");
@@ -447,7 +517,7 @@ void AppClass::Update(void)
 	m_pMeshMngr->PrintLine("");
 	if (followBullet)
 	{
-		m_pMeshMngr->PrintLine("FOLLOWING BULLET");
+	m_pMeshMngr->PrintLine("FOLLOWING BULLET");
 	}
 	//m_pMeshMngr->PrintLine("Hold right click to free mouse");
 	m_pMeshMngr->Print("Collisions Being Checked : ");
@@ -460,38 +530,31 @@ void AppClass::Display(void)
 	//clear the screen
 	ClearScreen();
 
-	matrix4 groundMatrix = IDENTITY_M4;
-	groundMatrix = glm::translate(vector3(0, -5, 0));
-	//quaternion q = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
-	quaternion q = glm::angleAxis(0.0f, vector3(1.0f, 0.0f, 0.0f));
-	groundMatrix *= ToMatrix4(q);
-
-	m_pMeshMngr->SetModelMatrix(groundMatrix, "ground");
-
-	m_pMeshMngr->AddInstanceToRenderList("ground");
-
-	//following the bullet
-	if (followBullet)
+	if (!gameOver)
 	{
-		m_pCameraMngr->SetPositionTargetAndView(bullet.GetCamera().GetPosition(), bullet.GetCamera().GetTarget(), bullet.GetCamera().GetUp());
+		matrix4 groundMatrix = IDENTITY_M4;
+		groundMatrix = glm::translate(vector3(0, -5, 0));
+		//quaternion q = glm::angleAxis(90.0f, vector3(1.0f, 0.0f, 0.0f));
+		quaternion q = glm::angleAxis(0.0f, vector3(1.0f, 0.0f, 0.0f));
+		groundMatrix *= ToMatrix4(q);
 
-		if (bullet.GetFired())
+		m_pMeshMngr->SetModelMatrix(groundMatrix, "ground");
+
+		m_pMeshMngr->AddInstanceToRenderList("ground");
+
+		//following the bullet
+		if (followBullet)
 		{
-			//bullet.model->Render(bullet.GetCamera().GetProjection(false), bullet.GetCamera().GetView(), bullet.GetWorldMatrix());
+			m_pCameraMngr->SetPositionTargetAndView(bullet.GetCamera().GetPosition(), bullet.GetCamera().GetTarget(), bullet.GetCamera().GetUp());
 		}
-	}
-	//fps player camera
-	if(!followBullet)
-	{
-		m_pCameraMngr->SetPositionTargetAndView(player.GetCamera().GetPosition(), player.GetCamera().GetTarget(), player.GetCamera().GetUp());
-
-		if (bullet.GetFired())
+		//fps player camera
+		if (!followBullet)
 		{
-			//bullet.model->Render(player.GetCamera().GetProjection(false), player.GetCamera().GetView(), bullet.GetWorldMatrix());
+			m_pCameraMngr->SetPositionTargetAndView(player.GetCamera().GetPosition(), player.GetCamera().GetTarget(), player.GetCamera().GetUp());
 		}
-	}
 
-	optimizer->DrawAllPartions();
+		optimizer->DrawAllPartions();
+	}
 
 	m_pMeshMngr->Render(); //renders the render list
 	m_pMeshMngr->ClearRenderList(); //Reset the Render list after render

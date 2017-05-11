@@ -46,6 +46,9 @@ class AppClass : public ReEngAppClass
 	float timeCheck = 45.0f;
 	int score = 0;
 
+	bool gameOver = false;
+	double fRunTime = 0.0f;
+
 public:
 	typedef ReEngAppClass super;
 	/*
@@ -122,6 +125,8 @@ public:
 	OUTPUT: ---
 	*/
 	virtual void Release(void) final;
+
+	void ResetWorld(void);
 };
 
 #endif //__APPLICATION_H_
