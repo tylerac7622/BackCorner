@@ -71,7 +71,12 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->InstanceCuboid(vector3(60, 5, 1), REGRAY, "obstac0");
 	m_pMeshMngr->InstanceCuboid(vector3(28, 4, 1), REGRAY, "obstac1");
 	m_pMeshMngr->InstanceCuboid(vector3(60, 1, 60), REGRAY, "obstac2");
-	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REBLUE, "target");
+	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REBLUE, "targetblue");
+	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REYELLOW, "targetyellow");
+	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, RECYAN, "targetcyan");
+	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REPURPLE, "targetpurple");
+	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REORANGE, "targetorange");
+	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REBLACK, "usedtarget");
 	m_pMeshMngr->InstanceCuboid(vector3(10, 15, 20), REBROWN, "obstac3");
 	m_pMeshMngr->InstanceCuboid(vector3(10, 100, 10), RERED, "obstac4");
 	m_pMeshMngr->InstanceCuboid(vector3(100, 100, 5), REYELLOW, "obstac5");
@@ -137,12 +142,37 @@ void AppClass::InitVariables(void)
 	world.push_back(Object(vector3(-54.0f, 64.0f, -25.0f), vector3(0.0, 150.0, 0.0), "obstac7"));
 	world.push_back(Object(vector3(-56.0f, 66.0f, -25.0f), vector3(0.0, 180, 0.0), "obstac7"));
 
-	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0)));
-	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0)));
-	targets.push_back(Target(vector3(66.0f, 76.0f, 110.0f), vector3(0.0, 0.0, 90.0)));
-	targets.push_back(Target(vector3(-105.0f, 40.0f, 70.0f), vector3(90.0, .0, 90.0)));
-	targets.push_back(Target(vector3(-105.0f, 22.5f, 70.0f), vector3(90.0, .0, 90.0)));
+	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0), "targetblue"));
+	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0), "targetyellow"));
+	targets.push_back(Target(vector3(66.0f, 76.0f, 110.0f), vector3(0.0, 0.0, 90.0), "targetcyan"));
+	targets.push_back(Target(vector3(-105.0f, 40.0f, 70.0f), vector3(90.0, .0, 90.0), "targetorange"));
+	targets.push_back(Target(vector3(-105.0f, 22.5f, 70.0f), vector3(90.0, .0, 90.0), "targetpurple"));
 
+	//FOR RANDOM TARGETS
+	/*for (int i = 0; i < 5; i++)
+	{
+	int posX = rand() % 130;
+	int posY = rand() % 50;
+	int posZ = rand() % 130;
+	int rotX = rand() % 360;
+	if (posX < 65)
+	{
+	posX = -100 + posX;
+	}
+	else
+	{
+	posX = 100 - (posX - 65);
+	}
+	if (posZ < 65)
+	{
+	posZ = -100 + posZ;
+	}
+	else
+	{
+	posZ = 100 - (posZ - 65);
+	}
+	targets.push_back(Target(vector3(posX, posY, posZ), vector3(rotX, 0.0, 90.0)));
+	}*/
 	player.Init();
 
 	m_pLightMngr->AddLight();
@@ -175,6 +205,7 @@ void AppClass::InitVariables(void)
 	{
 		optimizer->PlaceTarget(&targets[i]);
 	}
+	targetsLeft = targets.size();
 }
 
 void AppClass::Update(void)
@@ -208,8 +239,8 @@ void AppClass::Update(void)
 		world[i].Update(globalTime);
 		m_pMeshMngr->SetModelMatrix(world[i].GetWorldMatrix(),  world[i].GetName());
 		m_pMeshMngr->AddInstanceToRenderList( world[i].GetName());
-		m_pMeshMngr->AddInstanceToRenderList("crosshair");
 	}
+	m_pMeshMngr->AddInstanceToRenderList("crosshair");
 	for (int i = 0; i < targets.size(); i++)
 	{
 		targets[i].Update(globalTime);
@@ -274,35 +305,41 @@ void AppClass::Update(void)
 					if (bullet.collider->IsColliding(bullet.currentSpec[i]->targets[i2]->collider))
 					{
 						Target* saveTarget = bullet.currentSpec[i]->targets[i2];
-						int posX = rand() % 130;
-						int posZ = rand() % 130;
-						if (posX < 65)
+						if (saveTarget->IsActive())
 						{
+							/*int posX = rand() % 130;
+							int posZ = rand() % 130;
+							if (posX < 65)
+							{
 							posX = -100 + posX;
-						}
-						else
-						{
+							}
+							else
+							{
 							posX = 100 - (posX - 65);
-						}
-						if (posZ < 65)
-						{
+							}
+							if (posZ < 65)
+							{
 							posZ = -100 + posZ;
-						}
-						else
-						{
+							}
+							else
+							{
 							posZ = 100 - (posZ - 65);
+							}*/
+							//optimizer->RemoveFromTargets(saveTarget);
+							//saveTarget->SetPosition(vector3(posX, 2, posZ));
+							//saveTarget->currentSpec.clear();
+							//optimizer->PlaceTarget(saveTarget);
+							saveTarget->SetName("usedtarget");
+							hitTarget = true;
+							timer = 0.0f;
+							score++;
+							saveTarget->SetActive(false);
+							targetsLeft -= 1;
 						}
-						optimizer->RemoveFromTargets(saveTarget);
-						saveTarget->SetPosition(vector3(posX, 2, posZ));
-						saveTarget->currentSpec.clear();
-						optimizer->PlaceTarget(saveTarget);
 
 						bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
 						followBullet = false;
 						globalTime = 1;
-						hitTarget = true;
-						timer = 0.0f;
-						score++;
 					}
 				}
 			}
@@ -371,7 +408,7 @@ void AppClass::Update(void)
 	m_pMeshMngr->Print("                     FPS: " + std::to_string(fps), REYELLOW);
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->Print("Targets Left: ");
-	m_pMeshMngr->Print(std::to_string(targets.size()));
+	m_pMeshMngr->Print(std::to_string(targetsLeft));
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->Print("Score: ");
 	m_pMeshMngr->Print(std::to_string(score));
