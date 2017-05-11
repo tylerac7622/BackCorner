@@ -26,7 +26,7 @@ class AppClass : public ReEngAppClass
 	Camera cam = Camera();
 	Bullet bullet = Bullet(vector3(0, 2, 0), vector3(0, 0, 0));
 	Target target = Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0));
-	Player player = Player(vector3(0, 0, 0), vector3(0, 0, 0));
+	Player player = Player(vector3(0, 1, 0), vector3(0, 0, 0));
 	std::vector<Object> world;
 	std::vector<Target> targets;
 	int targetsLeft;

@@ -103,28 +103,68 @@ void AppClass::InitVariables(void)
 	cam.SetTarget(ZERO_V3);
 	cam.SetUp(REAXISY);
 
-	optimizer = new SpatialOpt(500, vector3(0.0f, 0.0f, 0.0f), 4);
+	optimizer = new SpatialOpt(300, vector3(0.0f, 0.0f, 0.0f), 4);
 	optimizer->SetToDraw(true);
+
+	player.Init();
 
 	srand(time(NULL));
 
 	m_pMeshMngr->LoadModel("bullet.obj", "bullet", false);
-	m_pMeshMngr->InstanceCuboid(vector3(500, 0, 500), REGREEN, "ground");
-	m_pMeshMngr->InstanceCuboid(vector3(60, 5, 1), REGRAY, "obstac0");
-	m_pMeshMngr->InstanceCuboid(vector3(28, 4, 1), REGRAY, "obstac1");
-	m_pMeshMngr->InstanceCuboid(vector3(60, 1, 60), REGRAY, "obstac2");
+	m_pMeshMngr->InstanceCuboid(vector3(300, 0, 300), REGREEN, "ground");
+	m_pMeshMngr->InstanceCuboid(vector3(60, 5, 1), vector3(0.15f, 0.15f, 0.15f), "obstac0");
+	m_pMeshMngr->InstanceCuboid(vector3(28, 4, 1), vector3(0.15f, 0.15f, 0.15f), "obstac1");
+	m_pMeshMngr->InstanceCuboid(vector3(60, 1, 60), vector3(0.15f, 0.15f, 0.15f), "obstac2");
 	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REBLUE, "targetblue");
 	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REYELLOW, "targetyellow");
 	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, RECYAN, "targetcyan");
 	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REPURPLE, "targetpurple");
 	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REORANGE, "targetorange");
 	m_pMeshMngr->InstanceCylinder(2, 0.5, 10, REBLACK, "usedtarget");
-	m_pMeshMngr->InstanceCuboid(vector3(10, 15, 20), REBROWN, "obstac3");
-	m_pMeshMngr->InstanceCuboid(vector3(10, 100, 10), RERED, "obstac4");
-	m_pMeshMngr->InstanceCuboid(vector3(100, 100, 5), REYELLOW, "obstac5");
-	m_pMeshMngr->InstanceCuboid(vector3(100, 100, 5), REYELLOW, "obstac6");
+	m_pMeshMngr->InstanceCuboid(vector3(10, 15, 20), REGRAY, "obstac3");
+	m_pMeshMngr->InstanceCuboid(vector3(10, 100, 10), REGRAY, "obstac4");
+	m_pMeshMngr->InstanceCuboid(vector3(100, 100, 5), REGRAY, "obstac5");
+	m_pMeshMngr->InstanceCuboid(vector3(100, 100, 5), REGRAY, "obstac6");
 	m_pMeshMngr->InstanceCuboid(vector3(35, 5, 25), REWHITE, "obstac7");
 
+	m_pMeshMngr->InstanceCuboid(vector3(1, 20, 120), REGRAY, "obstac8");
+	m_pMeshMngr->InstanceCuboid(vector3(16, 20, 10), REGRAY, "obstac9");
+	m_pMeshMngr->InstanceCuboid(vector3(6, 20, 10), REGRAY, "obstac10");
+	m_pMeshMngr->InstanceCuboid(vector3(6, 8, 5), REGRAY, "obstac11");
+	m_pMeshMngr->InstanceCuboid(vector3(35, 20, 10), REGRAY, "obstac12");
+	m_pMeshMngr->InstanceCuboid(vector3(3, 20, 10), REGRAY, "obstac13");
+	m_pMeshMngr->InstanceCuboid(vector3(6, 12, 10), REGRAY, "obstac14");
+	m_pMeshMngr->InstanceCuboid(vector3(6, 4, 10), REGRAY, "obstac15");
+	m_pMeshMngr->InstanceCuboid(vector3(60, 20, 1), REGRAY, "obstac16");
+	m_pMeshMngr->InstanceCuboid(vector3(60, 1, 120), REGRAY, "obstac17");
+	m_pMeshMngr->InstanceCuboid(vector3(60, 6, 1), REGRAY, "obstac18");
+
+	m_pMeshMngr->InstanceCuboid(vector3(20, 14, 1), vector3(0.15f, 0.15f, 0.15f), "obstac19");
+
+	world.push_back(Object(vector3(30.0f, 5, -90.0f), vector3(0.0, 0.0, 0.0), "obstac8"));
+	world.push_back(Object(vector3(-30.0f, 5, -90.0f), vector3(0.0, 0.0, 0.0), "obstac8"));
+	world.push_back(Object(vector3(0.0f, 5, -65.0f), vector3(0.0, 0.0, 0.0), "obstac9"));
+	world.push_back(Object(vector3(-26.5f, 5, -85.0f), vector3(0.0, 0.0, 0.0), "obstac10"));
+	world.push_back(Object(vector3(16.5f, 5, -95.0f), vector3(0.0, 0.0, 0.0), "obstac9"));
+	world.push_back(Object(vector3(27.5f, 1, -95.0f), vector3(0.0, 0.0, 0.0), "obstac14"));
+	world.push_back(Object(vector3(27.5f, 13, -95.0f), vector3(0.0, 0.0, 0.0), "obstac15"));
+	world.push_back(Object(vector3(4.0f, 5, -120.0f), vector3(0.0, 0.0, 0.0), "obstac12"));
+	world.push_back(Object(vector3(24.5f, -1, -120.0f), vector3(0.0, 0.0, 0.0), "obstac11"));
+	world.push_back(Object(vector3(24.5f, 11, -120.0f), vector3(0.0, 0.0, 0.0), "obstac11"));
+	world.push_back(Object(vector3(29.0f, 5, -120.0f), vector3(0.0, 0.0, 0.0), "obstac13"));
+	world.push_back(Object(vector3(0.0f, 5, -150.0f), vector3(0.0, 0.0, 0.0), "obstac16"));
+	world.push_back(Object(vector3(0.0f, 15, -90.0f), vector3(0.0, 0.0, 0.0), "obstac17"));
+	world.push_back(Object(vector3(0.0f, 12, -30.0f), vector3(0.0, 0.0, 0.0), "obstac18"));
+
+	targets.push_back(Target(vector3(20.0f, -3.5f, -135.0f), vector3(0.0, 0.0, 45.0), "targetblue"));
+
+	world.push_back(Object(vector3(-20.0f, 2, -10.0f), vector3(0.0, 0.0, 0.0), "obstac19"));
+	world.push_back(Object(vector3(0.0f, 2, 10.0f), vector3(0.0, 0.0, 0.0), "obstac19"));
+	world.push_back(Object(vector3(-10.0f, 2, 0.0f), vector3(0.0, 90.0, 0.0), "obstac19"));
+
+	//player.SetPosition(vector3(0, 0, -110));
+
+	//"front" wall
 	world.push_back(Object(vector3(0.0f, -2.5f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac0"));
 	world.push_back(Object(vector3(-16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac1"));
 	world.push_back(Object(vector3(16.0f, 2.0f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac1"));
@@ -152,7 +192,7 @@ void AppClass::InitVariables(void)
 	world.push_back(Object(vector3(0.0f, 9.5f, 0.0f), vector3(0.0, 0.0, 0.0), "obstac2"));
 
 	// obstacles
-	world.push_back(Object(vector3(30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac3"));
+	/*world.push_back(Object(vector3(30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac3"));
 	world.push_back(Object(vector3(30.0f, 2.0f, -70.0f), vector3(0.0, 90.0, 0.0), "obstac3"));
 	world.push_back(Object(vector3(-30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac3"));
 	world.push_back(Object(vector3(-80.0f, 2.0f, 10.0f), vector3(0.0, 90.0, 0.0), "obstac3"));
@@ -168,7 +208,7 @@ void AppClass::InitVariables(void)
 	world.push_back(Object(vector3(-100.0f, 2.0f, 70.0f), vector3(0.0, 90.0, 0.0), "obstac5"));
 	world.push_back(Object(vector3(-105.0f, 15.0f, 70.0f), vector3(90.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-105.0f, 30.0f, 70.0f), vector3(90.0, 0.0, 0.0), "obstac4"));
-	world.push_back(Object(vector3(-110.0f, 2.0f, 70.0f), vector3(0.0, 90.0, 0.0), "obstac6"));
+	world.push_back(Object(vector3(-110.0f, 2.0f, 70.0f), vector3(0.0, 90.0, 0.0), "obstac6"));*/
 
 	//sky clouds
 	world.push_back(Object(vector3(50.0f, 60.0f, 100.0f), vector3(0.0, 90.0, 0.0), "obstac7"));
@@ -183,8 +223,8 @@ void AppClass::InitVariables(void)
 	world.push_back(Object(vector3(-52.0f, 62.0f, -25.0f), vector3(0.0, 120, 0.0), "obstac7"));
 	world.push_back(Object(vector3(-54.0f, 64.0f, -25.0f), vector3(0.0, 150.0, 0.0), "obstac7"));
 	world.push_back(Object(vector3(-56.0f, 66.0f, -25.0f), vector3(0.0, 180, 0.0), "obstac7"));
+	world.push_back(Object(vector3(-56.0f, 66.0f, -25.0f), vector3(0.0, 180, 0.0), "obstac7"));
 
-	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0), "targetblue"));
 	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0), "targetyellow"));
 	targets.push_back(Target(vector3(66.0f, 76.0f, 110.0f), vector3(0.0, 0.0, 90.0), "targetcyan"));
 	targets.push_back(Target(vector3(-105.0f, 40.0f, 70.0f), vector3(90.0, .0, 90.0), "targetorange"));
@@ -215,7 +255,6 @@ void AppClass::InitVariables(void)
 	}
 	targets.push_back(Target(vector3(posX, posY, posZ), vector3(rotX, 0.0, 90.0)));
 	}*/
-	player.Init();
 
 	m_pLightMngr->AddLight();
 	m_pLightMngr->AddLight();
@@ -293,17 +332,17 @@ void AppClass::Update(void)
 		}
 
 		//limits the bullet and resets it if it goes too far
-		if (abs(bullet.GetPosition().x) + abs(bullet.GetPosition().z) > 700)
+		if (abs(bullet.GetPosition().x) > 250 || abs(bullet.GetPosition().z) > 250)
 		{
-			bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
-			followBullet = false;
-			globalTime = 1;
+			//bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
+			//followBullet = false;
+			//globalTime = 1;
 		}
 		if (bullet.GetPosition().y <= -5)
 		{
-			bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
-			followBullet = false;
-			globalTime = 1;
+			//bullet.Reset(vector3(0, 2, 0), vector3(0, 0, 0));
+			//followBullet = false;
+			//globalTime = 1;
 		}
 
 		if (bullet.GetFired())
@@ -350,28 +389,6 @@ void AppClass::Update(void)
 							Target* saveTarget = bullet.currentSpec[i]->targets[i2];
 							if (saveTarget->IsActive())
 							{
-								/*int posX = rand() % 130;
-								int posZ = rand() % 130;
-								if (posX < 65)
-								{
-								posX = -100 + posX;
-								}
-								else
-								{
-								posX = 100 - (posX - 65);
-								}
-								if (posZ < 65)
-								{
-								posZ = -100 + posZ;
-								}
-								else
-								{
-								posZ = 100 - (posZ - 65);
-								}*/
-								//optimizer->RemoveFromTargets(saveTarget);
-								//saveTarget->SetPosition(vector3(posX, 2, posZ));
-								//saveTarget->currentSpec.clear();
-								//optimizer->PlaceTarget(saveTarget);
 								saveTarget->SetName("usedtarget");
 								hitTarget = true;
 								timer = 0.0f;
