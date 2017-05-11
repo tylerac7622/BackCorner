@@ -29,6 +29,7 @@ class AppClass : public ReEngAppClass
 	Player player = Player(vector3(0, 0, 0), vector3(0, 0, 0));
 	std::vector<Object> world;
 	std::vector<Target> targets;
+	int targetsLeft;
 
 	SpatialOpt* optimizer;
 

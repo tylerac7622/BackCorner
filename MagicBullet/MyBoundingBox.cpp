@@ -154,23 +154,26 @@ bool MyBoundingBoxClass::IsColliding(MyBoundingBoxClass* a_other)
 	float fRadiiSum = this->m_fRadius + a_other->m_fRadius;
 	return fDistance < fRadiiSum;*/
 
+	//If the distance was smaller it might be colliding
+	bool bColliding = true;
 
-	/*if (this->m_v3MaxGloballobal.x < a_other->m_v3MinGloballobal.x)
-	return false;
-	else if (this->m_v3MinGloballobal.x > a_other->m_v3MaxGloballobal.x)
-	return false;
+	//Check for X
+	if (m_v3MaxGlobal.x < a_other->m_v3MinGlobal.x)
+		return false;
+	if (m_v3MinGlobal.x > a_other->m_v3MaxGlobal.x)
+		return false;
 
-	if (this->m_v3MaxGloballobal.y < a_other->m_v3MinGloballobal.y)
-	return false;
-	else if (this->m_v3MinGloballobal.y > a_other->m_v3MaxGloballobal.y)
-	return false;
+	//Check for Y
+	if (m_v3MaxGlobal.y < a_other->m_v3MinGlobal.y)
+		return false;
+	if (m_v3MinGlobal.y > a_other->m_v3MaxGlobal.y)
+		return false;
 
-	if (this->m_v3MaxGloballobal.z < a_other->m_v3MinGloballobal.z)
-	return false;
-	else if (this->m_v3MinGloballobal.z > a_other->m_v3MaxGloballobal.z)
-	return false;
-
-	return true;*/
+	//Check for Z
+	if (m_v3MaxGlobal.z < a_other->m_v3MinGlobal.z)
+		return false;
+	if (m_v3MinGlobal.z > a_other->m_v3MaxGlobal.z)
+		return false;
 
 	return SAT(a_other);
 }

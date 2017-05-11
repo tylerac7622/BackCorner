@@ -10,6 +10,7 @@ using namespace ReEng;
 class Target : public Object {
 public:
 
+	Target(vector3 pos, vector3 rot, String name);
 	Target(vector3 pos, vector3 rot);
 
 	~Target(void);
