@@ -66,7 +66,7 @@ void AppClass::InitVariables(void)
 
 	srand(time(NULL));
 
-	m_pMeshMngr->LoadModel("bullet.obj", "bullet", false, glm::scale(.4f,.4f,.4f));
+	m_pMeshMngr->LoadModel("bullet.obj", "bullet", false);
 	m_pMeshMngr->InstanceCuboid(vector3(500, 0, 500), REGREEN, "ground");
 	m_pMeshMngr->InstanceCuboid(vector3(60, 5, 1), REGRAY, "obstac0");
 	m_pMeshMngr->InstanceCuboid(vector3(28, 4, 1), REGRAY, "obstac1");
