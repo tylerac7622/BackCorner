@@ -35,7 +35,7 @@ void AppClass::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		bullet.Reset(player.GetPosition() + vector3(0, 2, 0), player.GetEuler());
+		bullet.Reset(player.GetPosition() + vector3(0, 1, 0), player.GetEuler());
 		bullet.SetFired(true);
 		followBullet = true;
 		globalTime = 0.02f;

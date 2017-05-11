@@ -71,8 +71,11 @@ void AppClass::ResetWorld(void)
 	fRunTime = 0.0f;
 
 	targets.clear();
-	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0), "targetblue"));
-	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0), "targetyellow"));
+	targets.push_back(Target(vector3(20.0f, -3.5f, -135.0f), vector3(0.0, 0.0, 45.0), "targetblue"));
+	targets.push_back(Target(vector3(70.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0), "targetyellow"));
+	targets.push_back(Target(vector3(66.0f, 76.0f, 110.0f), vector3(0.0, 0.0, 90.0), "targetcyan"));
+	targets.push_back(Target(vector3(-105.0f, 40.0f, 70.0f), vector3(90.0, .0, 90.0), "targetorange"));
+	targets.push_back(Target(vector3(-105.0f, 22.5f, 70.0f), vector3(90.0, .0, 90.0), "targetpurple"));
 
 	player.Init();
 
@@ -141,6 +144,12 @@ void AppClass::InitVariables(void)
 
 	m_pMeshMngr->InstanceCuboid(vector3(20, 14, 1), vector3(0.15f, 0.15f, 0.15f), "obstac19");
 
+	m_pMeshMngr->InstanceCuboid(vector3(120, 1, 130), REGRAY, "obstac20");
+	/*m_pMeshMngr->InstanceCuboid(vector3(1, 70, 50), REGRAY, "obstac21");
+	m_pMeshMngr->InstanceCuboid(vector3(10, 7, 40), REGRAY, "obstac22");
+	m_pMeshMngr->InstanceCuboid(vector3(10, 60, 4), REGRAY, "obstac23");
+	m_pMeshMngr->InstanceCuboid(vector3(10, 47, 4), REGRAY, "obstac24");*/
+
 	world.push_back(Object(vector3(30.0f, 5, -90.0f), vector3(0.0, 0.0, 0.0), "obstac8"));
 	world.push_back(Object(vector3(-30.0f, 5, -90.0f), vector3(0.0, 0.0, 0.0), "obstac8"));
 	world.push_back(Object(vector3(0.0f, 5, -65.0f), vector3(0.0, 0.0, 0.0), "obstac9"));
@@ -156,13 +165,20 @@ void AppClass::InitVariables(void)
 	world.push_back(Object(vector3(0.0f, 15, -90.0f), vector3(0.0, 0.0, 0.0), "obstac17"));
 	world.push_back(Object(vector3(0.0f, 12, -30.0f), vector3(0.0, 0.0, 0.0), "obstac18"));
 
-	targets.push_back(Target(vector3(20.0f, -3.5f, -135.0f), vector3(0.0, 0.0, 45.0), "targetblue"));
-
 	world.push_back(Object(vector3(-20.0f, 2, -10.0f), vector3(0.0, 0.0, 0.0), "obstac19"));
 	world.push_back(Object(vector3(0.0f, 2, 10.0f), vector3(0.0, 0.0, 0.0), "obstac19"));
 	world.push_back(Object(vector3(-10.0f, 2, 0.0f), vector3(0.0, 90.0, 0.0), "obstac19"));
 
-	//player.SetPosition(vector3(0, 0, -110));
+	world.push_back(Object(vector3(90.0f, 15, -85.0f), vector3(0.0, 0.0, 0.0), "obstac20"));
+
+	/*world.push_back(Object(vector3(-80.0f, 25, 90.0f), vector3(0.0, 0.0, 0.0), "obstac21"));
+	world.push_back(Object(vector3(-70.0f, 25, 90.0f), vector3(0.0, 0.0, 0.0), "obstac21"));
+	world.push_back(Object(vector3(-75.0f, 6, 85.0f), vector3(0.0, 0.0, 0.0), "obstac22"));
+	world.push_back(Object(vector3(-75.0f, 35, 105.0f), vector3(0.0, 0.0, 0.0), "obstac22"));
+	world.push_back(Object(vector3(-75.0f, 32.5, 65.0f), vector3(0.0, 0.0, 0.0), "obstac23"));
+	world.push_back(Object(vector3(-75.0f, 15.5, 125.0f), vector3(0.0, 0.0, 0.0), "obstac24"));*/
+
+	//player.SetPosition(vector3(-60, 0, 110));
 
 	//"front" wall
 	world.push_back(Object(vector3(0.0f, -2.5f, -30.0f), vector3(0.0, 0.0, 0.0), "obstac0"));
@@ -192,15 +208,15 @@ void AppClass::InitVariables(void)
 	world.push_back(Object(vector3(0.0f, 9.5f, 0.0f), vector3(0.0, 0.0, 0.0), "obstac2"));
 
 	// obstacles
-	/*world.push_back(Object(vector3(30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac3"));
-	world.push_back(Object(vector3(30.0f, 2.0f, -70.0f), vector3(0.0, 90.0, 0.0), "obstac3"));
+	world.push_back(Object(vector3(30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac3"));
+	//world.push_back(Object(vector3(30.0f, 2.0f, -70.0f), vector3(0.0, 90.0, 0.0), "obstac3"));
 	world.push_back(Object(vector3(-30.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac3"));
 	world.push_back(Object(vector3(-80.0f, 2.0f, 10.0f), vector3(0.0, 90.0, 0.0), "obstac3"));
 	world.push_back(Object(vector3(60.0f, 2.0f, 10.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
-	world.push_back(Object(vector3(-30.0f, 2.0f, -70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
+	//world.push_back(Object(vector3(-30.0f, 2.0f, -70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-10.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-60.0f, 2.0f, 10.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
-	world.push_back(Object(vector3(0.0f, 2.0f, -70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
+	//world.push_back(Object(vector3(0.0f, 2.0f, -70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(100.0f, 2.0f, 70.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-60.0f, 2.0f, 100.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(0.0f, 2.0f, 50.0f), vector3(0.0, 0.0, 0.0), "obstac4"));
@@ -208,7 +224,7 @@ void AppClass::InitVariables(void)
 	world.push_back(Object(vector3(-100.0f, 2.0f, 70.0f), vector3(0.0, 90.0, 0.0), "obstac5"));
 	world.push_back(Object(vector3(-105.0f, 15.0f, 70.0f), vector3(90.0, 0.0, 0.0), "obstac4"));
 	world.push_back(Object(vector3(-105.0f, 30.0f, 70.0f), vector3(90.0, 0.0, 0.0), "obstac4"));
-	world.push_back(Object(vector3(-110.0f, 2.0f, 70.0f), vector3(0.0, 90.0, 0.0), "obstac6"));*/
+	world.push_back(Object(vector3(-110.0f, 2.0f, 70.0f), vector3(0.0, 90.0, 0.0), "obstac6"));
 
 	//sky clouds
 	world.push_back(Object(vector3(50.0f, 60.0f, 100.0f), vector3(0.0, 90.0, 0.0), "obstac7"));
@@ -225,7 +241,8 @@ void AppClass::InitVariables(void)
 	world.push_back(Object(vector3(-56.0f, 66.0f, -25.0f), vector3(0.0, 180, 0.0), "obstac7"));
 	world.push_back(Object(vector3(-56.0f, 66.0f, -25.0f), vector3(0.0, 180, 0.0), "obstac7"));
 
-	targets.push_back(Target(vector3(-20.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0), "targetyellow"));
+	targets.push_back(Target(vector3(20.0f, -3.5f, -135.0f), vector3(0.0, 0.0, 45.0), "targetblue"));
+	targets.push_back(Target(vector3(70.0f, 2.0f, -50.0f), vector3(0.0, 0.0, 90.0), "targetyellow"));
 	targets.push_back(Target(vector3(66.0f, 76.0f, 110.0f), vector3(0.0, 0.0, 90.0), "targetcyan"));
 	targets.push_back(Target(vector3(-105.0f, 40.0f, 70.0f), vector3(90.0, .0, 90.0), "targetorange"));
 	targets.push_back(Target(vector3(-105.0f, 22.5f, 70.0f), vector3(90.0, .0, 90.0), "targetpurple"));
