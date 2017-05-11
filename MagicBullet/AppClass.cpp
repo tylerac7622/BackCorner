@@ -224,7 +224,7 @@ void AppClass::Update(void)
 
 	//Update the mesh manager's time without updating for collision detection
 	m_pMeshMngr->Update();
-	//m_pMeshMngr->AddSkyboxToRenderList();
+	m_pMeshMngr->AddSkyboxToRenderList();
 
 	bullet.Update(globalTime);
 	m_pMeshMngr->SetModelMatrix(bullet.GetWorldMatrix(), "bullet");
@@ -404,7 +404,16 @@ void AppClass::Update(void)
 
 	int fps = m_pSystem->GetFPS();
 	m_pMeshMngr->PrintLine("");
-	m_pMeshMngr->Print("                             Time: " + std::to_string(fRunTime));
+	if (fRunTime <= 30.0f) {
+		m_pMeshMngr->Print("                             Time: " + std::to_string(fRunTime), vector3(0.83f, 0.69f, 0.22f));
+	}
+	else if (fRunTime > 30.0f && fRunTime <= 45.0f) {
+		m_pMeshMngr->Print("                             Time: " + std::to_string(fRunTime), vector3(.75f, .75f, .75f));
+	}
+	else {
+		m_pMeshMngr->Print("                             Time: " + std::to_string(fRunTime), vector3(0.50f, 0.25f, 0.00f));
+	}
+	
 	m_pMeshMngr->Print("                     FPS: " + std::to_string(fps), REYELLOW);
 	m_pMeshMngr->PrintLine("");
 	m_pMeshMngr->Print("Targets Left: ");
