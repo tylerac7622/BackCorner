@@ -138,6 +138,7 @@ void AppClass::InitVariables(void)
 	m_pMeshMngr->InstanceCuboid(vector3(60, 20, 1), REGRAY, "obstac16");
 	m_pMeshMngr->InstanceCuboid(vector3(60, 1, 120), REGRAY, "obstac17");
 	m_pMeshMngr->InstanceCuboid(vector3(60, 6, 1), REGRAY, "obstac18");
+	m_pMeshMngr->InstanceSphere(0.1f, 10, REBLACK, "crossHair");
 
 	m_pMeshMngr->InstanceCuboid(vector3(20, 14, 1), vector3(0.15f, 0.15f, 0.15f), "obstac19");
 
@@ -259,7 +260,7 @@ void AppClass::InitVariables(void)
 	m_pLightMngr->AddLight();
 	m_pLightMngr->AddLight();
 	m_pLightMngr->SetIntensity(100000, 1);
-	m_pLightMngr->SetPosition(vector3(300.0f, 300.0f, 300.0f), 1);
+	m_pLightMngr->SetPosition(vector3(-300.0f, 300.0f, 300.0f), 1);
 	m_pLightMngr->SetIntensity(10, 2);
 
 	//Setting the color to black
@@ -300,7 +301,10 @@ void AppClass::Update(void)
 
 		//m_pLightMngr->SetPosition(player.GetPosition(), 0);
 		m_pLightMngr->SetPosition(bullet.GetPosition(), 2);
-
+	//	InstanceClass* crosshair = m_pMeshMngr->GetInstanceByName("crossHair");
+	//	crosshair->SetModelMatrix(glm::translate((player.GetPosition() + vector3(player.GetForward().x * 17, player.GetForward().y * 17, player.GetForward().z * 17))));
+	//	crosshair->Update();
+		//crosshair->AddToRenderList();
 
 		//Update the system's time
 		m_pSystem->UpdateTime();
